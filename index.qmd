@@ -1,11 +1,12 @@
 ---
-title: "ISSS626_course"
+title: "Geospatial Analytics and Applications"
 ---
 
-This is a Quarto website.
+::: {.hero}
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+# Welcome to My Website
 
-```{r}
-1 + 1
-```
+This is my Geospatial Analytics and Applications course work website.
+
+:::
+

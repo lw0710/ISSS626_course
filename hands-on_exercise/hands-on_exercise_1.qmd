@@ -1,0 +1,15 @@
+---
+title: "Hands-on Exercise 1"
+Author: Jin Jiaying
+Date: 
+---
+
+# 1 Geospatial Data Science with R
+
+## Getting Started
+This is my first hands-on exercise.
+
+## Loading the necessary R packages
+```
+pacman::p_load(sf, tidyverse)
+```
