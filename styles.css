@@ -1,18 +1,14 @@
 /* css styles */
-.hero {
+body.home-page {
   background-image: url("images/home_background_ACNH2.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
 
-  min-height: 80vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  text-align: center;
-  color: white;
+body.home-page main.content {
+  background-color: rgba(255, 255, 255, 0.88);
+  padding: 30px;
+  border-radius: 15px;
 }

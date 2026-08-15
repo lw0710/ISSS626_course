@@ -1,12 +1,11 @@
 ---
 title: "Geospatial Analytics and Applications"
+format:
+  html:
+    body-classes: home-page
 ---
 
-::: {.hero}
 
 # Welcome to My Website
 
 This is my Geospatial Analytics and Applications course work website.
-
-:::
-

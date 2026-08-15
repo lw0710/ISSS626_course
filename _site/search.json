@@ -18,7 +18,7 @@
     "href": "hands-on_exercise/hands-on_exercise_1.html",
     "title": "Hands-on Exercise 1",
     "section": "",
-    "text": "This is my first hands-on exercise.\n\n\n\npacman::p_load(sf, tidyverse)"
+    "text": "This is my first hands-on exercise.\n\n\n\n\npacman::p_load(sf, tidyverse)"
   },
   {
     "objectID": "hands-on_exercise/hands-on_exercise_1.html#getting-started",

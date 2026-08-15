@@ -10,6 +10,6 @@ Date:
 This is my first hands-on exercise.
 
 ## Loading the necessary R packages
-```
+```{r}
 pacman::p_load(sf, tidyverse)
 ```
