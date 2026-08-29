@@ -5,12 +5,12 @@ website:
   title: "ISSS626 GAA"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
       - text: Hands-on Exercise
         menu:
         - text: "Hands-on Exercise 1"
           href: hands-on_exercise/hands-on_exercise_1.qmd
+        - text: "Hands-on Exercise 2"
+          href: hands-on_exercise/hands-on_exercise_2.qmd
       - text: In-class Exercise
         menu:
         - text: "In-class Exercise 1"
@@ -18,6 +18,8 @@ website:
         menu:
         - text: "Take-home Exercise 1"
     right:
+      - href: index.qmd
+        text: Home
       - about.qmd
 
 format:
@@ -28,5 +30,11 @@ format:
     css: styles.css
     toc: true
   
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+
 editor: visual
 

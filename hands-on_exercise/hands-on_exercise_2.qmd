@@ -1,0 +1,8 @@
+---
+title: "Hands-on Exercise 2"
+author: "Jin Jiaying"
+date: last-modified
+date-format: "DD MMM YYYY"
+---
+
+# Loading the necessary R packages

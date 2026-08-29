@@ -1,11 +1,12 @@
 ---
 title: "Hands-on Exercise 1"
-Author: Jin Jiaying
-Date: 28 Aug 2026
+author: "Jin Jiaying"
+date: last-modified
+date-format: "DD MMM YYYY"
 ---
 
 
-## Loading the necessary R packages
+# Loading the necessary R packages
 
 ```{r}
 pacman::p_load(sf, tmap, tidyverse, rvest)
