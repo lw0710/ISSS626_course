@@ -441,31 +441,51 @@ plot(L_tm.csr, . - r ~ r,
 ```
 ::: {.callout-note title="Comparison of Second-order Spatial Point Pattern Functions"}
 **G-function**
+
 - Main Focus: Event-to-event
+
 - What It Measures: Distance from each event to its nearest neighbouring event
+
 - Indication of Clustering: Observed G is **higher** than CSR
 
+
 **F-function**
+
 - Main Focus: Empty space
+
 - What It Measures: Distance from a random location to the nearest event
+
 - Indication of Clustering: Observed F is **lower** than CSR
 
+
 **K-function**
+
 - Main Focus: Neighbourhood intensity
+
 - What It Measures: Number of neighbouring events within distance \(r\)
+
 - Indication of Clustering: Observed K is **higher** than CSR
 
+
 **L-function**
+
 - Main Focus: Standardised K-function
+
 - What It Measures: Transformed version of K for easier interpretation
+
 - Indication of Clustering: \(L(r)-r > 0\)
 
 
 For a **clustered pattern**:
+
 - **G**: points are closer to one another.
+
 - **F**: clustering creates larger empty spaces between clusters.
+
 - **K**: more neighbouring points are found within distance \(r\).
+
 - **L**: a positive \(L(r)-r\) indicates clustering.
+
 
 If the observed curve stays close to the CSR expectation or within the simulation envelope, the pattern is approximately random at that distance scale.
 :::
