@@ -10,7 +10,7 @@ date-format: "DD MMM YYYY"
 pacman::p_load(sf, terra, spatstat, tmap, rvest, tidyverse)
 ```
 
-# 2.1 **1st Order Spatial Point Patterns Analysis Methods**
+# **2.1 1st Order Spatial Point Patterns Analysis Methods**
 ## 2.1.1 Importing data
 ```{r}
 mpsz_sf <- st_read("hands-on_ex2_data/MasterPlan2019SubzoneBoundaryNoSeaGEOJSON.geojson") %>% 
@@ -353,7 +353,7 @@ plot(density(childcare_jw_ppp.km,
      main="Jurong West")
 ```
 
-# 2.2 **2nd Order Spatial Point Patterns Analysis Methods**
+# **2.2 2nd Order Spatial Point Patterns Analysis Methods**
 ## 2.2.1 Importing data
 
 Same data be used as in 2.1.1
