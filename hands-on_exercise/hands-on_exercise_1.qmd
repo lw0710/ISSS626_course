@@ -1,8 +1,8 @@
 ---
 title: "Hands-on Exercise 1"
 author: "Jin Jiaying"
-date: last-modified
-date-format: "DD MMM YYYY"
+date: "28 Aug 2026"
+date-modified: last-modified
 ---
 
 # Loading the necessary R packages
@@ -156,7 +156,7 @@ ggplot(data=mpsz, aes(y = `PreSch Count`, x= as.numeric(`PreSch Density`)))+
   labs(title = "", x = "Pre-school density (per km sq)", y = "Pre-school count")
 ```
 
-# **1.2 Thematic Mapping and GeoVisualisation with R** 
+# **1.2 Thematic Mapping and GeoVisualisation with R**
 
 ## 1.2.1 Importing Data into R
 

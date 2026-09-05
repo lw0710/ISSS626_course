@@ -1,0 +1,9 @@
+---
+title: "Hands-on Exercise 3"
+author: "Jin Jiaying"
+date: "05 Sep 2026"
+date-modified: last-modified
+---
+
+# Loading the necessary R packages
+

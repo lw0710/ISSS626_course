@@ -1,7 +1,8 @@
 ---
 title: "Hands-on Exercise 2"
 author: "Jin Jiaying"
-date: last-modified
+date: "03 Sep 2026"
+date-modified: last-modified
 date-format: "DD MMM YYYY"
 ---
 
@@ -116,7 +117,7 @@ childcareSG_ppp
 ```{r}
 clarkevans.test(childcareSG_ppp,
                 correction="none",
-                clipregion="sg_owin",
+                clipregion= sg_owin,
                 alternative=c("clustered"))
 ```
 ::: {.callout-tip title="Interpretation of Clark-Evans test without CSR"}
@@ -134,7 +135,7 @@ From a planning perspective, childcare centres tend to concentrate in particular
 ```{r}
 clarkevans.test(childcareSG_ppp,
                 correction="none",
-                clipregion="sg_owin",
+                clipregion= sg_owin,
                 alternative=c("clustered"),
                 method="MonteCarlo",
                 nsim=99)
@@ -403,7 +404,7 @@ K_ck = Kest(childcare_ck_ppp, correction = "Ripley")
 plot(K_ck, . -r ~ r, ylab= "K(d)-r", xlab = "d(m)")
 ```
 ```{r}
-K_ck.csr <- envelope(childcare_ck_ppp, Kest, nsim = 99, rank = 1, glocal=TRUE)
+K_ck.csr <- envelope(childcare_ck_ppp, Kest, nsim = 99, rank = 1, local=TRUE)
 plot(K_ck.csr, . - r ~ r, xlab="d", ylab="K(d)-r")
 ```
 ```{r}
@@ -413,7 +414,7 @@ plot(K_tm, . -r ~ r,
      xlim=c(0,1000))
 ```
 ```{r}
-K_tm.csr <- envelope(childcare_tm_ppp, Kest, nsim = 99, rank = 1, glocal=TRUE)
+K_tm.csr <- envelope(childcare_tm_ppp, Kest, nsim = 99, rank = 1, local=TRUE)
 plot(K_tm.csr, . - r ~ r, 
      xlab="d", ylab="K(d)-r", xlim=c(0,500))
 ```
@@ -425,7 +426,7 @@ plot(L_ck, . -r ~ r,
      ylab= "L(d)-r", xlab = "d(m)")
 ```
 ```{r}
-L_ck.csr <- envelope(childcare_ck_ppp, Lest, nsim = 99, rank = 1, glocal=TRUE)
+L_ck.csr <- envelope(childcare_ck_ppp, Lest, nsim = 99, rank = 1, local=TRUE)
 plot(L_ck.csr, . - r ~ r, xlab="d", ylab="L(d)-r")
 ```
 ```{r}
@@ -435,7 +436,7 @@ plot(L_tm, . -r ~ r,
      xlim=c(0,1000))
 ```
 ```{r}
-L_tm.csr <- envelope(childcare_tm_ppp, Lest, nsim = 99, rank = 1, glocal=TRUE)
+L_tm.csr <- envelope(childcare_tm_ppp, Lest, nsim = 99, rank = 1, local=TRUE)
 plot(L_tm.csr, . - r ~ r, 
      xlab="d", ylab="L(d)-r", xlim=c(0,500))
 ```
