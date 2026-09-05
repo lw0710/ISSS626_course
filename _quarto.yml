@@ -11,12 +11,19 @@ website:
           href: hands-on_exercise/hands-on_exercise_1.qmd
         - text: "Hands-on Exercise 2"
           href: hands-on_exercise/hands-on_exercise_2.qmd
+        - text: "Hands-on Exercise 3"
+          href: hands-on_exercise/hands-on_exercise_3.qmd
+          
       - text: In-class Exercise
         menu:
         - text: "In-class Exercise 1"
+          href: in-class_exercise/in-class_ex1.qmd
+        
       - text: Take-home Exercise
         menu:
         - text: "Take-home Exercise 1"
+          href: take-home_exercise/take-home_ex1.qmd
+        
     right:
       - href: index.qmd
         text: Home
@@ -32,6 +39,7 @@ format:
   
 execute:
   echo: true
+  eval: true
   warning: false
   message: false
   freeze: auto
