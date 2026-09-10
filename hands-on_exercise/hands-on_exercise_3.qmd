@@ -6,4 +6,187 @@ date-modified: last-modified
 ---
 
 # Loading the necessary R packages
+```{r}
+pacman::p_load(sf, spatstat, sparr, tmap, stpp, tidyverse)
+```
 
+# 3 Spatio-Temporal Point Patterns Analysis
+
+## 3.1 Importing and Preparing Study Area
+```{r}
+raw <- st_read(dsn="hands-on_ex3_data/raw_data", layer = "Batas_Wilayah_KelurahanDesa_10K_AR") %>%
+  st_transform(crs = 32748)
+names(raw)
+head(raw)
+```
+```{r}
+unique(
+  raw$WADMPR[
+    grepl("Bangka", raw$WADMPR, ignore.case = TRUE)
+  ]
+)
+```
+```{r}
+kbb <- raw %>%
+  filter(WADMPR == "Kepulauan Bangka Belitung")
+nrow(kbb)
+unique(kbb$WADMPR)
+kbb %>%
+  st_drop_geometry() %>%
+  count(WADMKK, sort = TRUE)
+```
+::: {.callout-note title="Data Preparation"}
+The sub-district boundary of Kepulauan Bangka Belitung is getting by filtering latest whole indonesia shapefile (raw). After checking number of Kabupaten/Kota, it matches with latest official data. In this case, although the number of region is 393 which is higher than the hands-on material given, the following exercise will continue by using this 393 regions data.
+:::
+
+```{r}
+kbb_sf <- kbb %>%
+  st_union() %>%
+  st_zm(drop = TRUE, what = "ZM") %>%
+  st_transform(crs = 32748)
+```
+
+
+```{r}
+kbb_owin <- as.owin(kbb_sf)
+kbb_owin
+```
+```{r}
+class(kbb_owin)
+```
+
+## 3.2 Importing and Preparing Forest Fire data
+```{r}
+fire_raw <- read_csv("hands-on_ex3_data/modis_2024_Indonesia.csv")
+fire_sf <- fire_raw %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
+  st_transform(crs = 32748)
+```
+::: {.callout-note title="Data used"}
+latest 2024 data is used in this exercise.
+:::
+
+```{r}
+fire_sf <- fire_sf %>% 
+  mutate(DayofYear = yday(acq_date)) %>%
+  mutate(Month_num = month(acq_date)) %>%
+  mutate(Month_fac = month(acq_date, 
+                           label = TRUE, 
+                           abbr = FALSE))
+```
+
+## 3.3 Visualising the Fire Points
+```{r}
+tm_shape(kbb_sf)+
+  tm_polygons() +
+tm_shape(fire_sf) +
+  tm_dots() +
+  tm_title("Overall plot") + 
+  tm_credits("Forest Fires in Kepulauan Bangka Belitung")
+```
+::: {.callout-note title="Plot Title"}
+tm_credit() is initially used as credit introduction, since tmap does not have function like sub-title, here it is used just for web display.
+:::
+
+```{r}
+tm_shape(kbb_sf)+
+  tm_polygons() +
+tm_shape(fire_sf) +
+  tm_dots(size = 0.1) +
+tm_facets(by="Month_fac", 
+            free.coords=FALSE, 
+            drop.units = TRUE) + 
+  tm_title("Monthly geographic distribution of forest fires")
+```
+
+## 3.4 Computing STKDE by Month
+```{r}
+fire_month <- fire_sf %>% 
+  select(Month_num)
+
+fire_month_ppp <- as.ppp(fire_month)
+fire_month_ppp
+
+summary(fire_month_ppp)
+
+any(duplicated(fire_month_ppp))
+```
+```{r}
+fire_month_owin <- fire_month_ppp[kbb_owin]
+summary(fire_month_owin)
+
+plot(fire_month_owin)
+```
+```{r}
+st_kde <- spattemp.density(fire_month_owin)
+summary(st_kde)
+```
+```{r}
+tims <- c(7,8,9,10,11,12)
+par(mfcol=c(2,3))
+for(i in tims){ 
+  plot(st_kde, i, 
+       override.par=FALSE, 
+       fix.range=TRUE, 
+       main=paste("KDE at month",i))
+}
+```
+
+## 3.5 Computing STKDE by Day of Year
+```{r}
+fire_yday_ppp <- fire_sf %>% 
+  select(DayofYear) %>%
+  as.ppp()
+
+fire_yday_owin <- fire_yday_ppp[kbb_owin]
+summary(fire_yday_owin)
+
+kde_yday <- spattemp.density(
+  fire_yday_owin)
+summary(kde_yday)
+
+plot(kde_yday)
+```
+
+## 3.6 Computing STKDE by Day of Year: Improved method
+```{r}
+set.seed(1234)
+BOOT.spattemp(fire_yday_owin)
+```
+```{r}
+kde_yday_improved <- spattemp.density(fire_yday_owin,
+                             h = 9000,
+                             lambda = 19)
+summary(kde_yday_improved)
+```
+```{r}
+plot(kde_yday_improved)
+```
+
+## 3.7 Spatio-temporal Point Patterns Analysis: stpp methods
+```{r}
+coords <- st_coordinates(fire_sf)
+
+fire_df <- data.frame(
+  x = coords[, 1],  
+  y = coords[, 2],
+  t = fire_sf$`DayofYear`)
+
+fire_stpp <- as.3dpoints(fire_df)
+class(fire_stpp)
+
+plot(fire_stpp)
+```
+
+```{r}
+kbb_stik <- STIKhat(fire_stpp)
+
+plotK(kbb_stik)
+```
+::: {.callout-note title="Warning on duplicated spatial points"}
+STIKhat() returns a warning indicating duplicated spatial points. 
+A check of the input data found no duplicated space-time observations 
+(x, y, t), while 12 observations share spatial coordinates (x, y) with 
+another observation but occur at different times. Therefore, these 
+observations are retained for the space-time analysis.
+:::

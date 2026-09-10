@@ -10,10 +10,9 @@ This In-class Exercise is learning Geospatial Data processing with KNIME
 
 # Workflow
 
-The KNIME workflow was constructed to import, project and visualise
-the geospatial dataset.
+The KNIME workflow was constructed to import, project and visualise the geospatial dataset.
 
-![Preliminary KNIME workflow.](../images/KNIME/in-class_ex1_workflow.png){width=80%}
+![Preliminary KNIME workflow.](../images/KNIME/in-class_ex1_workflow.png){width="80%"}
 
 ### Data Import
 
@@ -21,10 +20,8 @@ The **GeoFile Reader** node was used to import the geospatial dataset.
 
 ### Coordinate Transformation
 
-The **Projection** node was used to transform the coordinate reference
-system before spatial analysis and visualisation.
+The **Projection** node was used to transform the coordinate reference system before spatial analysis and visualisation.
 
 ### Visualisation
 
-Both static and interactive geospatial views were explored to inspect
-the spatial distribution of the dataset.
+Both static and interactive geospatial views were explored to inspect the spatial distribution of the dataset.
