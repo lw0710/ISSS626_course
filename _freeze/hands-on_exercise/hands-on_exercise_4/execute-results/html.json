@@ -1,0 +1,17 @@
+{
+  "hash": "d555e199c4046bce03bb274a8584626f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Hands-on Exercise 4\"\nauthor: \"Jin Jiaying\"\ndate: \"12 Sep 2026\"\ndate-modified: last-modifiedl\n---\n\n# Loading the necessary R packages\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(sf, spdep, tmap, tidyverse, knitr)\n```\n:::\n\n\n# 4 Spatial Weights and Applications\n\n## 4.1 Getting the Data Into R Environment\n\n::: {.cell}\n\n```{.r .cell-code}\nhunan <- st_read(dsn = \"hands-on_ex4_data\", layer = \"Hunan\")\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nReading layer `Hunan' from data source \n  `C:\\Users\\jiayi\\Documents\\SMU\\26_Aug_Term\\GAA\\lw0170_GAA\\ISSS626_course\\hands-on_exercise\\hands-on_ex4_data' \n  using driver `ESRI Shapefile'\nSimple feature collection with 88 features and 7 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 108.7831 ymin: 24.6342 xmax: 114.2544 ymax: 30.12812\nGeodetic CRS:  WGS 84\n```\n\n\n:::\n\n```{.r .cell-code}\nhunan2012 <- read_csv(\"hands-on_ex4_data/Hunan_2012.csv\")\n\nhunan <- left_join(hunan,hunan2012) %>%\n  select(1:4, 7, 15)\n```\n:::\n\n\n## 4.2 Visualising Regional Development Indicator\n\n::: {.cell}\n\n```{.r .cell-code}\nbasemap <- tm_shape(hunan) +\n  tm_polygons() +\n  tm_text(\"NAME_3\", size=0.5)\n\ngdppc <- qtm(hunan, \"GDPPC\") +\n  tm_layout(\n    legend.position = c(\"left\", \"bottom\"))\ntmap_arrange(basemap, gdppc, asp=1, ncol=2)\n```\n\n::: {.cell-output-display}\n![](hands-on_exercise_4_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n\n\n\n\n\n ",
+    "supporting": [
+      "hands-on_exercise_4_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

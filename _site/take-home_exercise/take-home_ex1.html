@@ -9,7 +9,7 @@
 <meta name="author" content="Jin Jiaying">
 <meta name="dcterms.date" content="2026-09-05">
 
-<title>Take-home Exercise 1 – ISSS626 GAA</title>
+<title>Take-home Exercise 1 - Technical Report – ISSS626 GAA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -109,6 +144,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../hands-on_exercise/hands-on_exercise_3.html">
  <span class="dropdown-text">Hands-on Exercise 3</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../hands-on_exercise/hands-on_exercise_4.html">
+ <span class="dropdown-text">Hands-on Exercise 4</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -154,15 +193,31 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#loading-necessary-r-packages" id="toc-loading-necessary-r-packages" class="nav-link" data-scroll-target="#loading-necessary-r-packages">Loading Necessary R Packages</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">1 Data Preparation</a></li>
+  <li><a href="#first-order-and-second-order-point-pattern-analysis" id="toc-first-order-and-second-order-point-pattern-analysis" class="nav-link" data-scroll-target="#first-order-and-second-order-point-pattern-analysis">2 First-Order and Second-Order Point-Pattern Analysis</a>
+  <ul class="collapse">
+  <li><a href="#first-order-point-pattern-analysis" id="toc-first-order-point-pattern-analysis" class="nav-link" data-scroll-target="#first-order-point-pattern-analysis">2.1 First-Order Point-Pattern Analysis</a></li>
+  <li><a href="#second-order-point-pattern-analysis" id="toc-second-order-point-pattern-analysis" class="nav-link" data-scroll-target="#second-order-point-pattern-analysis">2.2 Second-Order Point-Pattern Analysis</a></li>
+  <li><a href="#integration-and-interpretation" id="toc-integration-and-interpretation" class="nav-link" data-scroll-target="#integration-and-interpretation">2.3 Integration and Interpretation</a></li>
+  </ul></li>
+  <li><a href="#geovisualisation-and-analytical-interpretation" id="toc-geovisualisation-and-analytical-interpretation" class="nav-link" data-scroll-target="#geovisualisation-and-analytical-interpretation">3 Geovisualisation and Analytical Interpretation</a></li>
+  <li><a href="#public-safety-planning-and-management" id="toc-public-safety-planning-and-management" class="nav-link" data-scroll-target="#public-safety-planning-and-management">4 Public-Safety Planning and Management</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Take-home Exercise 1</h1>
+<h1 class="title">Take-home Exercise 1 - Technical Report</h1>
 </div>
 
 
@@ -186,7 +241,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 5, 2026</p>
+      <p class="date-modified">September 12, 2026</p>
     </div>
   </div>
     
@@ -197,8 +252,99 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="overview" class="level1">
+<h1>Overview</h1>
+</section>
+<section id="loading-necessary-r-packages" class="level1">
+<h1>Loading Necessary R Packages</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="data-preparation" class="level1">
+<h1>1 Data Preparation</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>th_accident <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"take-home_ex1_data/thai_road_accident_2019_2022.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(th_accident)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    acc_code       incident_datetime             report_datetime              
+ Min.   : 571834   Min.   :2019-01-01 00:00:00   Min.   :2019-01-01 03:05:00  
+ 1st Qu.:3789460   1st Qu.:2020-01-17 23:30:00   1st Qu.:2020-03-20 08:45:30  
+ Median :3824084   Median :2021-01-03 14:30:00   Median :2021-03-31 10:06:00  
+ Mean   :4235766   Mean   :2021-01-10 02:05:53   Mean   :2021-03-28 04:33:21  
+ 3rd Qu.:5831089   3rd Qu.:2022-01-03 10:55:00   3rd Qu.:2022-03-01 11:08:30  
+ Max.   :7571316   Max.   :2022-12-31 23:55:00   Max.   :2023-01-26 13:20:00  
+                                                                              
+    province_th       province_en          agency            route      
+ Length   :81735   Length   :81735   Length   :81735   Length   :81735  
+ N.unique :   78   N.unique :   78   N.unique :    3   N.unique : 3882  
+ N.blank  :    0   N.blank  :    0   N.blank  :    0   N.blank  :    0  
+ Min.nchar:    3   Min.nchar:    3   Min.nchar:   22   Min.nchar:    7  
+ Max.nchar:   15   Max.nchar:   24   Max.nchar:   32   Max.nchar:  108  
+                                                                        
+                                                                        
+    vehicle_type     presumed_cause    accident_type  
+ Length   :81735   Length   :81735   Length   :81735  
+ N.unique :   15   N.unique :   54   N.unique :   11  
+ N.blank  :    0   N.blank  :    0   N.blank  :    0  
+ Min.nchar:    3   Min.nchar:    5   Min.nchar:    5  
+ Max.nchar:   28   Max.nchar:   47   Max.nchar:   44  
+                                                      
+                                                      
+ number_of_vehicles_involved number_of_fatalities number_of_injuries
+ Min.   : 0.000              Min.   : 0.0000      Min.   : 0.0000   
+ 1st Qu.: 1.000              1st Qu.: 0.0000      1st Qu.: 0.0000   
+ Median : 1.000              Median : 0.0000      Median : 0.0000   
+ Mean   : 1.535              Mean   : 0.1456      Mean   : 0.8119   
+ 3rd Qu.: 2.000              3rd Qu.: 0.0000      3rd Qu.: 1.0000   
+ Max.   :27.000              Max.   :13.0000      Max.   :51.0000   
+                                                                    
+ weather_condition    latitude           longitude       road_description
+ Length   :81735   Min.   :-0.001108   Min.   : 18.02   Length   :81735  
+ N.unique :    7   1st Qu.:13.510107   1st Qu.: 99.89   N.unique :   19  
+ N.blank  :    0   Median :14.468878   Median :100.56   N.blank  :    0  
+ Min.nchar:    4   Mean   :14.377542   Mean   :100.81   Min.nchar:    5  
+ Max.nchar:   16   3rd Qu.:16.567408   3rd Qu.:101.29   Max.nchar:   36  
+                   Max.   :41.549515   Max.   :105.52                    
+                   NAs    :359         NAs    :359                       
+ slope_description
+ Length   :81735  
+ N.unique :    3  
+ N.blank  :    0  
+ Min.nchar:    5  
+ Max.nchar:   10  
+                  
+                  </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  th_accident,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"take-home_ex1_data/thailand_road_accident_clean.csv"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="first-order-and-second-order-point-pattern-analysis" class="level1">
+<h1>2 First-Order and Second-Order Point-Pattern Analysis</h1>
+<section id="first-order-point-pattern-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="first-order-point-pattern-analysis">2.1 First-Order Point-Pattern Analysis</h2>
+</section>
+<section id="second-order-point-pattern-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="second-order-point-pattern-analysis">2.2 Second-Order Point-Pattern Analysis</h2>
+</section>
+<section id="integration-and-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="integration-and-interpretation">2.3 Integration and Interpretation</h2>
+</section>
+</section>
+<section id="geovisualisation-and-analytical-interpretation" class="level1">
+<h1>3 Geovisualisation and Analytical Interpretation</h1>
+</section>
+<section id="public-safety-planning-and-management" class="level1">
+<h1>4 Public-Safety Planning and Management</h1>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

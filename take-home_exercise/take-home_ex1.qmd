@@ -1,7 +1,58 @@
 ---
-title: "Take-home Exercise 1"
+title: "Take-home Exercise 1 - Technical Report"
 author: "Jin Jiaying"
 date: "05 Sep 2026"
 date-modified: last-modified
 ---
+
+# Overview
+
+
+# Loading Necessary R Packages
+```{r}
+pacman::p_load(tidyverse)
+```
+
+
+# 1 Data Preparation
+```{r}
+th_accident <- read_csv("take-home_ex1_data/thai_road_accident_2019_2022.csv")
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+summary(th_accident)
+write.csv(
+  th_accident,
+  "take-home_ex1_data/thailand_road_accident_clean.csv",
+  row.names = FALSE
+)
+```
+
+
+# 2 First-Order and Second-Order Point-Pattern Analysis
+
+## 2.1 First-Order Point-Pattern Analysis
+
+## 2.2 Second-Order Point-Pattern Analysis
+
+## 2.3 Integration and Interpretation
+
+
+# 3 Geovisualisation and Analytical Interpretation
+
+
+# 4 Public-Safety Planning and Management
+
 

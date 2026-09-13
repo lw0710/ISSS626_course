@@ -1,0 +1,41 @@
+---
+title: "Hands-on Exercise 4"
+author: "Jin Jiaying"
+date: "12 Sep 2026"
+date-modified: last-modifiedl
+---
+
+# Loading the necessary R packages
+```{r}
+pacman::p_load(sf, spdep, tmap, tidyverse, knitr)
+```
+
+# 4 Spatial Weights and Applications
+
+## 4.1 Getting the Data Into R Environment
+```{r}
+hunan <- st_read(dsn = "hands-on_ex4_data", layer = "Hunan")
+
+hunan2012 <- read_csv("hands-on_ex4_data/Hunan_2012.csv")
+
+hunan <- left_join(hunan,hunan2012) %>%
+  select(1:4, 7, 15)
+```
+
+## 4.2 Visualising Regional Development Indicator
+```{r}
+basemap <- tm_shape(hunan) +
+  tm_polygons() +
+  tm_text("NAME_3", size=0.5)
+
+gdppc <- qtm(hunan, "GDPPC") +
+  tm_layout(
+    legend.position = c("left", "bottom"))
+tmap_arrange(basemap, gdppc, asp=1, ncol=2)
+```
+
+
+
+
+
+ 
