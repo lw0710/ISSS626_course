@@ -60,7 +60,7 @@ kbb_owin
 class(kbb_owin)
 ```
 
-## 3.2 Importing and Preparing Forest Fire data
+ ## 3.2 Importing and Preparing Forest Fire data
 
 ```{r}
 fire_raw <- read_csv("hands-on_ex3_data/modis_2024_Indonesia.csv")

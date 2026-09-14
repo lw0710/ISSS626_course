@@ -202,7 +202,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#spatio-temporal-point-patterns-analysis" id="toc-spatio-temporal-point-patterns-analysis" class="nav-link" data-scroll-target="#spatio-temporal-point-patterns-analysis">3 Spatio-Temporal Point Patterns Analysis</a>
   <ul class="collapse">
   <li><a href="#importing-and-preparing-study-area" id="toc-importing-and-preparing-study-area" class="nav-link" data-scroll-target="#importing-and-preparing-study-area">3.1 Importing and Preparing Study Area</a></li>
-  <li><a href="#importing-and-preparing-forest-fire-data" id="toc-importing-and-preparing-forest-fire-data" class="nav-link" data-scroll-target="#importing-and-preparing-forest-fire-data">3.2 Importing and Preparing Forest Fire data</a></li>
   <li><a href="#visualising-the-fire-points" id="toc-visualising-the-fire-points" class="nav-link" data-scroll-target="#visualising-the-fire-points">3.3 Visualising the Fire Points</a></li>
   <li><a href="#computing-stkde-by-month" id="toc-computing-stkde-by-month" class="nav-link" data-scroll-target="#computing-stkde-by-month">3.4 Computing STKDE by Month</a></li>
   <li><a href="#computing-stkde-by-day-of-year" id="toc-computing-stkde-by-day-of-year" class="nav-link" data-scroll-target="#computing-stkde-by-day-of-year">3.5 Computing STKDE by Day of Year</a></li>
@@ -241,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 13, 2026</p>
+      <p class="date-modified">September 15, 2026</p>
     </div>
   </div>
     
@@ -409,9 +408,7 @@ enclosing rectangle: [512066.8, 930756.9] x [9579205, 9834915] units</code></pre
 <pre><code>[1] "owin"</code></pre>
 </div>
 </div>
-</section>
-<section id="importing-and-preparing-forest-fire-data" class="level2">
-<h2 class="anchored" data-anchor-id="importing-and-preparing-forest-fire-data">3.2 Importing and Preparing Forest Fire data</h2>
+<p>## 3.2 Importing and Preparing Forest Fire data</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fire_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"hands-on_ex3_data/modis_2024_Indonesia.csv"</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>fire_sf <span class="ot">&lt;-</span> fire_raw <span class="sc">%&gt;%</span></span>
