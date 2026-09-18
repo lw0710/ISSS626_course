@@ -18,18 +18,7 @@ pacman::p_load(tidyverse)
 ```{r}
 th_accident <- read_csv("take-home_ex1_data/thai_road_accident_2019_2022.csv")
 ```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
+## 1.1 Data Recap
 
 ```{r}
 summary(th_accident)

@@ -246,7 +246,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 15, 2026</p>
+      <p class="date-modified">September 17, 2026</p>
     </div>
   </div>
     
@@ -261,6 +261,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Loading the necessary R packages</h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, spdep, tmap, tidyverse, knitr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Note on spdep package">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Note on spdep package
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>spdep package</strong> consists functions including poly2nb(), knearneigh(), nb2listw() and lag.listw(). It is mainly for neighbour, spatial weights and spatial lag built-up.</p>
+</div>
 </div>
 </section>
 <section id="spatial-weights-and-applications" class="level1">
@@ -287,6 +300,19 @@ Geodetic CRS:  WGS 84</code></pre>
 </section>
 <section id="visualising-regional-development-indicator" class="level2">
 <h2 class="anchored" data-anchor-id="visualising-regional-development-indicator">4.2 Visualising Regional Development Indicator</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Note on Spatial Weight Matrix">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Note on Spatial Weight Matrix
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Spatial Weight Matrix is transformation from geographical relationship into mathematical relationship.</p>
+</div>
+</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>basemap <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(hunan) <span class="sc">+</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
@@ -445,6 +471,19 @@ Link number distribution:
   ..$ comp.id: int [1:88] 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
 </div>
 </div>
+<div class="callout callout-style-default callout-note callout-titled" title="Why to check neighbour">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Why to check neighbour
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Checking neighbours helps validate the spatial weights before using them in further spatial analysis.</p>
+</div>
+</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>wm_r <span class="ot">&lt;-</span> <span class="fu">poly2nb</span>(hunan, <span class="at">queen=</span><span class="cn">FALSE</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wm_r)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -462,6 +501,26 @@ Link number distribution:
 30 65 with 1 link
 1 most connected region:
 85 with 10 links</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Queen vs Rook Contiguity">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Queen vs Rook Contiguity
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Both methods define neighbours based on whether polygons share boundaries, but they use different rules. | Method | Neighbour Definition | Main Advantage | Main Limitation | | ——— | —————————– | —————————————————– | ——————————————————— | | <strong>Queen</strong> | Share an <strong>edge or a vertex</strong> | More inclusive and usually gives better connectivity | Corner-touching areas may not have meaningful interaction | | <strong>Rook</strong> | Share an <strong>edge only</strong> | Uses a stricter and more direct boundary relationship | May exclude some nearby areas that only meet at a corner |</p>
+<p><strong>How to Choose?</strong></p>
+<ul>
+<li><p>Use Queen contiguity when general spatial proximity and connectivity are important.</p></li>
+<li><p>Use Rook contiguity when interaction is expected mainly through a shared boundary.</p></li>
+<li><p>The choice should depend on the spatial process and research question, not on which method produces more neighbours.</p></li>
+</ul>
+<p>To summarize, Queen is more inclusive, while Rook is more restrictive.</p>
 </div>
 </div>
 <div class="cell">

@@ -200,7 +200,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#loading-necessary-r-packages" id="toc-loading-necessary-r-packages" class="nav-link" data-scroll-target="#loading-necessary-r-packages">Loading Necessary R Packages</a></li>
-  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">1 Data Preparation</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">1 Data Preparation</a>
+  <ul class="collapse">
+  <li><a href="#data-recap" id="toc-data-recap" class="nav-link" data-scroll-target="#data-recap">1.1 Data Recap</a></li>
+  </ul></li>
   <li><a href="#first-order-and-second-order-point-pattern-analysis" id="toc-first-order-and-second-order-point-pattern-analysis" class="nav-link" data-scroll-target="#first-order-and-second-order-point-pattern-analysis">2 First-Order and Second-Order Point-Pattern Analysis</a>
   <ul class="collapse">
   <li><a href="#first-order-point-pattern-analysis" id="toc-first-order-point-pattern-analysis" class="nav-link" data-scroll-target="#first-order-point-pattern-analysis">2.1 First-Order Point-Pattern Analysis</a></li>
@@ -241,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 12, 2026</p>
+      <p class="date-modified">September 17, 2026</p>
     </div>
   </div>
     
@@ -266,6 +269,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>th_accident <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"take-home_ex1_data/thai_road_accident_2019_2022.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<section id="data-recap" class="level2">
+<h2 class="anchored" data-anchor-id="data-recap">1.1 Data Recap</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(th_accident)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -324,6 +329,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</section>
 </section>
 <section id="first-order-and-second-order-point-pattern-analysis" class="level1">
 <h1>2 First-Order and Second-Order Point-Pattern Analysis</h1>
