@@ -246,7 +246,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 17, 2026</p>
+      <p class="date-modified">September 19, 2026</p>
     </div>
   </div>
     
@@ -513,7 +513,19 @@ Link number distribution:
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Both methods define neighbours based on whether polygons share boundaries, but they use different rules. | Method | Neighbour Definition | Main Advantage | Main Limitation | | ——— | —————————– | —————————————————– | ——————————————————— | | <strong>Queen</strong> | Share an <strong>edge or a vertex</strong> | More inclusive and usually gives better connectivity | Corner-touching areas may not have meaningful interaction | | <strong>Rook</strong> | Share an <strong>edge only</strong> | Uses a stricter and more direct boundary relationship | May exclude some nearby areas that only meet at a corner |</p>
+<p>Both methods define neighbours based on whether polygons share boundaries, but they use different rules.</p>
+<p><strong>Queen</strong></p>
+<ul>
+<li><p>Neighbour Definition: Share an <strong>edge or a vertex</strong></p></li>
+<li><p>Main Advantage: More inclusive and usually gives better connectivity Main</p></li>
+<li><p>Main Limitation: Corner-touching areas may not have meaningful interaction</p></li>
+</ul>
+<p><strong>Rook</strong></p>
+<ul>
+<li><p>Neighbour Definition: Share an <strong>edge only</strong></p></li>
+<li><p>Main Advantage: Uses a stricter and more direct boundary relationship</p></li>
+<li><p>Main Limitation: May exclude some nearby areas that only meet at a corner</p></li>
+</ul>
 <p><strong>How to Choose?</strong></p>
 <ul>
 <li><p>Use Queen contiguity when general spatial proximity and connectivity are important.</p></li>
@@ -2675,6 +2687,22 @@ B 88 7744 536 1072 14160</code></pre>
 <p><img src="hands-on_exercise_4_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Spatial Lagged Variable vs Spatial Window Sum">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Spatial Lagged Variable vs Spatial Window Sum
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Spatial Laggged Variable</strong> exclude focal area itself, while <strong>Spatial Window Sum</strong> include focal area itself.</p>
+<p><strong>Sptial Lagged Variable</strong> is suitable for competitive benchmarking &amp; focal area’s own performance.</p>
+<p><strong>Spatial Window Sum</strong> is suitable for additive variables.</p>
+<p>In general, <strong>Spatial Window Sum</strong> helps identify where resources are needed based on current local demand, while <strong>Spatial Lagged Variable</strong> helps identify areas that may require strategic attention based on surrounding conditions.</p>
 </div>
 </div>
 

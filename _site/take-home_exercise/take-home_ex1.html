@@ -202,7 +202,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#loading-necessary-r-packages" id="toc-loading-necessary-r-packages" class="nav-link" data-scroll-target="#loading-necessary-r-packages">Loading Necessary R Packages</a></li>
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">1 Data Preparation</a>
   <ul class="collapse">
-  <li><a href="#data-recap" id="toc-data-recap" class="nav-link" data-scroll-target="#data-recap">1.1 Data Recap</a></li>
+  <li><a href="#restrict-to-2022" id="toc-restrict-to-2022" class="nav-link" data-scroll-target="#restrict-to-2022">Restrict to 2022</a></li>
+  <li><a href="#data-recap" id="toc-data-recap" class="nav-link" data-scroll-target="#data-recap">Data Recap</a></li>
+  <li><a href="#derive-datetime-data" id="toc-derive-datetime-data" class="nav-link" data-scroll-target="#derive-datetime-data">Derive Datetime Data</a></li>
+  <li><a href="#define-bangkok-metropolitan-region" id="toc-define-bangkok-metropolitan-region" class="nav-link" data-scroll-target="#define-bangkok-metropolitan-region">Define Bangkok Metropolitan Region</a></li>
+  <li><a href="#clean-missing-coordinates" id="toc-clean-missing-coordinates" class="nav-link" data-scroll-target="#clean-missing-coordinates">Clean Missing Coordinates</a></li>
   </ul></li>
   <li><a href="#first-order-and-second-order-point-pattern-analysis" id="toc-first-order-and-second-order-point-pattern-analysis" class="nav-link" data-scroll-target="#first-order-and-second-order-point-pattern-analysis">2 First-Order and Second-Order Point-Pattern Analysis</a>
   <ul class="collapse">
@@ -244,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 17, 2026</p>
+      <p class="date-modified">September 19, 2026</p>
     </div>
   </div>
     
@@ -257,42 +261,80 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="overview" class="level1">
 <h1>Overview</h1>
+<p>This is Technical Report of Take-home Exercise 1, aiming to examine the spatial patterns of road traffic accidents in the Bangkok Greater Metropolitan Area (BGMA) in 2022. Dataset from Kaggle <a href="https://www.kaggle.com/datasets/thaweewatboy/thailand-road-accident-2019-2022">Thailand Road Accident 2019-2022</a> is used. Administrative boundary data and road network data will also be incorporated to support spatial and network-constrained analyses.</p>
+<p>The analysis consists of four main tasks:</p>
+<ul>
+<li><p>Data Preparation and Quality Assessment: Clean and validate the accident records, define the study area, handle missing or invalid coordinates, and prepare the spatial datasets for analysis.</p></li>
+<li><p>Exploratory and First-Order Analysis: Examine the spatial and temporal distribution of accidents and identify areas or road segments with high accident intensity using methods such as Kernel Density Estimation (KDE) and Network Kernel Density Estimation (NKDE).</p></li>
+<li><p>Second-Order Analysis – Investigate whether road accidents exhibit statistically significant spatial clustering, with particular attention to clustering along the road network.</p></li>
+<li><p>Integration and Interpretation – Compare findings from conventional and network-constrained approaches and discuss their implications for road-safety planning and public-safety management.</p></li>
+</ul>
 </section>
 <section id="loading-necessary-r-packages" class="level1">
 <h1>Loading Necessary R Packages</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, sf, lubridate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="data-preparation" class="level1">
 <h1>1 Data Preparation</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>th_accident <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"take-home_ex1_data/thai_road_accident_2019_2022.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>th_accident_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"take-home_ex1_data/thai_road_accident_2019_2022.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="data-recap" class="level2">
-<h2 class="anchored" data-anchor-id="data-recap">1.1 Data Recap</h2>
+<section id="restrict-to-2022" class="level2">
+<h2 class="anchored" data-anchor-id="restrict-to-2022">Restrict to 2022</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(th_accident)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>accident_2022 <span class="ot">&lt;-</span> th_accident_raw <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(incident_datetime) <span class="sc">==</span> <span class="dv">2022</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="data-recap" class="level2">
+<h2 class="anchored" data-anchor-id="data-recap">Data Recap</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(accident_2022)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 21,032
+Columns: 18
+$ acc_code                    &lt;dbl&gt; 6566872, 6566880, 5706553, 5485750, 562445…
+$ incident_datetime           &lt;dttm&gt; 2022-01-01 00:01:00, 2022-01-01 00:01:00,…
+$ report_datetime             &lt;dttm&gt; 2022-01-02 11:45:00, 2022-01-02 11:44:00,…
+$ province_th                 &lt;chr&gt; "ชัยนาท", "มหาสารคาม", "ชุมพร", "ภูเก็ต", "อุดร…
+$ province_en                 &lt;chr&gt; "Chai Nat", "Maha Sarakham", "Chumphon", "…
+$ agency                      &lt;chr&gt; "department of rural roads", "department o…
+$ route                       &lt;chr&gt; "เทศบาลตำบลวัดสิงห์ - บ้านน้ำพุ (ช่วงหันคา)", "แยกทา…
+$ vehicle_type                &lt;chr&gt; "motorcycle", "motorcycle", "private/passe…
+$ presumed_cause              &lt;chr&gt; "driving under the influence of alcohol", …
+$ accident_type               &lt;chr&gt; "other", "other", "rollover/fallen on stra…
+$ number_of_vehicles_involved &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 1, 1, 2, 1, …
+$ number_of_fatalities        &lt;dbl&gt; 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ number_of_injuries          &lt;dbl&gt; 1, 1, 0, 1, 2, 0, 1, 1, 2, 1, 1, 1, 1, 1, …
+$ weather_condition           &lt;chr&gt; "clear", "dark", "clear", "clear", "clear"…
+$ latitude                    &lt;dbl&gt; 15.113158, 16.489238, 10.625082, 7.934514,…
+$ longitude                   &lt;dbl&gt; 99.98124, 103.07762, 99.17715, 98.27715, 1…
+$ road_description            &lt;chr&gt; "straight road", "straight road", "straigh…
+$ slope_description           &lt;chr&gt; "no slope", "no slope", "no slope", "no sl…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(accident_2022)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    acc_code       incident_datetime             report_datetime              
- Min.   : 571834   Min.   :2019-01-01 00:00:00   Min.   :2019-01-01 03:05:00  
- 1st Qu.:3789460   1st Qu.:2020-01-17 23:30:00   1st Qu.:2020-03-20 08:45:30  
- Median :3824084   Median :2021-01-03 14:30:00   Median :2021-03-31 10:06:00  
- Mean   :4235766   Mean   :2021-01-10 02:05:53   Mean   :2021-03-28 04:33:21  
- 3rd Qu.:5831089   3rd Qu.:2022-01-03 10:55:00   3rd Qu.:2022-03-01 11:08:30  
+ Min.   :5478917   Min.   :2022-01-01 00:01:00   Min.   :2022-01-01 09:21:00  
+ 1st Qu.:6288805   1st Qu.:2022-03-30 07:17:30   1st Qu.:2022-05-24 08:56:45  
+ Median :6911501   Median :2022-06-20 07:27:30   Median :2022-09-09 08:54:00  
+ Mean   :6855258   Mean   :2022-06-26 12:08:51   Mean   :2022-08-29 00:06:59  
+ 3rd Qu.:7476661   3rd Qu.:2022-09-30 13:54:45   3rd Qu.:2022-12-21 09:37:30  
  Max.   :7571316   Max.   :2022-12-31 23:55:00   Max.   :2023-01-26 13:20:00  
                                                                               
     province_th       province_en          agency            route      
- Length   :81735   Length   :81735   Length   :81735   Length   :81735  
- N.unique :   78   N.unique :   78   N.unique :    3   N.unique : 3882  
+ Length   :21032   Length   :21032   Length   :21032   Length   :21032  
+ N.unique :   78   N.unique :   78   N.unique :    3   N.unique : 2275  
  N.blank  :    0   N.blank  :    0   N.blank  :    0   N.blank  :    0  
  Min.nchar:    3   Min.nchar:    3   Min.nchar:   22   Min.nchar:    7  
- Max.nchar:   15   Max.nchar:   24   Max.nchar:   32   Max.nchar:  108  
+ Max.nchar:   15   Max.nchar:   24   Max.nchar:   32   Max.nchar:  101  
                                                                         
                                                                         
     vehicle_type     presumed_cause    accident_type  
- Length   :81735   Length   :81735   Length   :81735  
- N.unique :   15   N.unique :   54   N.unique :   11  
+ Length   :21032   Length   :21032   Length   :21032  
+ N.unique :   15   N.unique :   49   N.unique :   11  
  N.blank  :    0   N.blank  :    0   N.blank  :    0  
  Min.nchar:    3   Min.nchar:    5   Min.nchar:    5  
  Max.nchar:   28   Max.nchar:   47   Max.nchar:   44  
@@ -302,20 +344,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Min.   : 0.000              Min.   : 0.0000      Min.   : 0.0000   
  1st Qu.: 1.000              1st Qu.: 0.0000      1st Qu.: 0.0000   
  Median : 1.000              Median : 0.0000      Median : 0.0000   
- Mean   : 1.535              Mean   : 0.1456      Mean   : 0.8119   
+ Mean   : 1.529              Mean   : 0.1262      Mean   : 0.7688   
  3rd Qu.: 2.000              3rd Qu.: 0.0000      3rd Qu.: 1.0000   
- Max.   :27.000              Max.   :13.0000      Max.   :51.0000   
+ Max.   :24.000              Max.   :10.0000      Max.   :49.0000   
                                                                     
- weather_condition    latitude           longitude       road_description
- Length   :81735   Min.   :-0.001108   Min.   : 18.02   Length   :81735  
- N.unique :    7   1st Qu.:13.510107   1st Qu.: 99.89   N.unique :   19  
- N.blank  :    0   Median :14.468878   Median :100.56   N.blank  :    0  
- Min.nchar:    4   Mean   :14.377542   Mean   :100.81   Min.nchar:    5  
- Max.nchar:   16   3rd Qu.:16.567408   3rd Qu.:101.29   Max.nchar:   36  
-                   Max.   :41.549515   Max.   :105.52                    
-                   NAs    :359         NAs    :359                       
+ weather_condition    latitude        longitude       road_description
+ Length   :21032   Min.   : 5.771   Min.   : 97.87   Length   :21032  
+ N.unique :    6   1st Qu.:13.502   1st Qu.: 99.89   N.unique :   16  
+ N.blank  :    0   Median :14.373   Median :100.61   N.blank  :    0  
+ Min.nchar:    4   Mean   :14.358   Mean   :100.83   Min.nchar:    5  
+ Max.nchar:   16   3rd Qu.:16.538   3rd Qu.:101.31   Max.nchar:   36  
+                   Max.   :20.378   Max.   :105.48                    
+                   NAs    :189      NAs    :189                       
  slope_description
- Length   :81735  
+ Length   :21032  
  N.unique :    3  
  N.blank  :    0  
  Min.nchar:    5  
@@ -323,11 +365,95 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                   
                   </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  th_accident,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"take-home_ex1_data/thailand_road_accident_clean.csv"</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(accident_2022))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   acc_code           incident_datetime 
+                          0                           0 
+            report_datetime                 province_th 
+                          0                           0 
+                province_en                      agency 
+                          0                           0 
+                      route                vehicle_type 
+                          0                           0 
+             presumed_cause               accident_type 
+                          0                           0 
+number_of_vehicles_involved        number_of_fatalities 
+                          0                           0 
+         number_of_injuries           weather_condition 
+                          0                           0 
+                   latitude                   longitude 
+                        189                         189 
+           road_description           slope_description 
+                          0                           0 </code></pre>
+</div>
+</div>
+<p>::: :::</p>
+</section>
+<section id="derive-datetime-data" class="level2">
+<h2 class="anchored" data-anchor-id="derive-datetime-data">Derive Datetime Data</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>accident_2022_final <span class="ot">&lt;-</span> accident_2022 <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">year</span>(incident_datetime),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">month =</span> <span class="fu">month</span>(incident_datetime, <span class="at">label =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">day =</span> <span class="fu">day</span>(incident_datetime),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">weekday =</span> <span class="fu">wday</span>(incident_datetime, <span class="at">label =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">hour =</span> <span class="fu">hour</span>(incident_datetime)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="define-bangkok-metropolitan-region" class="level2">
+<h2 class="anchored" data-anchor-id="define-bangkok-metropolitan-region">Define Bangkok Metropolitan Region</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bmr_provinces <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bangkok"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nakhon Pathom"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nonthaburi"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Pathum Thani"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Samut Prakan"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Samut Sakhon"</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>accident_bmr <span class="ot">&lt;-</span> accident_2022 <span class="sc">%&gt;%</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(province_en <span class="sc">%in%</span> bmr_provinces)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="clean-missing-coordinates" class="level2">
+<h2 class="anchored" data-anchor-id="clean-missing-coordinates">Clean Missing Coordinates</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>missing_coord <span class="ot">&lt;-</span> accident_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(latitude) <span class="sc">|</span> <span class="fu">is.na</span>(longitude))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>missing_coord</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 189 × 18
+   acc_code incident_datetime   report_datetime     province_th  province_en
+      &lt;dbl&gt; &lt;dttm&gt;              &lt;dttm&gt;              &lt;chr&gt;        &lt;chr&gt;      
+ 1  5545266 2022-01-10 15:55:00 2022-01-10 16:38:00 กรุงเทพมหานคร Bangkok    
+ 2  5553499 2022-01-11 19:34:00 2022-01-11 20:38:00 กรุงเทพมหานคร Bangkok    
+ 3  5572632 2022-01-14 09:14:00 2022-01-14 10:59:00 กรุงเทพมหานคร Bangkok    
+ 4  5580928 2022-01-15 14:50:00 2022-01-15 16:34:00 กรุงเทพมหานคร Bangkok    
+ 5  5614310 2022-01-20 10:55:00 2022-01-20 12:09:00 กรุงเทพมหานคร Bangkok    
+ 6  5614443 2022-01-20 11:37:00 2022-01-20 12:40:00 กรุงเทพมหานคร Bangkok    
+ 7  5648970 2022-01-21 01:05:00 2022-01-31 19:58:00 กรุงเทพมหานคร Bangkok    
+ 8  5624242 2022-01-22 10:28:00 2022-01-22 13:37:00 กรุงเทพมหานคร Bangkok    
+ 9  5624364 2022-01-23 18:00:00 2022-01-23 19:02:00 กรุงเทพมหานคร Bangkok    
+10  5628505 2022-01-28 09:44:00 2022-01-28 10:18:00 กรุงเทพมหานคร Bangkok    
+# ℹ 179 more rows
+# ℹ 13 more variables: agency &lt;chr&gt;, route &lt;chr&gt;, vehicle_type &lt;chr&gt;,
+#   presumed_cause &lt;chr&gt;, accident_type &lt;chr&gt;,
+#   number_of_vehicles_involved &lt;dbl&gt;, number_of_fatalities &lt;dbl&gt;,
+#   number_of_injuries &lt;dbl&gt;, weather_condition &lt;chr&gt;, latitude &lt;dbl&gt;,
+#   longitude &lt;dbl&gt;, road_description &lt;chr&gt;, slope_description &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>::: :::</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  accident_2022,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"take-home_ex1_data/thailand_road_accident_clean.csv"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>

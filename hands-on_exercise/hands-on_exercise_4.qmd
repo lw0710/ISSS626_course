@@ -72,10 +72,23 @@ summary(wm_r)
 ```
 ::: {.callout-note title="Queen vs Rook Contiguity"}
 Both methods define neighbours based on whether polygons share boundaries, but they use different rules.
-| Method | Neighbour Definition             | Main Advantage                                        | Main Limitation                                           |
-| --------- | ----------------------------- | ----------------------------------------------------- | --------------------------------------------------------- |
-| **Queen** | Share an **edge or a vertex** | More inclusive and usually gives better connectivity  | Corner-touching areas may not have meaningful interaction |
-| **Rook**  | Share an **edge only**        | Uses a stricter and more direct boundary relationship | May exclude some nearby areas that only meet at a corner |
+                                         
+**Queen**
+
+- Neighbour Definition: Share an **edge or a vertex**
+
+- Main Advantage: More inclusive and usually gives better connectivity Main 
+
+- Main Limitation: Corner-touching areas may not have meaningful interaction
+
+**Rook**
+
+- Neighbour Definition: Share an **edge only**
+
+- Main Advantage: Uses a stricter and more direct boundary relationship
+
+- Main Limitation: May exclude some nearby areas that only meet at a corner
+
 
 **How to Choose?**
 
@@ -292,3 +305,14 @@ hunan %>%
 w_sum_gdppc <- qtm(hunan, "w_sum GDPPC")
 tmap_arrange(lag_sum_gdppc, w_sum_gdppc, asp=1, ncol=2)
 ```
+
+::: {.callout-note title="Spatial Lagged Variable vs Spatial Window Sum"}
+**Spatial Laggged Variable** exclude focal area itself, while **Spatial Window Sum** include focal area itself.
+
+**Sptial Lagged Variable** is suitable for competitive benchmarking & focal area's own performance.
+
+**Spatial Window Sum** is suitable for additive variables.
+
+In general, **Spatial Window Sum** helps identify where resources are needed based on current local demand, 
+while **Spatial Lagged Variable** helps identify areas that may require strategic attention based on surrounding conditions.
+:::

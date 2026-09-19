@@ -7,23 +7,87 @@ date-modified: last-modified
 
 # Overview
 
+This is Technical Report of Take-home Exercise 1, aiming to examine the spatial patterns of road traffic accidents in the Bangkok Greater Metropolitan Area (BGMA) in 2022. Dataset from Kaggle [Thailand Road Accident 2019-2022](https://www.kaggle.com/datasets/thaweewatboy/thailand-road-accident-2019-2022) is used. Administrative boundary data and road network data will also be incorporated to support spatial and network-constrained analyses.
+
+The analysis consists of four main tasks:
+
+- Data Preparation and Quality Assessment: Clean and validate the accident records, define the study area, handle missing or invalid coordinates, and prepare the spatial datasets for analysis.
+
+- Exploratory and First-Order Analysis: Examine the spatial and temporal distribution of accidents and identify areas or road segments with high accident intensity using methods such as Kernel Density Estimation (KDE) and Network Kernel Density Estimation (NKDE).
+
+- Second-Order Analysis – Investigate whether road accidents exhibit statistically significant spatial clustering, with particular attention to clustering along the road network.
+
+- Integration and Interpretation – Compare findings from conventional and network-constrained approaches and discuss their implications for road-safety planning and public-safety management.
+
 
 # Loading Necessary R Packages
 ```{r}
-pacman::p_load(tidyverse)
+pacman::p_load(tidyverse, sf, lubridate)
 ```
 
 
 # 1 Data Preparation
 ```{r}
-th_accident <- read_csv("take-home_ex1_data/thai_road_accident_2019_2022.csv")
+th_accident_raw <- read_csv("take-home_ex1_data/thai_road_accident_2019_2022.csv")
 ```
-## 1.1 Data Recap
+## Restrict to 2022
+```{r}
+accident_2022 <- th_accident_raw %>%
+  filter(year(incident_datetime) == 2022)
+```
+
+## Data Recap
 
 ```{r}
-summary(th_accident)
+glimpse(accident_2022)
+summary(accident_2022)
+colSums(is.na(accident_2022))
+```
+:::
+:::
+
+## Derive Datetime Data 
+```{r}
+accident_2022_final <- accident_2022 %>%
+  mutate(
+    year = year(incident_datetime),
+    month = month(incident_datetime, label = TRUE),
+    day = day(incident_datetime),
+    weekday = wday(incident_datetime, label = TRUE),
+    hour = hour(incident_datetime)
+  )
+```
+
+## Define Bangkok Metropolitan Region
+```{r}
+bmr_provinces <- c(
+  "Bangkok",
+  "Nakhon Pathom",
+  "Nonthaburi",
+  "Pathum Thani",
+  "Samut Prakan",
+  "Samut Sakhon"
+)
+
+accident_bmr <- accident_2022 %>%
+  filter(province_en %in% bmr_provinces)
+```
+
+## Clean Missing Coordinates
+```{r}
+missing_coord <- accident_bmr %>%
+  filter(is.na(latitude) | is.na(longitude))
+
+missing_coord
+```
+:::
+:::
+
+
+
+```{r}
 write.csv(
-  th_accident,
+  accident_2022,
   "take-home_ex1_data/thailand_road_accident_clean.csv",
   row.names = FALSE
 )
