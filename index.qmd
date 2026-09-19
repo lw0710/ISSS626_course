@@ -5,7 +5,6 @@ format:
     body-classes: home-page
 ---
 
-
 **Welcome to My Website**
 
 This is my Geospatial Analytics and Applications course work website.

@@ -10,6 +10,7 @@ date-modified: last-modified
 ```{r}
 pacman::p_load(sf, spdep, tmap, tidyverse, knitr)
 ```
+
 ::: {.callout-note title="Note on spdep package"}
 **spdep package** consists functions including poly2nb(), knearneigh(), nb2listw() and lag.listw(). It is mainly for neighbour, spatial weights and spatial lag built-up.
 :::
@@ -62,6 +63,7 @@ nb1
 
 str(wm_q)
 ```
+
 ::: {.callout-note title="Why to check neighbour"}
 Checking neighbours helps validate the spatial weights before using them in further spatial analysis.
 :::
@@ -70,14 +72,15 @@ Checking neighbours helps validate the spatial weights before using them in furt
 wm_r <- poly2nb(hunan, queen=FALSE)
 summary(wm_r)
 ```
+
 ::: {.callout-note title="Queen vs Rook Contiguity"}
 Both methods define neighbours based on whether polygons share boundaries, but they use different rules.
-                                         
+
 **Queen**
 
 - Neighbour Definition: Share an **edge or a vertex**
 
-- Main Advantage: More inclusive and usually gives better connectivity Main 
+- Main Advantage: More inclusive and usually gives better connectivity Main
 
 - Main Limitation: Corner-touching areas may not have meaningful interaction
 
@@ -88,7 +91,6 @@ Both methods define neighbours based on whether polygons share boundaries, but t
 - Main Advantage: Uses a stricter and more direct boundary relationship
 
 - Main Limitation: May exclude some nearby areas that only meet at a corner
-
 
 **How to Choose?**
 
@@ -313,6 +315,5 @@ tmap_arrange(lag_sum_gdppc, w_sum_gdppc, asp=1, ncol=2)
 
 **Spatial Window Sum** is suitable for additive variables.
 
-In general, **Spatial Window Sum** helps identify where resources are needed based on current local demand, 
-while **Spatial Lagged Variable** helps identify areas that may require strategic attention based on surrounding conditions.
+In general, **Spatial Window Sum** helps identify where resources are needed based on current local demand, while **Spatial Lagged Variable** helps identify areas that may require strategic attention based on surrounding conditions.
 :::

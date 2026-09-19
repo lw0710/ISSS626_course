@@ -20,6 +20,8 @@ website:
         menu:
         - text: "In-class Exercise 1"
           href: in-class_exercise/in-class_ex1.qmd
+        - text: "In-class Exercise 4"
+          href: in-class_exercise/in-class_ex4.qmd
         
       - text: Take-home Exercise
         menu:

@@ -78,13 +78,18 @@ accident_bmr <- accident_2022 %>%
 missing_coord <- accident_bmr %>%
   filter(is.na(latitude) | is.na(longitude))
 
-missing_coord
+nrow(missing_coord)
 ```
 :::
 :::
 
 
+## Invalid Coordinates
+```{r}
 
+```
+
+## Store clean dataset
 ```{r}
 write.csv(
   accident_2022,

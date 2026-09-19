@@ -1,0 +1,136 @@
+---
+title: "In-class Exercise 4"
+author: "Jin Jiaying"
+date: "19 Sep 2026"
+date-modified: last-modified
+---
+
+# Loading the necessary R packages
+```{r}
+pacman::p_load(sf, ggstatsplot, spdep, tmap, tidyverse, knitr, GWmodel)
+```
+
+# Importing Dataset
+```{r}
+hunan_sf <- st_read(dsn = "in-class_ex4_data", layer = "Hunan")
+
+hunan2012 <- read_csv("in-class_ex4_data/Hunan_2012.csv")
+
+hunan <- left_join(hunan_sf, hunan2012)%>%
+  select(1:3, 7, 15, 16, 31, 32)
+
+hunan_alt <- left_join(hunan_sf, hunan2012)%>%
+  select("NAME_2" , "ID_3", "NAME_3", "County", "GDPPC", "GIO", "Agri", "Service", "geometry")
+```
+::: {.callout-note title="Joining Technics" }
+A general way to joining data table is using **by = join_by()**, to identify which variable used for join.
+:::
+
+# Mapping GDPPC
+```{r}
+basemap <- tm_shape(hunan) +
+  tm_polygons() +
+  tm_text("NAME_3", size=0.5)
+
+gdppc <- qtm(hunan, "GDPPC") +
+  tm_layout(
+    legend.position = c("left", "bottom"))
+tmap_arrange(basemap, gdppc, asp=1, ncol=2)
+```
+::: {.callout-note title="About qtm()" }
+qtm() function has a default colour design as blue.
+Make sure to adjust the legend position, to not blocking the map.
+:::
+
+# Converting to Spatial Polygon Dataframe
+```{r}
+hunan_sp <- hunan%>%
+  as_Spatial()
+```
+
+# Geographically Weighted Summary Statistics (GSWW) with adaptive bandwidth
+```{r}
+bw_CV <- bw.gwr(GDPPC ~ 1,
+                data = hunan_sp,
+                approach = "CV",
+                adaptive = TRUE,
+                kernel = "bisquare",
+                longlat = T)
+
+bw_CV
+```
+```{r}
+bw_AIC <- bw.gwr(GDPPC ~ 1,
+                data = hunan_sp,
+                approach = "AICc",
+                adaptive = TRUE,
+                kernel = "bisquare",
+                longlat = T)
+
+bw_AIC
+```
+
+::: {.callout-note title="Bandwidth selection for basic GWR"}
+bw.gwr() is a function for automatic bandwidth selection to calibrate a basic GWR model.
+
+Usage:
+bw.gwr(formula, data, approach="CV", kernel="bisquare",
+       adaptive=FALSE, p=2, theta=0, longlat=F, dMat,
+       parallel.method=F,parallel.arg=NULL)
+*CV here stands for Cross-Verification
+
+CV vs AIC:
+
+- AICc: Select a bandwidth by balancing goodness-of-fit and model complexity. A lower AICc indicates a better trade-off and helps reduce overfitting.
+
+- Cross-Validation (CV): Select a bandwidth by minimising out-of-sample prediction error, commonly using leave-one-out prediction. A lower CV score indicates better predictive performance.
+
+In summary
+
+| Objective | More Suitable |
+|:---|:---:|
+| Interpret spatial relationships | AICc |
+| Model selection | AICc |
+| Focus on predictive performance | CV |
+:::
+
+# Computing geographically weighted summary statistics
+```{r}
+gwstat <- gwss(data = hunan_sp,
+               vars = "GDPPC",
+               bw = bw_AIC,
+               kernel = "bisquare",
+               quantile = TRUE,
+               adaptive = TRUE,
+               longlat = T)
+```
+
+
+# Preparing the output data
+```{r}
+gwstat_df <- as.data.frame(gwstat$SDF)
+```
+
+```{r}
+hunan_gstat <- cbind(hunan, gwstat_df)
+```
+::: {.callout-note title: Why using **cbind()** here?}
+The reason cannot using leftjoin as previous is there is **no unique identifier** in gwstat_df dataset. Thus cbind() is used, by combining using same order. (Sequence never change)
+
+Thus, if sorting is done, cannot use cbind() in this case, since sequence has been changed.
+:::
+
+# Visualising geographically weighted summary statistics
+```{r}
+tm_shape(hunan_gstat) +
+  tm_polygons(fill = "GDPPC_LM",
+              fill.scale = tm_scale_intervals(
+                style = "quantile",
+                n = 5,
+                values = "brewer.greens"),
+              fill.legend = tm_legend(
+                title = "Local Mean")) + 
+  tm_borders(fill_alpha = 0.5) + 
+  tm_title("Distribution of geographically weighted mean") + 
+  tm_layout(legend.position = c("left", "bottom"))
+```
