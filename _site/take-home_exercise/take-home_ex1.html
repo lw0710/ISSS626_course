@@ -159,6 +159,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../in-class_exercise/in-class_ex1.html">
  <span class="dropdown-text">In-class Exercise 1</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../in-class_exercise/in-class_ex4.html">
+ <span class="dropdown-text">In-class Exercise 4</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -202,13 +206,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#loading-necessary-r-packages" id="toc-loading-necessary-r-packages" class="nav-link" data-scroll-target="#loading-necessary-r-packages">Loading Necessary R Packages</a></li>
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">1 Data Preparation</a>
   <ul class="collapse">
-  <li><a href="#restrict-to-2022" id="toc-restrict-to-2022" class="nav-link" data-scroll-target="#restrict-to-2022">Restrict to 2022</a></li>
-  <li><a href="#data-recap" id="toc-data-recap" class="nav-link" data-scroll-target="#data-recap">Data Recap</a></li>
-  <li><a href="#derive-datetime-data" id="toc-derive-datetime-data" class="nav-link" data-scroll-target="#derive-datetime-data">Derive Datetime Data</a></li>
-  <li><a href="#define-bangkok-metropolitan-region" id="toc-define-bangkok-metropolitan-region" class="nav-link" data-scroll-target="#define-bangkok-metropolitan-region">Define Bangkok Metropolitan Region</a></li>
-  <li><a href="#clean-missing-coordinates" id="toc-clean-missing-coordinates" class="nav-link" data-scroll-target="#clean-missing-coordinates">Clean Missing Coordinates</a></li>
-  <li><a href="#invalid-coordinates" id="toc-invalid-coordinates" class="nav-link" data-scroll-target="#invalid-coordinates">Invalid Coordinates</a></li>
-  <li><a href="#store-clean-dataset" id="toc-store-clean-dataset" class="nav-link" data-scroll-target="#store-clean-dataset">Store clean dataset</a></li>
+  <li><a href="#data-import-and-initial-quality-assessment" id="toc-data-import-and-initial-quality-assessment" class="nav-link" data-scroll-target="#data-import-and-initial-quality-assessment">1.1 Data Import and Initial Quality Assessment</a>
+  <ul class="collapse">
+  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import">1.1.1 Data Import</a></li>
+  <li><a href="#restrict-to-2022" id="toc-restrict-to-2022" class="nav-link" data-scroll-target="#restrict-to-2022">1.1.2 Restrict to 2022</a></li>
+  <li><a href="#initial-data-screening" id="toc-initial-data-screening" class="nav-link" data-scroll-target="#initial-data-screening">1.1.3 Initial Data Screening</a></li>
+  <li><a href="#missing-value-assessment" id="toc-missing-value-assessment" class="nav-link" data-scroll-target="#missing-value-assessment">1.1.4 Missing Value Assessment</a></li>
+  <li><a href="#duplicate-record-assessment" id="toc-duplicate-record-assessment" class="nav-link" data-scroll-target="#duplicate-record-assessment">1.1.5 Duplicate Record Assessment</a></li>
+  </ul></li>
+  <li><a href="#study-area-definition" id="toc-study-area-definition" class="nav-link" data-scroll-target="#study-area-definition">1.2 Study Area Definition</a>
+  <ul class="collapse">
+  <li><a href="#define-bangkok-metropolitan-region-bmr" id="toc-define-bangkok-metropolitan-region-bmr" class="nav-link" data-scroll-target="#define-bangkok-metropolitan-region-bmr">1.2.1 Define Bangkok Metropolitan Region (BMR)</a></li>
+  <li><a href="#select-bmr-accident-records" id="toc-select-bmr-accident-records" class="nav-link" data-scroll-target="#select-bmr-accident-records">1.2.2 Select BMR Accident Records</a></li>
+  <li><a href="#prepare-bmr-administrative-boundary" id="toc-prepare-bmr-administrative-boundary" class="nav-link" data-scroll-target="#prepare-bmr-administrative-boundary">1.2.3 Prepare BMR Administrative Boundary</a></li>
+  <li><a href="#construct-bmr-study-boundary" id="toc-construct-bmr-study-boundary" class="nav-link" data-scroll-target="#construct-bmr-study-boundary">1.2.4 Construct BMR Study Boundary</a></li>
+  </ul></li>
+  <li><a href="#event-and-attribute-preparation" id="toc-event-and-attribute-preparation" class="nav-link" data-scroll-target="#event-and-attribute-preparation">1.3 Event and Attribute Preparation</a>
+  <ul class="collapse">
+  <li><a href="#define-accident-events" id="toc-define-accident-events" class="nav-link" data-scroll-target="#define-accident-events">1.3.1 Define accident events</a></li>
+  <li><a href="#derive-temporal-attributes" id="toc-derive-temporal-attributes" class="nav-link" data-scroll-target="#derive-temporal-attributes">1.3.2 Derive Temporal Attributes</a></li>
+  <li><a href="#derive-accident-severity" id="toc-derive-accident-severity" class="nav-link" data-scroll-target="#derive-accident-severity">1.3.3 Derive Accident Severity</a></li>
+  </ul></li>
+  <li><a href="#geospatial-data-preparation" id="toc-geospatial-data-preparation" class="nav-link" data-scroll-target="#geospatial-data-preparation">1.4 Geospatial Data Preparation</a>
+  <ul class="collapse">
+  <li><a href="#coordinate-completeness-and-plausibility" id="toc-coordinate-completeness-and-plausibility" class="nav-link" data-scroll-target="#coordinate-completeness-and-plausibility">1.4.1 Coordinate Completeness and Plausibility</a></li>
+  <li><a href="#convert-records-to-spatial-point-features" id="toc-convert-records-to-spatial-point-features" class="nav-link" data-scroll-target="#convert-records-to-spatial-point-features">1.4.2 Convert Records to Spatial Point Features</a></li>
+  <li><a href="#spatial-validation-against-bmr-boundary" id="toc-spatial-validation-against-bmr-boundary" class="nav-link" data-scroll-target="#spatial-validation-against-bmr-boundary">1.4.3 Spatial Validation Against BMR Boundary</a></li>
+  <li><a href="#crs-transformation" id="toc-crs-transformation" class="nav-link" data-scroll-target="#crs-transformation">1.4.4 CRS Transformation</a></li>
+  </ul></li>
+  <li><a href="#road-network-preparation" id="toc-road-network-preparation" class="nav-link" data-scroll-target="#road-network-preparation">1.5 Road Network Preparation</a>
+  <ul class="collapse">
+  <li><a href="#import-and-inspect-road-network" id="toc-import-and-inspect-road-network" class="nav-link" data-scroll-target="#import-and-inspect-road-network">1.5.1 Import and Inspect Road Network</a></li>
+  <li><a href="#select-relevant-road-classes" id="toc-select-relevant-road-classes" class="nav-link" data-scroll-target="#select-relevant-road-classes">1.5.2 Select Relevant Road Classes</a></li>
+  <li><a href="#restrict-road-network-to-bmr" id="toc-restrict-road-network-to-bmr" class="nav-link" data-scroll-target="#restrict-road-network-to-bmr">1.5.3 Restrict Road Network to BMR</a></li>
+  <li><a href="#clip-network-to-bmr-boundary" id="toc-clip-network-to-bmr-boundary" class="nav-link" data-scroll-target="#clip-network-to-bmr-boundary">1.5.4 Clip Network to BMR Boundary</a></li>
+  <li><a href="#network-geometry-preparation-and-validation" id="toc-network-geometry-preparation-and-validation" class="nav-link" data-scroll-target="#network-geometry-preparation-and-validation">1.5.5 Network Geometry Preparation and Validation</a></li>
+  </ul></li>
+  <li><a href="#point-to-network-validation-and-snapping" id="toc-point-to-network-validation-and-snapping" class="nav-link" data-scroll-target="#point-to-network-validation-and-snapping">1.6 Point-to-Network Validation and Snapping</a>
+  <ul class="collapse">
+  <li><a href="#point-to-network-distance-assessment" id="toc-point-to-network-distance-assessment" class="nav-link" data-scroll-target="#point-to-network-distance-assessment">1.6.1 Point-to-Network Distance Assessment</a></li>
+  <li><a href="#examine-potentially-misaligned-events" id="toc-examine-potentially-misaligned-events" class="nav-link" data-scroll-target="#examine-potentially-misaligned-events">1.6.2 Examine Potentially Misaligned Events</a></li>
+  <li><a href="#snap-accident-events-to-road-network" id="toc-snap-accident-events-to-road-network" class="nav-link" data-scroll-target="#snap-accident-events-to-road-network">1.6.3 Snap Accident Events to Road Network</a></li>
+  <li><a href="#post-snapping-validation" id="toc-post-snapping-validation" class="nav-link" data-scroll-target="#post-snapping-validation">1.6.4 Post-Snapping Validation</a></li>
+  </ul></li>
+  <li><a href="#store-analysis-ready-data" id="toc-store-analysis-ready-data" class="nav-link" data-scroll-target="#store-analysis-ready-data">1.7 Store Analysis-Ready Data</a></li>
   </ul></li>
   <li><a href="#first-order-and-second-order-point-pattern-analysis" id="toc-first-order-and-second-order-point-pattern-analysis" class="nav-link" data-scroll-target="#first-order-and-second-order-point-pattern-analysis">2 First-Order and Second-Order Point-Pattern Analysis</a>
   <ul class="collapse">
@@ -250,7 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 19, 2026</p>
+      <p class="date-modified">September 23, 2026</p>
     </div>
   </div>
     
@@ -275,23 +316,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="loading-necessary-r-packages" class="level1">
 <h1>Loading Necessary R Packages</h1>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, sf, lubridate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, sf, lubridate, spNetwork)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="data-preparation" class="level1">
 <h1>1 Data Preparation</h1>
+<section id="data-import-and-initial-quality-assessment" class="level2">
+<h2 class="anchored" data-anchor-id="data-import-and-initial-quality-assessment">1.1 Data Import and Initial Quality Assessment</h2>
+<section id="data-import" class="level3">
+<h3 class="anchored" data-anchor-id="data-import">1.1.1 Data Import</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>th_accident_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"take-home_ex1_data/thai_road_accident_2019_2022.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="restrict-to-2022" class="level2">
-<h2 class="anchored" data-anchor-id="restrict-to-2022">Restrict to 2022</h2>
+</section>
+<section id="restrict-to-2022" class="level3">
+<h3 class="anchored" data-anchor-id="restrict-to-2022">1.1.2 Restrict to 2022</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>accident_2022 <span class="ot">&lt;-</span> th_accident_raw <span class="sc">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(incident_datetime) <span class="sc">==</span> <span class="dv">2022</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="data-recap" class="level2">
-<h2 class="anchored" data-anchor-id="data-recap">Data Recap</h2>
+<section id="initial-data-screening" class="level3">
+<h3 class="anchored" data-anchor-id="initial-data-screening">1.1.3 Initial Data Screening</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(accident_2022)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -367,6 +413,12 @@ $ slope_description           &lt;chr&gt; "no slope", "no slope", "no slope", "n
                   
                   </code></pre>
 </div>
+</div>
+<p>::: :::</p>
+</section>
+<section id="missing-value-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="missing-value-assessment">1.1.4 Missing Value Assessment</h3>
+<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(accident_2022))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   acc_code           incident_datetime 
@@ -389,61 +441,634 @@ number_of_vehicles_involved        number_of_fatalities
                           0                           0 </code></pre>
 </div>
 </div>
+</section>
+<section id="duplicate-record-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="duplicate-record-assessment">1.1.5 Duplicate Record Assessment</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(accident_2022))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>accident_2022 <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(acc_code) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 2
+# ℹ 2 variables: acc_code &lt;dbl&gt;, n &lt;int&gt;</code></pre>
+</div>
+</div>
+<p>No duplicated accident identifiers or fully duplicated records were detected.</p>
+</section>
+</section>
+<section id="study-area-definition" class="level2">
+<h2 class="anchored" data-anchor-id="study-area-definition">1.2 Study Area Definition</h2>
+<section id="define-bangkok-metropolitan-region-bmr" class="level3">
+<h3 class="anchored" data-anchor-id="define-bangkok-metropolitan-region-bmr">1.2.1 Define Bangkok Metropolitan Region (BMR)</h3>
+<p>[Insert source]</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>bmr_provinces <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bangkok"</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nakhon Pathom"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nonthaburi"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Pathum Thani"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Samut Prakan"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Samut Sakhon"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="select-bmr-accident-records" class="level3">
+<h3 class="anchored" data-anchor-id="select-bmr-accident-records">1.2.2 Select BMR Accident Records</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>accident_bmr <span class="ot">&lt;-</span> accident_2022 <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(province_en <span class="sc">%in%</span> bmr_provinces)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="prepare-bmr-administrative-boundary" class="level3">
+<h3 class="anchored" data-anchor-id="prepare-bmr-administrative-boundary">1.2.3 Prepare BMR Administrative Boundary</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tha_adm1 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"take-home_ex1_data/geoBoundaries-THA-ADM1.geojson"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `geoBoundaries-THA-ADM1' from data source 
+  `C:\Users\jiayi\Documents\SMU\26_Aug_Term\GAA\lw0170_GAA\ISSS626_course\take-home_exercise\take-home_ex1_data\geoBoundaries-THA-ADM1.geojson' 
+  using driver `GeoJSON'
+Simple feature collection with 77 features and 5 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 97.34381 ymin: 5.612851 xmax: 105.6368 ymax: 20.46483
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>bmr_names <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bangkok"</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nakhon Pathom Province"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nonthaburi Province"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Pathum Thani Province"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Samut Prakan Province"</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Samut Sakhon Province"</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>bmr_adm1 <span class="ot">&lt;-</span> tha_adm1 <span class="sc">%&gt;%</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(shapeName <span class="sc">%in%</span> bmr_names)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="construct-bmr-study-boundary" class="level3">
+<h3 class="anchored" data-anchor-id="construct-bmr-study-boundary">1.2.4 Construct BMR Study Boundary</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>bmr_boundary <span class="ot">&lt;-</span> bmr_adm1 <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>::: :::</p>
 </section>
-<section id="derive-datetime-data" class="level2">
-<h2 class="anchored" data-anchor-id="derive-datetime-data">Derive Datetime Data</h2>
+</section>
+<section id="event-and-attribute-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="event-and-attribute-preparation">1.3 Event and Attribute Preparation</h2>
+<section id="define-accident-events" class="level3">
+<h3 class="anchored" data-anchor-id="define-accident-events">1.3.1 Define accident events</h3>
+<p>A point event represents one recorded road traffic accident occurring within the Bangkok Metropolitan Region during 2022. Each unique acc_code is treated as one event. Multiple accidents occurring at the same recorded coordinates are retained as separate events because they represent distinct accident incidents.</p>
+</section>
+<section id="derive-temporal-attributes" class="level3">
+<h3 class="anchored" data-anchor-id="derive-temporal-attributes">1.3.2 Derive Temporal Attributes</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>accident_2022_final <span class="ot">&lt;-</span> accident_2022 <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">year</span>(incident_datetime),</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">month =</span> <span class="fu">month</span>(incident_datetime, <span class="at">label =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">day =</span> <span class="fu">day</span>(incident_datetime),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">weekday =</span> <span class="fu">wday</span>(incident_datetime, <span class="at">label =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">hour =</span> <span class="fu">hour</span>(incident_datetime)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>accident_bmr <span class="ot">&lt;-</span> accident_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">month =</span> <span class="fu">month</span>(incident_datetime, <span class="at">label =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">weekday =</span> <span class="fu">wday</span>(incident_datetime, <span class="at">label =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">hour =</span> <span class="fu">hour</span>(incident_datetime))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="define-bangkok-metropolitan-region" class="level2">
-<h2 class="anchored" data-anchor-id="define-bangkok-metropolitan-region">Define Bangkok Metropolitan Region</h2>
+<section id="derive-accident-severity" class="level3">
+<h3 class="anchored" data-anchor-id="derive-accident-severity">1.3.3 Derive Accident Severity</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bmr_provinces <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bangkok"</span>,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nakhon Pathom"</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nonthaburi"</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Pathum Thani"</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Samut Prakan"</span>,</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Samut Sakhon"</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>accident_bmr <span class="ot">&lt;-</span> accident_2022 <span class="sc">%&gt;%</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(province_en <span class="sc">%in%</span> bmr_provinces)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>accident_bmr <span class="ot">&lt;-</span> accident_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">severity =</span> <span class="fu">case_when</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">is.na</span>(number_of_fatalities) <span class="sc">|</span> <span class="fu">is.na</span>(number_of_injuries) <span class="sc">~</span> <span class="st">"Unknown"</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>      number_of_fatalities <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"Fatal"</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>      number_of_injuries <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"Injury"</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Non-injury"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="clean-missing-coordinates" class="level2">
-<h2 class="anchored" data-anchor-id="clean-missing-coordinates">Clean Missing Coordinates</h2>
+</section>
+<section id="geospatial-data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="geospatial-data-preparation">1.4 Geospatial Data Preparation</h2>
+<section id="coordinate-completeness-and-plausibility" class="level3">
+<h3 class="anchored" data-anchor-id="coordinate-completeness-and-plausibility">1.4.1 Coordinate Completeness and Plausibility</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>missing_coord <span class="ot">&lt;-</span> accident_bmr <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(latitude) <span class="sc">|</span> <span class="fu">is.na</span>(longitude))</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(missing_coord)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>missing_coord <span class="ot">&lt;-</span> accident_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(latitude) <span class="sc">|</span> <span class="fu">is.na</span>(longitude))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(missing_coord)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 189</code></pre>
 </div>
 </div>
-<p>::: :::</p>
-</section>
-<section id="invalid-coordinates" class="level2">
-<h2 class="anchored" data-anchor-id="invalid-coordinates">Invalid Coordinates</h2>
-</section>
-<section id="store-clean-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="store-clean-dataset">Store clean dataset</h2>
+<p>::: Records with missing coordinates were retained during the initial quality assessment but excluded from spatial point-pattern analysis because their locations could not be reliably represented spatially. :::</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  accident_2022,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"take-home_ex1_data/thailand_road_accident_clean.csv"</span>,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>accident_bmr_clean <span class="ot">&lt;-</span> accident_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(latitude),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(longitude))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="convert-records-to-spatial-point-features" class="level3">
+<h3 class="anchored" data-anchor-id="convert-records-to-spatial-point-features">1.4.2 Convert Records to Spatial Point Features</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>accident_bmr_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  accident_bmr_clean,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">crs =</span> <span class="dv">4326</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">remove =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="spatial-validation-against-bmr-boundary" class="level3">
+<h3 class="anchored" data-anchor-id="spatial-validation-against-bmr-boundary">1.4.3 Spatial Validation Against BMR Boundary</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>accident_bmr_sf <span class="ot">&lt;-</span> <span class="fu">st_filter</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  accident_bmr_sf,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  bmr_boundary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="crs-transformation" class="level3">
+<h3 class="anchored" data-anchor-id="crs-transformation">1.4.4 CRS Transformation</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>accident_bmr_utm <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  accident_bmr_sf,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">32647</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>bmr_boundary_utm <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  bmr_boundary,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">32647</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="road-network-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="road-network-preparation">1.5 Road Network Preparation</h2>
+<p>The road network represents an OpenStreetMap snapshot near the end of the 2022 study period; therefore, minor changes to the network during 2022 may not be fully represented.(https://download.geofabrik.de/asia/thailand.html)</p>
+<section id="import-and-inspect-road-network" class="level3">
+<h3 class="anchored" data-anchor-id="import-and-inspect-road-network">1.5.1 Import and Inspect Road Network</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>roads_th <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"take-home_ex1_data/th_road/gis_osm_roads_free_1.shp"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `gis_osm_roads_free_1' from data source 
+  `C:\Users\jiayi\Documents\SMU\26_Aug_Term\GAA\lw0170_GAA\ISSS626_course\take-home_exercise\take-home_ex1_data\th_road\gis_osm_roads_free_1.shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 2930836 features and 10 fields
+Geometry type: LINESTRING
+Dimension:     XY
+Bounding box:  xmin: 97.31354 ymin: 5.643645 xmax: 105.6481 ymax: 20.47168
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>roads_th</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 2930836 features and 10 fields
+Geometry type: LINESTRING
+Dimension:     XY
+Bounding box:  xmin: 97.31354 ymin: 5.643645 xmax: 105.6481 ymax: 20.47168
+Geodetic CRS:  WGS 84
+First 10 features:
+    osm_id code      fclass                name  ref oneway maxspeed layer
+1  4270622 5122 residential ถนนศิริมังคลาจารย์ ซอย1 &lt;NA&gt;      B        0     0
+2  4828442 5122 residential    Soi Ruam- U-Thit &lt;NA&gt;      B        0     0
+3  4828443 5122 residential    Soi Ruam- U-Thit &lt;NA&gt;      B        0     0
+4  4828444 5122 residential                &lt;NA&gt; &lt;NA&gt;      B        0     0
+5  4828446 5122 residential                &lt;NA&gt; &lt;NA&gt;      B        0     0
+6  8560735 5122 residential   ซอยโรงเรียนจารุณีวิทย์ &lt;NA&gt;      B       30     0
+7  8560761 5122 residential    ซอยโรงเรียนกิ่งเพชร &lt;NA&gt;      F       30     0
+8  8560767 5122 residential         ซอยเพชรบุรี 5 &lt;NA&gt;      B        0     0
+9  8560771 5122 residential        ซอยเพชรบุรี 12 &lt;NA&gt;      F        0     0
+10 8560776 5153     footway                &lt;NA&gt; &lt;NA&gt;      B        0     0
+   bridge tunnel                       geometry
+1       F      F LINESTRING (98.97274 18.796...
+2       F      F LINESTRING (98.34197 7.8194...
+3       F      F LINESTRING (98.34053 7.8202...
+4       F      F LINESTRING (98.34256 7.8210...
+5       F      F LINESTRING (98.34197 7.8194...
+6       F      F LINESTRING (100.5263 13.753...
+7       F      F LINESTRING (100.5257 13.751...
+8       F      F LINESTRING (100.5252 13.758...
+9       F      F LINESTRING (100.5299 13.753...
+10      F      F LINESTRING (100.521 13.7563...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(roads_th)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coordinate Reference System:
+  User input: WGS 84 
+  wkt:
+GEOGCRS["WGS 84",
+    DATUM["World Geodetic System 1984",
+        ELLIPSOID["WGS 84",6378137,298.257223563,
+            LENGTHUNIT["metre",1]]],
+    PRIMEM["Greenwich",0,
+        ANGLEUNIT["degree",0.0174532925199433]],
+    CS[ellipsoidal,2],
+        AXIS["latitude",north,
+            ORDER[1],
+            ANGLEUNIT["degree",0.0174532925199433]],
+        AXIS["longitude",east,
+            ORDER[2],
+            ANGLEUNIT["degree",0.0174532925199433]],
+    ID["EPSG",4326]]</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(<span class="fu">st_geometry_type</span>(roads_th))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] LINESTRING
+18 Levels: GEOMETRY POINT LINESTRING POLYGON MULTIPOINT ... TRIANGLE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(roads_th<span class="sc">$</span>fclass)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "residential"    "footway"        "secondary"      "motorway"      
+ [5] "primary"        "motorway_link"  "primary_link"   "trunk"         
+ [9] "unclassified"   "tertiary"       "secondary_link" "trunk_link"    
+[13] "service"        "cycleway"       "tertiary_link"  "path"          
+[17] "track"          "steps"          "track_grade4"   "track_grade2"  
+[21] "living_street"  "track_grade3"   "pedestrian"     "track_grade1"  
+[25] "track_grade5"   "busway"         "bridleway"      "unknown"       </code></pre>
+</div>
+</div>
+</section>
+<section id="select-relevant-road-classes" class="level3">
+<h3 class="anchored" data-anchor-id="select-relevant-road-classes">1.5.2 Select Relevant Road Classes</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>motor_road_classes <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"motorway"</span>,</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"motorway_link"</span>,</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"trunk"</span>,</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"trunk_link"</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"primary"</span>,</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"primary_link"</span>,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"secondary"</span>,</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"secondary_link"</span>,</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tertiary"</span>,</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tertiary_link"</span>,</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"unclassified"</span>,</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"residential"</span>,</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"living_street"</span>,</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"service"</span>)</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>roads_motor <span class="ot">&lt;-</span> roads_th <span class="sc">%&gt;%</span></span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(fclass <span class="sc">%in%</span> motor_road_classes)</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>roads_motor <span class="sc">%&gt;%</span></span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(fclass, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           fclass       n
+1     residential 1357946
+2         service  934108
+3    unclassified  117254
+4        tertiary   39161
+5       secondary   32115
+6           trunk   20375
+7         primary   19955
+8      trunk_link   10638
+9    primary_link    8201
+10 secondary_link    6702
+11       motorway    2671
+12  motorway_link    2380
+13  tertiary_link    1615
+14  living_street      25</code></pre>
+</div>
+</div>
+</section>
+<section id="restrict-road-network-to-bmr" class="level3">
+<h3 class="anchored" data-anchor-id="restrict-road-network-to-bmr">1.5.3 Restrict Road Network to BMR</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(roads_motor)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coordinate Reference System:
+  User input: WGS 84 
+  wkt:
+GEOGCRS["WGS 84",
+    DATUM["World Geodetic System 1984",
+        ELLIPSOID["WGS 84",6378137,298.257223563,
+            LENGTHUNIT["metre",1]]],
+    PRIMEM["Greenwich",0,
+        ANGLEUNIT["degree",0.0174532925199433]],
+    CS[ellipsoidal,2],
+        AXIS["latitude",north,
+            ORDER[1],
+            ANGLEUNIT["degree",0.0174532925199433]],
+        AXIS["longitude",east,
+            ORDER[2],
+            ANGLEUNIT["degree",0.0174532925199433]],
+    ID["EPSG",4326]]</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(bmr_boundary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coordinate Reference System:
+  User input: WGS 84 
+  wkt:
+GEOGCRS["WGS 84",
+    DATUM["World Geodetic System 1984",
+        ELLIPSOID["WGS 84",6378137,298.257223563,
+            LENGTHUNIT["metre",1]]],
+    PRIMEM["Greenwich",0,
+        ANGLEUNIT["degree",0.0174532925199433]],
+    CS[ellipsoidal,2],
+        AXIS["geodetic latitude (Lat)",north,
+            ORDER[1],
+            ANGLEUNIT["degree",0.0174532925199433]],
+        AXIS["geodetic longitude (Lon)",east,
+            ORDER[2],
+            ANGLEUNIT["degree",0.0174532925199433]],
+    ID["EPSG",4326]]</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(roads_motor) <span class="sc">==</span> <span class="fu">st_crs</span>(bmr_boundary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>roads_bmr <span class="ot">&lt;-</span> <span class="fu">st_filter</span>(</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  roads_motor,</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  bmr_boundary)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(roads_bmr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 576872</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>roads_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">count</span>(fclass, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           fclass      n
+1     residential 276993
+2         service 263244
+3       secondary   7340
+4    unclassified   7222
+5         primary   6270
+6        tertiary   5727
+7    primary_link   2452
+8  secondary_link   2073
+9   motorway_link   1720
+10          trunk   1464
+11       motorway   1268
+12     trunk_link    668
+13  tertiary_link    425
+14  living_street      6</code></pre>
+</div>
+</div>
+</section>
+<section id="clip-network-to-bmr-boundary" class="level3">
+<h3 class="anchored" data-anchor-id="clip-network-to-bmr-boundary">1.5.4 Clip Network to BMR Boundary</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>roads_bmr <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  roads_bmr,</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  bmr_boundary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="network-geometry-preparation-and-validation" class="level3">
+<h3 class="anchored" data-anchor-id="network-geometry-preparation-and-validation">1.5.5 Network Geometry Preparation and Validation</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>roads_bmr <span class="ot">&lt;-</span> roads_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_cast</span>(<span class="st">"LINESTRING"</span>)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(<span class="fu">st_geometry_type</span>(roads_bmr))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] LINESTRING
+18 Levels: GEOMETRY POINT LINESTRING POLYGON MULTIPOINT ... TRIANGLE</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">st_is_valid</span>(roads_bmr))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  TRUE 
+577626 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(roads_bmr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 577626</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>roads_bmr <span class="ot">&lt;-</span> roads_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">LineID =</span> <span class="fu">row_number</span>())</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="fu">anyDuplicated</span>(roads_bmr<span class="sc">$</span>LineID)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>roads_bmr_utm <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  roads_bmr,</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">32647</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="point-to-network-validation-and-snapping" class="level2">
+<h2 class="anchored" data-anchor-id="point-to-network-validation-and-snapping">1.6 Point-to-Network Validation and Snapping</h2>
+<section id="point-to-network-distance-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="point-to-network-distance-assessment">1.6.1 Point-to-Network Distance Assessment</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>nearest_road_id <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  accident_bmr_utm,</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  roads_bmr_utm)</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>nearest_road_dist <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>  accident_bmr_utm,</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>  roads_bmr_utm[nearest_road_id, ],</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">by_element =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>accident_bmr_utm<span class="sc">$</span>dist_to_road_m <span class="ot">&lt;-</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(nearest_road_dist)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(accident_bmr_utm<span class="sc">$</span>dist_to_road_m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+ 0.000601  1.851901  3.845640  4.569081  6.599110 41.534161 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  accident_bmr_utm<span class="sc">$</span>dist_to_road_m,</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">probs =</span> <span class="fu">c</span>(</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>,</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.25</span>,</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.5</span>,</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.75</span>,</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.90</span>,</span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.95</span>,</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.99</span>,</span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>),</span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          0%          25%          50%          75%          90%          95% 
+6.012547e-04 1.851901e+00 3.845640e+00 6.599110e+00 9.240770e+00 1.057616e+01 
+         99%         100% 
+1.395806e+01 4.153416e+01 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>accident_bmr_utm <span class="sc">%&gt;%</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">total =</span> <span class="fu">n</span>(),</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">over_10m =</span> <span class="fu">sum</span>(dist_to_road_m <span class="sc">&gt;</span> <span class="dv">10</span>),</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">over_20m =</span> <span class="fu">sum</span>(dist_to_road_m <span class="sc">&gt;</span> <span class="dv">20</span>),</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">over_30m =</span> <span class="fu">sum</span>(dist_to_road_m <span class="sc">&gt;</span> <span class="dv">30</span>),</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">over_50m =</span> <span class="fu">sum</span>(dist_to_road_m <span class="sc">&gt;</span> <span class="dv">50</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 5
+  total over_10m over_20m over_30m over_50m
+  &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;
+1  3589      233       19        1        0</code></pre>
+</div>
+</div>
+<p>::: Point-to-Network Validation Before conducting network-constrained spatial analysis, the distance from each accident point to its nearest road segment was calculated to assess positional consistency. The median distance was approximately 3.85 m, while 95% and 99% of accident locations were within approximately 10.58 m and 13.96 m of the nearest road, respectively. The maximum observed distance was approximately 41.53 m. These results suggest that the accident locations were generally well aligned with the road network. A maximum snapping tolerance of 50 m was therefore considered appropriate for projecting accident points onto the road network. :::</p>
+</section>
+<section id="examine-potentially-misaligned-events" class="level3">
+<h3 class="anchored" data-anchor-id="examine-potentially-misaligned-events">1.6.2 Examine Potentially Misaligned Events</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>far_accidents <span class="ot">&lt;-</span> accident_bmr_utm <span class="sc">%&gt;%</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(dist_to_road_m <span class="sc">&gt;</span> <span class="dv">20</span>)</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>far_accidents <span class="sc">%&gt;%</span></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>    acc_code,</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>    latitude,</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>    longitude,</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>    dist_to_road_m,</span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>    route,</span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>    road_description) <span class="sc">%&gt;%</span></span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(dist_to_road_m))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 19 × 6
+   acc_code latitude longitude dist_to_road_m route             road_description
+      &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt;           
+ 1  7212324     14.0      101.           41.5 แยกทางหลวงหมายเล… straight road   
+ 2  6252745     14.0      100.           27.2 คลองบางหลวง - ต่า… straight road   
+ 3  6362572     14.0      100.           26.4 คลองบางไผ่ - คลอง… straight road   
+ 4  6233643     14.0      100.           26.3 คลองบางไผ่ - คลอง… straight road   
+ 5  7561795     14.0      100.           26.1 คลองบางไผ่ - คลอง… straight road   
+ 6  7565239     13.6      100.           25.4 ดาวคะนอง -  แสมดำ other           
+ 7  7561793     14.0      100.           25.3 คลองบางไผ่ - คลอง… straight road   
+ 8  6513957     14.0      100.           25.2 คลองบางไผ่ - คลอง… straight road   
+ 9  7565191     14.0      100.           25.1 คลองบางไผ่ - คลอง… straight road   
+10  6242101     14.0      100.           24.8 คลองบางไผ่ - คลอง… straight road   
+11  7512256     14.0      100.           24.8 ไม่ทราบ            straight road   
+12  6591417     14.0      100.           24.6 คลองบางไผ่ - คลอง… straight road   
+13  5843213     14.0      100.           23.9 คลองบางไผ่ - คลอง… straight road   
+14  7541169     14.0      100.           23.6 คลองบางไผ่ - คลอง… straight road   
+15  6981795     14.0      100.           23.3 คลองบางหลวง - ต่า… other           
+16  7565032     14.0      100.           23.1 คลองบางหลวง - ต่า… wide curve      
+17  6466764     14.0      100.           22.0 คลองบางไผ่ - คลอง… straight road   
+18  7117128     14.0      100.           21.6 คลองบางไผ่ - คลอง… straight road   
+19  7441189     14.0      100.           20.6 ไม่ทราบ            straight road   </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>far_nearest_id <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  far_accidents,</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  roads_bmr_utm)</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>nearest_lines <span class="ot">&lt;-</span> <span class="fu">st_nearest_points</span>(</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>  far_accidents,</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>  roads_bmr_utm[far_nearest_id, ],</span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">pairwise =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a>far_area <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(</span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_buffer</span>(</span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_union</span>(far_accidents),</span>
+<span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">dist =</span> <span class="dv">500</span>))</span>
+<span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-15"><a href="#cb69-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb69-16"><a href="#cb69-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_geometry</span>(roads_bmr_utm),</span>
+<span id="cb69-17"><a href="#cb69-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlim =</span> <span class="fu">c</span>(far_area[<span class="st">"xmin"</span>], far_area[<span class="st">"xmax"</span>]),</span>
+<span id="cb69-18"><a href="#cb69-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylim =</span> <span class="fu">c</span>(far_area[<span class="st">"ymin"</span>], far_area[<span class="st">"ymax"</span>]),</span>
+<span id="cb69-19"><a href="#cb69-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"grey"</span>)</span>
+<span id="cb69-20"><a href="#cb69-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-21"><a href="#cb69-21" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb69-22"><a href="#cb69-22" aria-hidden="true" tabindex="-1"></a>  nearest_lines,</span>
+<span id="cb69-23"><a href="#cb69-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb69-24"><a href="#cb69-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb69-25"><a href="#cb69-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-26"><a href="#cb69-26" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb69-27"><a href="#cb69-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_geometry</span>(far_accidents),</span>
+<span id="cb69-28"><a href="#cb69-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">add =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb69-29"><a href="#cb69-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">pch =</span> <span class="dv">19</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="take-home_ex1_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>::: Accident events located more than 20 m from their nearest road segment were visually inspected to identify potential spatial misalignment before network snapping. :::</p>
+</section>
+<section id="snap-accident-events-to-road-network" class="level3">
+<h3 class="anchored" data-anchor-id="snap-accident-events-to-road-network">1.6.3 Snap Accident Events to Road Network</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>accident_snapped <span class="ot">&lt;-</span> <span class="fu">snapPointsToLines2</span>(</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">points =</span> accident_bmr_utm,</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lines =</span> roads_bmr_utm,</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">idField =</span> <span class="st">"LineID"</span>,</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">snap_dist =</span> <span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="post-snapping-validation" class="level3">
+<h3 class="anchored" data-anchor-id="post-snapping-validation">1.6.4 Post-Snapping Validation</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(accident_bmr_utm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3589</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(accident_snapped)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3589</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(<span class="fu">st_geometry_type</span>(accident_snapped))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] POINT
+18 Levels: GEOMETRY POINT LINESTRING POLYGON MULTIPOINT ... TRIANGLE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(accident_snapped) <span class="sc">==</span> <span class="fu">st_crs</span>(roads_bmr_utm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(accident_snapped<span class="sc">$</span>nearest_line_id))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>accident_snapped <span class="sc">%&gt;%</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(acc_code, nearest_line_id) <span class="sc">%&gt;%</span></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  acc_code nearest_line_id
+1  5652876           12351
+2  5484851          260741
+3  6566824           97053
+4  5485786           10927
+5  5493686           52671
+6  6566830           17321</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>check_road_id <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  accident_snapped,</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  roads_bmr_utm)</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>check_distance <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(</span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>  accident_snapped,</span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>  roads_bmr_utm[check_road_id, ],</span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">by_element =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">as.numeric</span>(check_distance))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+0.000e+00 2.017e-11 4.109e-11 4.549e-11 6.624e-11 1.263e-10 </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="store-analysis-ready-data" class="level2">
+<h2 class="anchored" data-anchor-id="store-analysis-ready-data">1.7 Store Analysis-Ready Data</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>analysis_ready <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">accidents =</span> accident_snapped,</span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">roads =</span> roads_bmr_utm,</span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">boundary =</span> bmr_boundary_utm)</span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(</span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>  analysis_ready,</span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"take-home_ex1_data/processed/analysis_ready.rds"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>

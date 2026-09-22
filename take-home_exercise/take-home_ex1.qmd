@@ -22,43 +22,53 @@ The analysis consists of four main tasks:
 
 # Loading Necessary R Packages
 ```{r}
-pacman::p_load(tidyverse, sf, lubridate)
+pacman::p_load(tidyverse, sf, lubridate, spNetwork)
 ```
 
 
 # 1 Data Preparation
+
+## 1.1 Data Import and Initial Quality Assessment
+
+### 1.1.1 Data Import
 ```{r}
 th_accident_raw <- read_csv("take-home_ex1_data/thai_road_accident_2019_2022.csv")
 ```
-## Restrict to 2022
+
+### 1.1.2 Restrict to 2022
 ```{r}
 accident_2022 <- th_accident_raw %>%
   filter(year(incident_datetime) == 2022)
 ```
 
-## Data Recap
-
+### 1.1.3 Initial Data Screening
 ```{r}
 glimpse(accident_2022)
 summary(accident_2022)
+```
+:::
+:::
+
+### 1.1.4 Missing Value Assessment
+```{r}
 colSums(is.na(accident_2022))
 ```
-:::
-:::
 
-## Derive Datetime Data 
+### 1.1.5 Duplicate Record Assessment
 ```{r}
-accident_2022_final <- accident_2022 %>%
-  mutate(
-    year = year(incident_datetime),
-    month = month(incident_datetime, label = TRUE),
-    day = day(incident_datetime),
-    weekday = wday(incident_datetime, label = TRUE),
-    hour = hour(incident_datetime)
-  )
-```
+sum(duplicated(accident_2022))
 
-## Define Bangkok Metropolitan Region
+accident_2022 %>%
+  count(acc_code) %>%
+  filter(n > 1)
+```
+No duplicated accident identifiers or fully duplicated records were detected.
+
+
+## 1.2 Study Area Definition
+
+### 1.2.1 Define Bangkok Metropolitan Region (BMR)
+[Insert source]
 ```{r}
 bmr_provinces <- c(
   "Bangkok",
@@ -66,14 +76,69 @@ bmr_provinces <- c(
   "Nonthaburi",
   "Pathum Thani",
   "Samut Prakan",
-  "Samut Sakhon"
-)
+  "Samut Sakhon")
+```
 
+### 1.2.2 Select BMR Accident Records
+```{r}
 accident_bmr <- accident_2022 %>%
   filter(province_en %in% bmr_provinces)
 ```
 
-## Clean Missing Coordinates
+### 1.2.3 Prepare BMR Administrative Boundary
+```{r}
+tha_adm1 <- st_read("take-home_ex1_data/geoBoundaries-THA-ADM1.geojson")
+
+bmr_names <- c(
+  "Bangkok",
+  "Nakhon Pathom Province",
+  "Nonthaburi Province",
+  "Pathum Thani Province",
+  "Samut Prakan Province",
+  "Samut Sakhon Province")
+
+bmr_adm1 <- tha_adm1 %>%
+  filter(shapeName %in% bmr_names)
+```
+
+### 1.2.4 Construct BMR Study Boundary
+```{r}
+bmr_boundary <- bmr_adm1 %>%
+  summarise()
+```
+:::
+:::
+
+
+## 1.3 Event and Attribute Preparation
+
+### 1.3.1 Define accident events
+A point event represents one recorded road traffic accident occurring within the Bangkok Metropolitan Region during 2022. Each unique acc_code is treated as one event. Multiple accidents occurring at the same recorded coordinates are retained as separate events because they represent distinct accident incidents.
+
+### 1.3.2 Derive Temporal Attributes
+```{r}
+accident_bmr <- accident_bmr %>%
+  mutate(
+    month = month(incident_datetime, label = TRUE),
+    weekday = wday(incident_datetime, label = TRUE),
+    hour = hour(incident_datetime))
+```
+
+### 1.3.3 Derive Accident Severity
+```{r}
+accident_bmr <- accident_bmr %>%
+  mutate(
+    severity = case_when(
+      is.na(number_of_fatalities) | is.na(number_of_injuries) ~ "Unknown",
+      number_of_fatalities > 0 ~ "Fatal",
+      number_of_injuries > 0 ~ "Injury",
+      TRUE ~ "Non-injury"))
+```
+
+
+## 1.4 Geospatial Data Preparation
+
+### 1.4.1 Coordinate Completeness and Plausibility
 ```{r}
 missing_coord <- accident_bmr %>%
   filter(is.na(latitude) | is.na(longitude))
@@ -81,21 +146,283 @@ missing_coord <- accident_bmr %>%
 nrow(missing_coord)
 ```
 :::
+Records with missing coordinates were retained during the initial quality assessment but excluded from spatial point-pattern analysis because their locations could not be reliably represented spatially.
 :::
 
-
-## Invalid Coordinates
 ```{r}
-
+accident_bmr_clean <- accident_bmr %>%
+  filter(
+    !is.na(latitude),
+    !is.na(longitude))
 ```
 
-## Store clean dataset
+### 1.4.2 Convert Records to Spatial Point Features
 ```{r}
-write.csv(
-  accident_2022,
-  "take-home_ex1_data/thailand_road_accident_clean.csv",
-  row.names = FALSE
-)
+accident_bmr_sf <- st_as_sf(
+  accident_bmr_clean,
+  coords = c("longitude", "latitude"),
+  crs = 4326,
+  remove = FALSE)
+```
+
+### 1.4.3 Spatial Validation Against BMR Boundary
+```{r}
+accident_bmr_sf <- st_filter(
+  accident_bmr_sf,
+  bmr_boundary)
+```
+
+### 1.4.4 CRS Transformation
+```{r}
+accident_bmr_utm <- st_transform(
+  accident_bmr_sf,
+  32647)
+
+bmr_boundary_utm <- st_transform(
+  bmr_boundary,
+  32647)
+```
+
+
+## 1.5 Road Network Preparation
+The road network represents an OpenStreetMap snapshot near the end of the 2022 study period; therefore, minor changes to the network during 2022 may not be fully represented.(https://download.geofabrik.de/asia/thailand.html)
+
+### 1.5.1 Import and Inspect Road Network
+```{r}
+roads_th <- st_read("take-home_ex1_data/th_road/gis_osm_roads_free_1.shp")
+
+roads_th
+st_crs(roads_th)
+unique(st_geometry_type(roads_th))
+unique(roads_th$fclass)
+```
+
+### 1.5.2 Select Relevant Road Classes
+```{r}
+motor_road_classes <- c(
+  "motorway",
+  "motorway_link",
+  "trunk",
+  "trunk_link",
+  "primary",
+  "primary_link",
+  "secondary",
+  "secondary_link",
+  "tertiary",
+  "tertiary_link",
+  "unclassified",
+  "residential",
+  "living_street",
+  "service")
+
+roads_motor <- roads_th %>%
+  filter(fclass %in% motor_road_classes)
+
+roads_motor %>%
+  st_drop_geometry() %>%
+  count(fclass, sort = TRUE)
+```
+
+### 1.5.3 Restrict Road Network to BMR
+```{r}
+st_crs(roads_motor)
+st_crs(bmr_boundary)
+
+st_crs(roads_motor) == st_crs(bmr_boundary)
+```
+
+```{r}
+roads_bmr <- st_filter(
+  roads_motor,
+  bmr_boundary)
+
+nrow(roads_bmr)
+roads_bmr %>%
+  st_drop_geometry() %>%
+   count(fclass, sort = TRUE)
+```
+
+### 1.5.4 Clip Network to BMR Boundary
+```{r}
+roads_bmr <- st_intersection(
+  roads_bmr,
+  bmr_boundary)
+```
+
+### 1.5.5 Network Geometry Preparation and Validation
+```{r}
+roads_bmr <- roads_bmr %>%
+  st_cast("LINESTRING")
+unique(st_geometry_type(roads_bmr))
+```
+
+```{r}
+table(st_is_valid(roads_bmr))
+nrow(roads_bmr)
+```
+
+```{r}
+roads_bmr <- roads_bmr %>%
+  mutate(LineID = row_number())
+
+anyDuplicated(roads_bmr$LineID)
+```
+
+```{r}
+roads_bmr_utm <- st_transform(
+  roads_bmr,
+  32647)
+```
+
+
+## 1.6 Point-to-Network Validation and Snapping
+
+### 1.6.1 Point-to-Network Distance Assessment
+```{r}
+nearest_road_id <- st_nearest_feature(
+  accident_bmr_utm,
+  roads_bmr_utm)
+
+nearest_road_dist <- st_distance(
+  accident_bmr_utm,
+  roads_bmr_utm[nearest_road_id, ],
+  by_element = TRUE)
+```
+
+```{r}
+accident_bmr_utm$dist_to_road_m <-
+  as.numeric(nearest_road_dist)
+
+summary(accident_bmr_utm$dist_to_road_m)
+quantile(
+  accident_bmr_utm$dist_to_road_m,
+  probs = c(
+    0,
+    0.25,
+    0.5,
+    0.75,
+    0.90,
+    0.95,
+    0.99,
+    1),
+  na.rm = TRUE)
+
+accident_bmr_utm %>%
+  st_drop_geometry() %>%
+  summarise(
+    total = n(),
+    over_10m = sum(dist_to_road_m > 10),
+    over_20m = sum(dist_to_road_m > 20),
+    over_30m = sum(dist_to_road_m > 30),
+    over_50m = sum(dist_to_road_m > 50))
+```
+:::
+Point-to-Network Validation
+Before conducting network-constrained spatial analysis, the distance from each accident point to its nearest road segment was calculated to assess positional consistency. The median distance was approximately 3.85 m, while 95% and 99% of accident locations were within approximately 10.58 m and 13.96 m of the nearest road, respectively. The maximum observed distance was approximately 41.53 m. These results suggest that the accident locations were generally well aligned with the road network. A maximum snapping tolerance of 50 m was therefore considered appropriate for projecting accident points onto the road network.
+:::
+
+### 1.6.2 Examine Potentially Misaligned Events
+```{r}
+far_accidents <- accident_bmr_utm %>%
+  filter(dist_to_road_m > 20)
+
+far_accidents %>%
+  st_drop_geometry() %>%
+  select(
+    acc_code,
+    latitude,
+    longitude,
+    dist_to_road_m,
+    route,
+    road_description) %>%
+  arrange(desc(dist_to_road_m))
+```
+
+```{r}
+far_nearest_id <- st_nearest_feature(
+  far_accidents,
+  roads_bmr_utm)
+
+nearest_lines <- st_nearest_points(
+  far_accidents,
+  roads_bmr_utm[far_nearest_id, ],
+  pairwise = TRUE)
+
+far_area <- st_bbox(
+  st_buffer(
+    st_union(far_accidents),
+    dist = 500))
+
+plot(
+  st_geometry(roads_bmr_utm),
+  xlim = c(far_area["xmin"], far_area["xmax"]),
+  ylim = c(far_area["ymin"], far_area["ymax"]),
+  col = "grey")
+
+plot(
+  nearest_lines,
+  add = TRUE,
+  lwd = 2)
+
+plot(
+  st_geometry(far_accidents),
+  add = TRUE,
+  pch = 19)
+```
+:::
+Accident events located more than 20 m from their nearest road segment were visually inspected to identify potential spatial misalignment before network snapping.
+:::
+
+### 1.6.3 Snap Accident Events to Road Network
+```{r}
+accident_snapped <- snapPointsToLines2(
+  points = accident_bmr_utm,
+  lines = roads_bmr_utm,
+  idField = "LineID",
+  snap_dist = 50)
+```
+
+### 1.6.4 Post-Snapping Validation
+```{r}
+nrow(accident_bmr_utm)
+nrow(accident_snapped)
+
+unique(st_geometry_type(accident_snapped))
+
+st_crs(accident_snapped) == st_crs(roads_bmr_utm)
+
+sum(is.na(accident_snapped$nearest_line_id))
+
+accident_snapped %>%
+  st_drop_geometry() %>%
+  select(acc_code, nearest_line_id) %>%
+  head()
+```
+
+```{r}
+check_road_id <- st_nearest_feature(
+  accident_snapped,
+  roads_bmr_utm)
+
+check_distance <- st_distance(
+  accident_snapped,
+  roads_bmr_utm[check_road_id, ],
+  by_element = TRUE)
+
+summary(as.numeric(check_distance))
+```
+
+
+## 1.7 Store Analysis-Ready Data
+```{r}
+analysis_ready <- list(
+  accidents = accident_snapped,
+  roads = roads_bmr_utm,
+  boundary = bmr_boundary_utm)
+
+saveRDS(
+  analysis_ready,
+  "take-home_ex1_data/processed/analysis_ready.rds")
 ```
 
 
