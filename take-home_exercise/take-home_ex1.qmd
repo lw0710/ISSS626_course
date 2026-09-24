@@ -67,44 +67,20 @@ No duplicated accident identifiers or fully duplicated records were detected.
 
 ## 1.2 Study Area Definition
 
-### 1.2.1 Define Bangkok Metropolitan Region (BMR)
-[Insert source]
+Bangkok Province was selected as the study area because it provides a clearly defined urban road-safety case while retaining the complete set of accident events within the selected geographic extent. Restricting the analysis to Bangkok also provides a computationally tractable road network for network-constrained spatial point-pattern analysis without requiring random subsampling of accident events.
+
+### 1.2.1 Select Bangkok Accident Records
 ```{r}
-bmr_provinces <- c(
-  "Bangkok",
-  "Nakhon Pathom",
-  "Nonthaburi",
-  "Pathum Thani",
-  "Samut Prakan",
-  "Samut Sakhon")
+accident_bkk <- accident_2022 %>%
+  filter(province_en == "Bangkok")
 ```
 
-### 1.2.2 Select BMR Accident Records
-```{r}
-accident_bmr <- accident_2022 %>%
-  filter(province_en %in% bmr_provinces)
-```
-
-### 1.2.3 Prepare BMR Administrative Boundary
+### 1.2.2 Prepare Bangkok Administrative Boundary
 ```{r}
 tha_adm1 <- st_read("take-home_ex1_data/geoBoundaries-THA-ADM1.geojson")
 
-bmr_names <- c(
-  "Bangkok",
-  "Nakhon Pathom Province",
-  "Nonthaburi Province",
-  "Pathum Thani Province",
-  "Samut Prakan Province",
-  "Samut Sakhon Province")
-
-bmr_adm1 <- tha_adm1 %>%
-  filter(shapeName %in% bmr_names)
-```
-
-### 1.2.4 Construct BMR Study Boundary
-```{r}
-bmr_boundary <- bmr_adm1 %>%
-  summarise()
+bkk_boundary <- tha_adm1 %>%
+  filter(shapeName == "Bangkok")
 ```
 :::
 :::
@@ -117,7 +93,7 @@ A point event represents one recorded road traffic accident occurring within the
 
 ### 1.3.2 Derive Temporal Attributes
 ```{r}
-accident_bmr <- accident_bmr %>%
+accident_bkk <- accident_bkk %>%
   mutate(
     month = month(incident_datetime, label = TRUE),
     weekday = wday(incident_datetime, label = TRUE),
@@ -126,7 +102,7 @@ accident_bmr <- accident_bmr %>%
 
 ### 1.3.3 Derive Accident Severity
 ```{r}
-accident_bmr <- accident_bmr %>%
+accident_bkk <- accident_bkk %>%
   mutate(
     severity = case_when(
       is.na(number_of_fatalities) | is.na(number_of_injuries) ~ "Unknown",
@@ -140,7 +116,7 @@ accident_bmr <- accident_bmr %>%
 
 ### 1.4.1 Coordinate Completeness and Plausibility
 ```{r}
-missing_coord <- accident_bmr %>%
+missing_coord <- accident_bkk %>%
   filter(is.na(latitude) | is.na(longitude))
 
 nrow(missing_coord)
@@ -150,7 +126,7 @@ Records with missing coordinates were retained during the initial quality assess
 :::
 
 ```{r}
-accident_bmr_clean <- accident_bmr %>%
+accident_bkk_clean <- accident_bkk %>%
   filter(
     !is.na(latitude),
     !is.na(longitude))
@@ -158,28 +134,28 @@ accident_bmr_clean <- accident_bmr %>%
 
 ### 1.4.2 Convert Records to Spatial Point Features
 ```{r}
-accident_bmr_sf <- st_as_sf(
-  accident_bmr_clean,
+accident_bkk_sf <- st_as_sf(
+  accident_bkk_clean,
   coords = c("longitude", "latitude"),
   crs = 4326,
   remove = FALSE)
 ```
 
-### 1.4.3 Spatial Validation Against BMR Boundary
+### 1.4.3 Spatial Validation Against bkk Boundary
 ```{r}
-accident_bmr_sf <- st_filter(
-  accident_bmr_sf,
-  bmr_boundary)
+accident_bkk_sf <- st_filter(
+  accident_bkk_sf,
+  bkk_boundary)
 ```
 
 ### 1.4.4 CRS Transformation
 ```{r}
-accident_bmr_utm <- st_transform(
-  accident_bmr_sf,
+accident_bkk_utm <- st_transform(
+  accident_bkk_sf,
   32647)
 
-bmr_boundary_utm <- st_transform(
-  bmr_boundary,
+bkk_boundary_utm <- st_transform(
+  bkk_boundary,
   32647)
 ```
 
@@ -223,54 +199,54 @@ roads_motor %>%
   count(fclass, sort = TRUE)
 ```
 
-### 1.5.3 Restrict Road Network to BMR
+### 1.5.3 Restrict Road Network to BKK
 ```{r}
 st_crs(roads_motor)
-st_crs(bmr_boundary)
+st_crs(bkk_boundary)
 
-st_crs(roads_motor) == st_crs(bmr_boundary)
+st_crs(roads_motor) == st_crs(bkk_boundary)
 ```
 
 ```{r}
-roads_bmr <- st_filter(
+roads_bkk <- st_filter(
   roads_motor,
-  bmr_boundary)
+  bkk_boundary)
 
-nrow(roads_bmr)
-roads_bmr %>%
+nrow(roads_bkk)
+roads_bkk %>%
   st_drop_geometry() %>%
    count(fclass, sort = TRUE)
 ```
 
-### 1.5.4 Clip Network to BMR Boundary
+### 1.5.4 Clip Network to bkk Boundary
 ```{r}
-roads_bmr <- st_intersection(
-  roads_bmr,
-  bmr_boundary)
+roads_bkk <- st_intersection(
+  roads_bkk,
+  bkk_boundary)
 ```
 
 ### 1.5.5 Network Geometry Preparation and Validation
 ```{r}
-roads_bmr <- roads_bmr %>%
+roads_bkk <- roads_bkk %>%
   st_cast("LINESTRING")
-unique(st_geometry_type(roads_bmr))
+unique(st_geometry_type(roads_bkk))
 ```
 
 ```{r}
-table(st_is_valid(roads_bmr))
-nrow(roads_bmr)
+table(st_is_valid(roads_bkk))
+nrow(roads_bkk)
 ```
 
 ```{r}
-roads_bmr <- roads_bmr %>%
+roads_bkk <- roads_bkk %>%
   mutate(LineID = row_number())
 
-anyDuplicated(roads_bmr$LineID)
+anyDuplicated(roads_bkk$LineID)
 ```
 
 ```{r}
-roads_bmr_utm <- st_transform(
-  roads_bmr,
+roads_bkk_utm <- st_transform(
+  roads_bkk,
   32647)
 ```
 
@@ -280,22 +256,22 @@ roads_bmr_utm <- st_transform(
 ### 1.6.1 Point-to-Network Distance Assessment
 ```{r}
 nearest_road_id <- st_nearest_feature(
-  accident_bmr_utm,
-  roads_bmr_utm)
+  accident_bkk_utm,
+  roads_bkk_utm)
 
 nearest_road_dist <- st_distance(
-  accident_bmr_utm,
-  roads_bmr_utm[nearest_road_id, ],
+  accident_bkk_utm,
+  roads_bkk_utm[nearest_road_id, ],
   by_element = TRUE)
 ```
 
 ```{r}
-accident_bmr_utm$dist_to_road_m <-
+accident_bkk_utm$dist_to_road_m <-
   as.numeric(nearest_road_dist)
 
-summary(accident_bmr_utm$dist_to_road_m)
+summary(accident_bkk_utm$dist_to_road_m)
 quantile(
-  accident_bmr_utm$dist_to_road_m,
+  accident_bkk_utm$dist_to_road_m,
   probs = c(
     0,
     0.25,
@@ -307,7 +283,7 @@ quantile(
     1),
   na.rm = TRUE)
 
-accident_bmr_utm %>%
+accident_bkk_utm %>%
   st_drop_geometry() %>%
   summarise(
     total = n(),
@@ -318,12 +294,12 @@ accident_bmr_utm %>%
 ```
 :::
 Point-to-Network Validation
-Before conducting network-constrained spatial analysis, the distance from each accident point to its nearest road segment was calculated to assess positional consistency. The median distance was approximately 3.85 m, while 95% and 99% of accident locations were within approximately 10.58 m and 13.96 m of the nearest road, respectively. The maximum observed distance was approximately 41.53 m. These results suggest that the accident locations were generally well aligned with the road network. A maximum snapping tolerance of 50 m was therefore considered appropriate for projecting accident points onto the road network.
+Before conducting network-constrained spatial analysis, the distance from each accident point to its nearest road segment was calculated to assess positional consistency. The median distance was approximately 
 :::
 
 ### 1.6.2 Examine Potentially Misaligned Events
 ```{r}
-far_accidents <- accident_bmr_utm %>%
+far_accidents <- accident_bkk_utm %>%
   filter(dist_to_road_m > 20)
 
 far_accidents %>%
@@ -341,11 +317,11 @@ far_accidents %>%
 ```{r}
 far_nearest_id <- st_nearest_feature(
   far_accidents,
-  roads_bmr_utm)
+  roads_bkk_utm)
 
 nearest_lines <- st_nearest_points(
   far_accidents,
-  roads_bmr_utm[far_nearest_id, ],
+  roads_bkk_utm[far_nearest_id, ],
   pairwise = TRUE)
 
 far_area <- st_bbox(
@@ -354,7 +330,7 @@ far_area <- st_bbox(
     dist = 500))
 
 plot(
-  st_geometry(roads_bmr_utm),
+  st_geometry(roads_bkk_utm),
   xlim = c(far_area["xmin"], far_area["xmax"]),
   ylim = c(far_area["ymin"], far_area["ymax"]),
   col = "grey")
@@ -376,20 +352,20 @@ Accident events located more than 20 m from their nearest road segment were visu
 ### 1.6.3 Snap Accident Events to Road Network
 ```{r}
 accident_snapped <- snapPointsToLines2(
-  points = accident_bmr_utm,
-  lines = roads_bmr_utm,
+  points = accident_bkk_utm,
+  lines = roads_bkk_utm,
   idField = "LineID",
-  snap_dist = 50)
+  snap_dist = 30)
 ```
 
 ### 1.6.4 Post-Snapping Validation
 ```{r}
-nrow(accident_bmr_utm)
+nrow(accident_bkk_utm)
 nrow(accident_snapped)
 
 unique(st_geometry_type(accident_snapped))
 
-st_crs(accident_snapped) == st_crs(roads_bmr_utm)
+st_crs(accident_snapped) == st_crs(roads_bkk_utm)
 
 sum(is.na(accident_snapped$nearest_line_id))
 
@@ -402,11 +378,11 @@ accident_snapped %>%
 ```{r}
 check_road_id <- st_nearest_feature(
   accident_snapped,
-  roads_bmr_utm)
+  roads_bkk_utm)
 
 check_distance <- st_distance(
   accident_snapped,
-  roads_bmr_utm[check_road_id, ],
+  roads_bkk_utm[check_road_id, ],
   by_element = TRUE)
 
 summary(as.numeric(check_distance))
@@ -417,8 +393,8 @@ summary(as.numeric(check_distance))
 ```{r}
 analysis_ready <- list(
   accidents = accident_snapped,
-  roads = roads_bmr_utm,
-  boundary = bmr_boundary_utm)
+  roads = roads_bkk_utm,
+  boundary = bkk_boundary_utm)
 
 saveRDS(
   analysis_ready,
@@ -426,13 +402,318 @@ saveRDS(
 ```
 
 
-# 2 First-Order and Second-Order Point-Pattern Analysis
+# 2 Network-Constrained Spatial Point-Pattern Analysis (SPPA)
 
-## 2.1 First-Order Point-Pattern Analysis
+```{r}
+analysis_ready <- readRDS("take-home_ex1_data/processed/analysis_ready.rds")
 
-## 2.2 Second-Order Point-Pattern Analysis
+accident_snapped <- analysis_ready$accidents
+roads_bkk_utm <- analysis_ready$roads
+bkk_boundary_utm <- analysis_ready$boundary
+```
+
+## 2.1 First-Order Network-Constrained SPPA (NKDE)
+
+### 2.1.1 Preparing Lixels and Sampling Points
+```{r}
+road_length_m <- as.numeric(
+  st_length(roads_bkk_utm))
+
+summary(road_length_m)
+
+quantile(
+  road_length_m,
+  probs = c(
+    0,
+    0.25,
+    0.50,
+    0.75,
+    0.90,
+    0.95,
+    0.99,
+    1),
+  na.rm = TRUE)
+```
+:::
+Lixel length selection. The distribution of the original road-segment lengths was examined before lixelisation. The median road-segment length was approximately 65 m, while the 90th and 95th percentiles were approximately 306 m and 487 m, respectively. A lixel length of 300 m was therefore adopted as an initial sampling resolution. This subdivides relatively long road segments while avoiding unnecessary fragmentation of the already highly segmented urban road network.
+
+A minimum residual lixel length of 50 m was specified to prevent very short remainder segments from being created during the subdivision process.
+:::
+
+```{r}
+lixel_length <- 300
+min_lixel_length <- 50
+
+lixels <- lixelize_lines(
+  lines = roads_bkk_utm,
+  lx_length = lixel_length,
+  mindist = min_lixel_length)
+```
+
+```{r}
+nrow(roads_bkk_utm)
+nrow(lixels)
+
+lixel_length_m <- as.numeric(st_length(lixels))
+
+summary(lixel_length_m)
+range(lixel_length_m)
+```
+:::
+ixelisation. A lixel length of 300 m with a minimum residual length of 50 m was applied. The number of network segments increased moderately from 208,445 to 231,380 after lixelisation, indicating that the selected resolution did not cause excessive fragmentation. The resulting lixels had a median length of approximately 75 m and a maximum length of approximately 350 m. The latter is consistent with the minimum-distance rule, whereby a short residual segment may be merged with the preceding lixel.
+:::
+
+```{r}
+samples <- lines_center(lixels)
+```
+
+### 2.1.2 Bandwidth Selection / Sensitivity Analysis
+```{r}
+run_nkde <- function(bw_value) {
+  
+  nkde(
+    lines = roads_bkk_utm,
+    events = accident_bkk_utm,
+    w = rep(1, nrow(accident_bkk_utm)),
+    samples = samples,
+    
+    kernel_name = "quartic",
+    bw = bw_value,
+    adaptive = FALSE,
+    
+    method = "simple",
+    div = "bw",
+    
+    max_depth = 8,
+    digits = 1,
+    tol = 1,
+    
+    agg = NULL,
+    sparse = TRUE,
+    grid_shape = c(10, 10),
+    
+    verbose = TRUE,
+    check = TRUE
+  )
+}
+```
+
+```{r}
+nkde_500 <- run_nkde(500)
+```
+
+```{r}
+length(nkde_500) == nrow(samples)
+```
+
+```{r}
+nkde_1000 <- run_nkde(1000)
+```
+```{r}
+length(nkde_1000) == nrow(samples)
+```
+
+```{r}
+nkde_compare <- tibble(
+  lixel_id = seq_len(nrow(samples)),
+  bw_500 = as.numeric(nkde_500) * 1000,
+  bw_1000 = as.numeric(nkde_1000) * 1000
+)
+
+nkde_compare %>%
+  summarise(
+    across(
+      c(bw_500, bw_1000),
+      list(
+        median = ~ median(.x, na.rm = TRUE),
+        p90 = ~ quantile(.x, 0.90, na.rm = TRUE),
+        p95 = ~ quantile(.x, 0.95, na.rm = TRUE),
+        p99 = ~ quantile(.x, 0.99, na.rm = TRUE),
+        max = ~ max(.x, na.rm = TRUE)
+      )
+    )
+  )
+```
+
+```{r}
+cut_500 <- quantile(
+  nkde_compare$bw_500,
+  0.95,
+  na.rm = TRUE
+)
+
+cut_1000 <- quantile(
+  nkde_compare$bw_1000,
+  0.95,
+  na.rm = TRUE
+)
+
+nkde_compare <- nkde_compare %>%
+  mutate(
+    high_500 = bw_500 >= cut_500,
+    high_1000 = bw_1000 >= cut_1000
+  )
+
+
+table(
+  nkde_compare$high_500,
+  nkde_compare$high_1000
+)
+
+intersection_n <- sum(
+  nkde_compare$high_500 &
+  nkde_compare$high_1000
+)
+
+union_n <- sum(
+  nkde_compare$high_500 |
+  nkde_compare$high_1000
+)
+
+hotspot_overlap <- intersection_n / union_n
+
+hotspot_overlap
+```
+The high-intensity road segments identified using 500 m and 1,000 m bandwidths showed substantial spatial agreement. Approximately 78% of the lixels classified within the top 5% of network intensity were shared between the two bandwidths, corresponding to a Jaccard overlap of approximately 0.63. This suggests that the identification of the principal high-intensity locations was reasonably robust to the selected bandwidth, although some local differences remained.
+
+#### Bandwidth Sensitivity Analysis
+```{r}
+lixels_compare <- lixels %>%
+  mutate(
+    bw_500 = nkde_compare$bw_500,
+    bw_1000 = nkde_compare$bw_1000
+  )
+
+common_limit <- quantile(
+  c(
+    lixels_compare$bw_500,
+    lixels_compare$bw_1000
+  ),
+  0.99,
+  na.rm = TRUE
+)
+
+#500
+ggplot() +
+  geom_sf(
+    data = lixels_compare,
+    aes(colour = bw_500),
+    linewidth = 0.4
+  ) +
+  geom_sf(
+    data = bkk_boundary_utm,
+    fill = NA,
+    colour = "grey30",
+    linewidth = 0.3
+  ) +
+  scale_colour_viridis_c(
+    limits = c(0, common_limit),
+    oob = scales::squish,
+    name = "Accident intensity\n(per km)"
+  ) +
+  theme_void() +
+  labs(
+    title = "NKDE of Road Accidents",
+    subtitle = "Bangkok, 2022 | Bandwidth = 500 m"
+  )
+
+#1000
+ggplot() +
+  geom_sf(
+    data = lixels_compare,
+    aes(colour = bw_1000),
+    linewidth = 0.4
+  ) +
+  geom_sf(
+    data = bkk_boundary_utm,
+    fill = NA,
+    colour = "grey30",
+    linewidth = 0.3
+  ) +
+  scale_colour_viridis_c(
+    limits = c(0, common_limit),
+    oob = scales::squish,
+    name = "Accident intensity\n(per km)"
+  ) +
+  theme_void() +
+  labs(
+    title = "NKDE of Road Accidents",
+    subtitle = "Bangkok, 2022 | Bandwidth = 1000 m"
+  )
+
+```
+:::
+NKDE results using bandwidths of 500 m and 1,000 m were compared to assess the sensitivity of the estimated accident-intensity pattern to the degree of smoothing. The two bandwidths identified broadly similar high-intensity locations, with approximately 78% of the top 5% high-intensity lixels shared between the two results. The corresponding Jaccard overlap was approximately 0.63, indicating substantial spatial agreement. Visually, the 500 m bandwidth retained greater local variation, whereas the 1,000 m bandwidth produced more continuous road-corridor patterns without substantially altering the principal high-intensity locations. The 1,000 m bandwidth was therefore adopted for the subsequent analysis.
+:::
+
+```{r}
+final_nkde <- nkde_1000
+
+lixels_nkde <- lixels %>%
+  mutate(
+    nkde = as.numeric(final_nkde),
+    nkde_km = nkde * 1000
+  )
+```
+
+
+### 2.1.3 Network Kernel Density Estimation
+done
+
+### 2.1.4 Spatial Distribution of Network Accident Intensity
+```{r}
+summary(lixels_nkde$nkde_km)
+
+quantile(
+  lixels_nkde$nkde_km,
+  probs = c(
+    0,
+    0.25,
+    0.50,
+    0.75,
+    0.90,
+    0.95,
+    0.99,
+    1
+  ),
+  na.rm = TRUE
+)
+```
+:::
+The NKDE intensity distribution was highly right-skewed. At least 75% of the lixels had an estimated intensity of zero, while the 95th and 99th percentiles increased to approximately 0.00095 and 0.00353 respectively, indicating that elevated accident intensity was concentrated within a relatively small proportion of the analysed road network.
+:::
+
+```{r}
+# 95th percentile threshold
+p95_nkde <- quantile(
+  lixels_nkde$nkde_km,
+  probs = 0.95,
+  na.rm = TRUE
+)
+
+# Extract top 5% high-intensity lixels
+high_intensity_lixels <- lixels_nkde %>%
+  filter(nkde_km >= p95_nkde)
+```
+
+
+## 2.2 Second-Order Network-Constrained SPPA (Network G/K function)
+
+### 2.2.1 Network G- and K-Function
+
+
+### 2.2.2 Complete Spatial Randomness Test
+
+
+### 2.2.3 Monte Carlo Simulation Envelope
+
+
+### 2.2.4 Interpretation of Network-distance Scales
+
+
 
 ## 2.3 Integration and Interpretation
+
 
 
 # 3 Geovisualisation and Analytical Interpretation
