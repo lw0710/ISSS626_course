@@ -8,3 +8,4 @@
 **/*data/
 /.quarto/
 **/*.quarto_ipynb
+*.RDataTmp*
