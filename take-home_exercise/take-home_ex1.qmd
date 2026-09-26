@@ -690,51 +690,58 @@ nrow(high_intensity_lixels) / nrow(lixels_nkde) * 100
 A total of 11,569 lixels were classified as high intensity, corresponding to 5% of the analysed network segments.
 
 ```{r}
+p99_nkde <- quantile(
+  lixels_nkde$nkde_km,
+  probs = 0.99,
+  na.rm = TRUE)
+
 ggplot() +
   geom_sf(
     data = lixels_nkde,
     aes(colour = nkde_km),
-    linewidth = 0.4
-  ) +
-  geom_sf(
-    data = bkk_boundary_utm,
-    fill = NA,
-    colour = "grey30",
-    linewidth = 0.3
-  ) +
+    linewidth = 0.1) +
   scale_colour_viridis_c(
-    name = "Accident intensity\n(per km)"
-  ) +
+    option = "viridis",
+    trans = "sqrt",
+    limits = c(0, p99_nkde),
+    oob = scales::squish,
+    name = "Accident intensity\n(per km)") +
   theme_void() +
   labs(
     title = "Network Kernel Density of Road Accidents",
-    subtitle = "Bangkok, 2022 | Bandwidth = 500 m"
-  )
+    subtitle = "Bangkok, 2022 | Bandwidth = 500 m")
 ```
+:::{.callout-note title="Sqrt-transformed colour scale"}
+The NKDE intensity distribution is highly right-skewed, with most road lixels having zero or very low estimated intensity.
+
+To improve visual differentiation, a square-root transformation was applied to the colour scale and its upper limit was capped at the 99th percentile.
+
+Values above the 99th percentile were retained and mapped to the upper end of the colour scale using scales::squish.
+
+These adjustments affect only the visualization and do not modify the underlying NKDE estimates.
+:::
+
+The resulting map shows that elevated accident intensity is concentrated along a relatively small number of road corridors, while most of the Bangkok road network exhibits low or zero estimated intensity.
 
 ```{r}
 ggplot() +
   geom_sf(
     data = lixels_nkde,
     colour = "grey85",
-    linewidth = 0.15
-  ) +
+    linewidth = 0.15) +
   geom_sf(
     data = high_intensity_lixels,
     colour = "red",
-    linewidth = 0.6
-  ) +
+    linewidth = 0.6) +
   geom_sf(
     data = bkk_boundary_utm,
     fill = NA,
     colour = "grey30",
-    linewidth = 0.3
-  ) +
+    linewidth = 0.3) +
   theme_void() +
   labs(
     title = "High-Intensity Road Sections",
-    subtitle = "Top 5% of NKDE intensity | Bangkok, 2022"
-  )
+    subtitle = "Top 5% of NKDE intensity | Bangkok, 2022")
 ```
 
 The high-intensity lixels were concentrated along a limited number of road corridors rather than being evenly distributed across the network. Several relatively continuous high-intensity corridors were observed across the western, central, and southern parts of Bangkok, while fewer high-intensity sections appeared in the eastern part of the study area. This suggests that elevated accident intensity is associated with specific road corridors rather than a general city-wide pattern.
@@ -757,14 +764,15 @@ The network **G function** examines nearest-neighbour relationships between acci
 
 Network-based CSR was used as the reference pattern. Under the null hypothesis, accident events are assumed to be randomly and independently distributed over the eligible Bangkok road network. Monte Carlo simulations were then used to generate reference envelopes for comparison with the observed G and K functions.
 
-**Hypothesis**
+::: {.callout-note title="Hypothesis"}
+**H₀:** Road accidents are randomly and independently distributed along the Bangkok road network.
 
-H₀: Road accidents are randomly and independently distributed along the Bangkok road network.
-H₁: Road accidents exhibit spatial interaction inconsistent with network CSR.
+**H₁:** Road accidents exhibit spatial interaction inconsistent with network CSR.
+:::
 
-Parameter Selection: 
-
+::: {.callout-tip title="Parameter Selection"}
 A 100 m width was adopted for the network G-function to provide a more stable representation of accident interaction across network-distance bands. Preliminary sensitivity checks indicated that the narrower 50 m width produced substantial short-range fluctuation.
+:::
 
 ```{r}
 set.seed(1234)
@@ -781,6 +789,7 @@ gk_test <- kfunctions(
   verbose = TRUE,
   conf_int = 0.05)
 ```
+
 ```{r}
 gk_test$plotk
 
@@ -810,7 +819,6 @@ Taken together, the G- and K-function results provide consistent evidence that r
 
 
 ## 2.3 Integration and Interpretation
-
 
 
 # 3 Geovisualisation and Analytical Interpretation
