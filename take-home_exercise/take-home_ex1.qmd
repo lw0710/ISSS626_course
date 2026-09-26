@@ -7,25 +7,26 @@ date-modified: last-modified
 
 # Overview
 
-This is Technical Report of Take-home Exercise 1, aiming to examine the spatial patterns of road traffic accidents in the Bangkok Greater Metropolitan Area (BGMA) in 2022. Dataset from Kaggle [Thailand Road Accident 2019-2022](https://www.kaggle.com/datasets/thaweewatboy/thailand-road-accident-2019-2022) is used. Administrative boundary data and road network data will also be incorporated to support spatial and network-constrained analyses.
+This Technical Report examines the spatial patterns of road traffic accidents in Bangkok Province in 2022. Road accident records from the [Thailand Road Accident 2019-2022](https://www.kaggle.com/datasets/thaweewatboy/thailand-road-accident-2019-2022) dataset are integrated with administrative boundary and OpenStreetMap road-network data to support network-constrained spatial point-pattern analysis.
 
 The analysis consists of four main tasks:
 
 - Data Preparation and Quality Assessment: Clean and validate the accident records, define the study area, handle missing or invalid coordinates, and prepare the spatial datasets for analysis.
 
-- Exploratory and First-Order Analysis: Examine the spatial and temporal distribution of accidents and identify areas or road segments with high accident intensity using methods such as Kernel Density Estimation (KDE) and Network Kernel Density Estimation (NKDE).
+- First-Order Network Analysis: Estimate how accident intensity varies along the road network using Network Kernel Density Estimation (NKDE), and identify road sections with relatively elevated accident intensity.
 
-- Second-Order Analysis – Investigate whether road accidents exhibit statistically significant spatial clustering, with particular attention to clustering along the road network.
+- Second-Order Analysis: Investigate whether road accidents exhibit statistically significant spatial clustering, with particular attention to clustering along the road network.
 
-- Integration and Interpretation – Compare findings from conventional and network-constrained approaches and discuss their implications for road-safety planning and public-safety management.
+- Integration and Interpretation: Compare findings from conventional and network-constrained approaches and discuss their implications for road-safety planning and public-safety management.
 
 
 # Loading Necessary R Packages
 ```{r}
-pacman::p_load(tidyverse, sf, lubridate, spNetwork)
+pacman::p_load(tidyverse, sf, lubridate, spNetwork, gganimate, gifski)
 ```
 
 ```{r}
+#| echo: false
 package_table <- data.frame(
   Package = c(
     "tidyverse",
@@ -598,9 +599,9 @@ samples <- lines_center(lixels)
 A fixed bandwidth of 500 m was used for NKDE to capture relatively local variations in accident intensity along the road network.
 
 ::: {.callout-tip title="Bandwidth Selection"}
-The bandwidth determines the network distance over which nearby accident events contribute to the estimated intensity. A **500 m bandwidth** was selected to capture relatively local accident concentrations while still providing smoothing across neighbouring road segments.
+The bandwidth determines the network distance over which nearby accident events contribute to the estimated intensity. The NKDE results are sensitive to bandwidth selection; therefore, the 500 m bandwidth should be interpreted as an analytical scale for identifying local patterns rather than a uniquely optimal bandwidth.
 
-A relatively local bandwidth such as 500 m preserves more local variation than broader smoothing scales, making it suitable for identifying localised high-intensity road sections.
+This relatively local bandwidth preserves more local variation than broader smoothing scales, making it suitable for identifying localised high-intensity road sections.
 :::
 
 ### 2.1.3 Estimating Network Accident Intensity
@@ -631,6 +632,11 @@ run_nkde <- function(bw_value) {
 ```
 
 ```{r}
+#| echo: true
+#| output: false
+#| warning: false
+#| message: false
+
 nkde_500 <- run_nkde(500)
 ```
 ```{r}
@@ -775,6 +781,11 @@ A 100 m width was adopted for the network G-function to provide a more stable re
 :::
 
 ```{r}
+#| echo: true
+#| output: false
+#| warning: false
+#| message: false
+
 set.seed(1234)
 
 gk_test <- kfunctions(
@@ -807,23 +818,176 @@ all(gk_test$values$obs_g[2:21] >
       gk_test$values$upper_g[2:21])
 ```
 
-### 2.2.4 Interpretation of Network-distance Scales
+### 2.2.3 Observed Functions and Simulation Envelopes
 
-The observed K-function remained above the upper Monte Carlo envelope across the examined network-distance scales, indicating that accident events exhibited stronger cumulative spatial clustering than expected under network-based CSR.
+The observed K function remained above the upper Monte Carlo envelope across the examined network-distance scales, indicating stronger cumulative spatial clustering than expected under network-based CSR.
 
-The observed G-function was also consistently above the upper simulation envelope over the displayed distance bands. The strongest observed interaction occurred at short network distances, with the G-function reaching its highest value around 50 m before generally declining as distance increased.
+Similarly, the observed G function remained above the upper simulation envelope throughout the displayed distance bands. The strongest observed interaction occurred at short network distances, with the G-function reaching its highest value around 50 m before generally declining as distance increased.
 
-Both observed functions remained above their respective upper Monte Carlo envelopes throughout the examined 50–1000 m network-distance range.
-
-Taken together, the G- and K-function results provide consistent evidence that road accidents were not randomly distributed along the Bangkok road network under the network-based CSR reference. The G-function indicates particularly strong short-range interaction, while the K-function shows that clustering persists cumulatively across broader network-distance scales.
+Both functions provide consistent evidence against network-based CSR. The G function highlights strong short-range interaction between accident events, while the K function indicates that clustering persists cumulatively across broader network-distance scales.
 
 
-## 2.3 Integration and Interpretation
+## 2.3 Overall Integration and Interpretation
+
+The first and second order analyses provide complementary perspectives on the spatial pattern of road accidents in Bangkok. NKDE identifies where accident intensity is concentrated along the road network, while the network G  and K functions assess whether and at what spatial scales the observed accident pattern departs from network-based Complete Spatial Randomness.
+
+The NKDE results reveal several concentrated and, in some locations, relatively continuous high-intensity road sections. When considered together with the network G and K function results, these concentrations form part of a broader non-random spatial pattern rather than appearing as isolated high-density locations.
+
+Overall, the combined analyses indicate that road accidents in Bangkok exhibit both localised network intensity and spatial interaction across multiple network-distance scales. However, these findings describe the spatial structure of accident occurrence rather than its underlying causes. Additional information on traffic exposure, road characteristics, and surrounding environmental conditions would be required to explain why particular road corridors experience higher accident intensity.
 
 
 # 3 Geovisualisation and Analytical Interpretation
 
+## 3.1 Temporal Animation Design
+
+To complement the network-constrained spatial analyses, a temporal animation was developed to examine how the observed accident pattern accumulated throughout 2022.
+
+The cleaned monthly attribute was used to organise accident events into twelve sequential states from January to December.
+
+A cumulative rather than month-by-month display was adopted so that accidents remain visible after their month of occurrence.
+
+This allows the animation to show how the annual spatial pattern gradually emerges over time, while accident severity is retained to distinguish fatal, injury, and non-injury events.
+
+```{r}
+month_labels <- c(
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sept", "Oct", "Nov", "Dec")
+
+accident_cumulative <- accident_snapped %>%
+  mutate(
+    month_num = match(as.character(month), month_labels)) %>%
+  tidyr::uncount(
+    weights = 13 - month_num,
+    .id = "month_offset") %>%
+  mutate(
+    display_month_num = month_num + month_offset - 1,
+    display_month = factor(
+      month_labels[display_month_num],
+      levels = month_labels,
+      ordered = TRUE))
+```
+
+```{r}
+ggplot() +
+  geom_sf(
+    data = roads_bkk,
+    colour = "grey80",
+    linewidth = 0.2) +
+  geom_sf(
+    data = accident_cumulative %>%
+      filter(display_month == "Dec"),
+    aes(colour = severity),
+    size = 1,
+    alpha = 0.6) +
+  labs(
+    title = "Road Traffic Accidents in Bangkok",
+    subtitle = "Cumulative accidents: January–December 2022",
+    colour = "Severity") +
+  theme_void()
+```
+
+## 3.2 Animated Accident Distribution
+
+```{r}
+accident_animation <- ggplot() +
+  geom_sf(
+    data = roads_bkk,
+    colour = "grey80",
+    linewidth = 0.2) +
+  geom_sf(
+    data = accident_cumulative,
+    aes(colour = severity),
+    size = 1,
+    alpha = 0.6) +
+  transition_states(
+    display_month,
+    transition_length = 1,
+    state_length = 3) +
+  labs(
+    title = "Cumulative Road Traffic Accidents in Bangkok — {closest_state} 2022",
+    subtitle = "Accidents accumulated from January to {closest_state}",
+    colour = "Severity") +
+  theme_void() +
+  theme(
+    legend.position = "right")
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 6
+
+animate(
+  accident_animation,
+  nframes = 48,
+  fps = 4,
+  renderer = gifski_renderer(
+    "images/bangkok_accidents_2022.gif"))
+```
+
+![Bangkok Accident 2022](images/bangkok_accidents_2022.gif){width=80%}
+
+The resulting animation displays the cumulative distribution of reported road accidents across the Bangkok road network from January to December 2022. Each successive frame incorporates newly recorded accidents while retaining events from previous months.
+
+## 3.3 Interpretation
+
+The cumulative animation illustrates how the observed annual accident pattern progressively developed throughout 2022. As additional events are added over time, accident locations do not appear to accumulate uniformly across the entire road network. Instead, repeated concentrations become increasingly visible along particular parts of the network.
+
+By the later months of the year, the cumulative distribution shows a clearer contrast between road sections with relatively dense accident occurrence and sections with comparatively few recorded events. Fatal, injury, and non-injury accidents are all represented within the evolving pattern, although the animation is intended primarily to visualize their spatial and temporal accumulation rather than to compare severity-specific rates.
+
+Importantly, the increasing number of visible points across successive frames is an inherent consequence of the cumulative design and should not be interpreted as evidence that accident risk increased over the course of the year. A month-specific temporal analysis would be required to evaluate seasonal changes or differences in accident frequency between months.
+
+## 3.4 Link to Network-Constrained Analysis
+
+The temporal animation provides a descriptive time dimension to the spatial patterns identified in Section 2. While the animation shows how accident locations progressively accumulate across the network, NKDE summarizes the resulting spatial intensity along road segments and highlights locations with comparatively high accident concentration.
+
+The network G and K functions address a different question by evaluating whether the spatial arrangement of accident events departs from network-based CSR and at what network-distance scales this interaction occurs. The animation should therefore be interpreted as complementary exploratory evidence rather than a statistical test of clustering.
+
+Together, the three perspectives provide a more complete description of the observed accident pattern: the animation shows how the pattern develops over time, NKDE identifies where accident intensity is concentrated, and the network G and K functions assess whether and at what spatial scales the observed spatial arrangement differs from the network-based random reference.
+
 
 # 4 Public-Safety Planning and Management
 
+## 4.1 Road-Safety Prioritization
 
+The NKDE results provide a network-based basis for prioritizing road sections for further road-safety investigation. Rather than allocating attention uniformly across Bangkok, planners can use high-intensity corridors as an initial screening layer for targeted investigation.
+Importantly, high NKDE intensity should not be interpreted directly as evidence of unsafe road design. Accident concentration may also reflect traffic exposure, road hierarchy, intersection density, land use, or other contextual factors that are not represented in the current dataset.
+
+The identified high-intensity sections can therefore be treated as priority screening locations where more detailed investigation of road design, traffic conditions, intersection characteristics, and surrounding land use may be warranted.
+
+## 4.2 Operational and Strategic Planning Applications
+
+From an operational perspective, NKDE can support the identification of specific road sections for targeted investigation. These locations may be prioritized for further examination of traffic conditions, junction design, signage, lighting, pedestrian infrastructure, or other locally relevant factors.
+
+From a strategic perspective, the network G and K function results indicate that accident occurrence should not necessarily be considered as a collection of independent locations. The observed clustering across network-distance scales suggests that connected road corridors and surrounding network structure may also be relevant when defining broader road-safety study areas.
+
+The temporal animation adds a monitoring perspective by demonstrating how the annual accident pattern develops as events accumulate. With data covering multiple years, a similar approach could be extended to examine whether identified concentrations persist, emerge, or shift over time.
+
+## 4.3 Limitations and Further Analysis
+
+1. **Traffic Exposure**
+
+Traffic volume and vehicle kilometres travelled are not considered. Therefore, NKDE represents **accident intensity rather than accident risk**.
+
+2. **Bandwidth Selection**
+
+NKDE results are sensitive to bandwidth selection. The 500 m bandwidth represents a selected analytical scale rather than an optimal value.
+
+3. **Road Network Representation**
+
+The road network is derived from OpenStreetMap and filtered by road class. Differences in network completeness or classification may affect the results.
+
+4. **Network CSR Assumption**
+
+Network CSR assumes that accidents are equally likely to occur across the eligible road network. In reality, traffic exposure varies between road sections.
+
+5. **Temporal Coverage**
+
+Only accident records from 2022 are analysed. The identified patterns may therefore be specific to that year rather than persistent over time.
+
+6. **Reporting and Positional Accuracy**
+
+Incomplete reporting or inaccurate coordinates may affect the observed pattern. Snapping improves network alignment but does not guarantee the exact accident location.
+
+7. **Accident Severity**
+
+All accidents are treated equally regardless of severity. The results therefore represent overall accident concentration rather than the concentration of severe or fatal accidents.
