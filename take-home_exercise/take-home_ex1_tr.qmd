@@ -9,7 +9,7 @@ date-modified: last-modified
 
 This Technical Report examines the spatial patterns of road traffic accidents in Bangkok Province in 2022. Road accident records from the [Thailand Road Accident 2019-2022](https://www.kaggle.com/datasets/thaweewatboy/thailand-road-accident-2019-2022) dataset are integrated with administrative boundary and OpenStreetMap road-network data to support network-constrained spatial point-pattern analysis.
 
-The analysis consists of four main tasks:
+The analysis consists of four main tasks to examine **where road accidents are concentrated along Bangkok's road network** and **whether these spatial patterns differ from what would be expected under random conditions**:
 
 - Data Preparation and Quality Assessment: Clean and validate the accident records, define the study area, handle missing or invalid coordinates, and prepare the spatial datasets for analysis.
 
@@ -32,13 +32,17 @@ package_table <- data.frame(
     "tidyverse",
     "sf",
     "lubridate",
-    "spNetwork"
+    "spNetwork",
+    "gganimate",
+    "gifski"
   ),
   Purpose = c(
     "Data wrangling, transformation, and visualisation.",
     "Reading, manipulating, and transforming spatial vector data.",
     "Parsing and manipulating date and time variables.",
-    "Performing network-constrained spatial analysis on linear networks."
+    "Performing network-constrained spatial analysis on linear networks.",
+    "Creating animated geovisualisations of cumulative accident patterns over time.",
+    "Rendering and exporting the temporal animation as a GIF file."
   )
 )
 
@@ -106,7 +110,9 @@ As result, no duplicated accident identifiers or fully duplicated records were d
 
 ## 1.2 Study Area Definition
 
-Bangkok Province was selected as the study area because it provides a clearly defined urban road-safety case while retaining the complete set of accident events within the selected geographic extent. Restricting the analysis to Bangkok also provides a computationally tractable road network for network-constrained spatial point-pattern analysis without requiring random sub-sampling of accident events.
+Bangkok Province was selected as the study area because it provides a clearly defined urban road-safety case while retaining the complete set of accident events within the selected geographic extent.
+
+Restricting the analysis to Bangkok also provides a computationally tractable road network for network-constrained spatial point-pattern analysis without requiring random sub-sampling of accident events.
 
 ### 1.2.1 Select Bangkok Accident Records
 
@@ -140,7 +146,7 @@ Accident records were structured as point events and enriched with temporal and 
 
 ### 1.3.1 Define accident events
 
-A point event represents one recorded road traffic accident occurring within the Bangkok Metropolitan Region during 2022. Each unique acc_code is treated as one event.
+A point event represents one recorded road traffic accident occurring within Bangkok Province during 2022. Each unique acc_code is treated as one event.
 
 Multiple accidents occurring at the same recorded coordinates are retained as separate events because they represent distinct accident incidents.
 
@@ -239,7 +245,7 @@ Network distances and bandwidths are measured in metres. A projected CRS is ther
 
 ## 1.5 Road Network Preparation
 
-The road network was filtered, clipped, and geometrically prepared to represent the linear space on which network-constrained analysis is performed.(https://download.geofabrik.de/asia/thailand.html)
+The road network was filtered, clipped, and geometrically prepared to represent the linear space on which network-constrained analysis is performed.
 
 ### 1.5.1 Import and Inspect Road Network
 
@@ -359,6 +365,7 @@ Accident locations were compared with the road network before snapping to ensure
 The distance from each accident point to its nearest road segment was calculated to assess positional consistency with the road network.
 
 ```{r}
+#| include: false
 nearest_road_id <- st_nearest_feature(
   accident_bkk_utm,
   roads_bkk_utm)
@@ -367,24 +374,23 @@ nearest_road_dist <- st_distance(
   accident_bkk_utm,
   roads_bkk_utm[nearest_road_id, ],
   by_element = TRUE)
-```
 
-```{r}
 accident_bkk_utm$dist_to_road_m <-
   as.numeric(nearest_road_dist)
+```
+
+::: {.panel-tabset}
+
+## Output
+
+```{r}
+#| echo: false
 
 summary(accident_bkk_utm$dist_to_road_m)
+
 quantile(
   accident_bkk_utm$dist_to_road_m,
-  probs = c(
-    0,
-    0.25,
-    0.5,
-    0.75,
-    0.90,
-    0.95,
-    0.99,
-    1),
+  probs = c(0, 0.25, 0.5, 0.75, 0.90, 0.95, 0.99, 1),
   na.rm = TRUE)
 
 accident_bkk_utm %>%
@@ -396,6 +402,43 @@ accident_bkk_utm %>%
     over_30m = sum(dist_to_road_m > 30),
     over_50m = sum(dist_to_road_m > 50))
 ```
+
+## Code
+
+```{r}
+#| eval: false
+
+nearest_road_id <- st_nearest_feature(
+  accident_bkk_utm,
+  roads_bkk_utm)
+
+nearest_road_dist <- st_distance(
+  accident_bkk_utm,
+  roads_bkk_utm[nearest_road_id, ],
+  by_element = TRUE)
+
+accident_bkk_utm$dist_to_road_m <-
+  as.numeric(nearest_road_dist)
+
+summary(accident_bkk_utm$dist_to_road_m)
+
+quantile(
+  accident_bkk_utm$dist_to_road_m,
+  probs = c(0, 0.25, 0.5, 0.75, 0.90, 0.95, 0.99, 1),
+  na.rm = TRUE)
+
+accident_bkk_utm %>%
+  st_drop_geometry() %>%
+  summarise(
+    total = n(),
+    over_10m = sum(dist_to_road_m > 10),
+    over_20m = sum(dist_to_road_m > 20),
+    over_30m = sum(dist_to_road_m > 30),
+    over_50m = sum(dist_to_road_m > 50))
+```
+
+:::
+
 ::: {.callout-note title="Validation Result"}
 The median point-to-network distance was approximately **3.64 m**, with 95% of accident events located within **9.71 m** of the nearest road.
 
@@ -407,6 +450,7 @@ Only **1 of 1,799** events was more than 20 m from the network, and none exceede
 Events more than 20 m from the nearest road were inspected separately to identify potentially misaligned locations before snapping.
 
 ```{r}
+#| include: false
 far_accidents <- accident_bkk_utm %>%
   filter(dist_to_road_m > 20)
 
@@ -420,9 +464,76 @@ far_accidents %>%
     route,
     road_description) %>%
   arrange(desc(dist_to_road_m))
+
+far_nearest_id <- st_nearest_feature(
+  far_accidents,
+  roads_bkk_utm)
+
+nearest_lines <- st_nearest_points(
+  far_accidents,
+  roads_bkk_utm[far_nearest_id, ],
+  pairwise = TRUE)
+
+far_area <- st_bbox(
+  st_buffer(
+    st_union(far_accidents),
+    dist = 500))
 ```
 
+
+::: {.panel-tabset}
+
+## Output
+
 ```{r}
+#| echo: false
+
+far_accidents %>%
+  st_drop_geometry() %>%
+  select(
+    acc_code,
+    latitude,
+    longitude,
+    dist_to_road_m,
+    route,
+    road_description) %>%
+  arrange(desc(dist_to_road_m))
+
+plot(
+  st_geometry(roads_bkk_utm),
+  xlim = c(far_area["xmin"], far_area["xmax"]),
+  ylim = c(far_area["ymin"], far_area["ymax"]),
+  col = "grey")
+
+plot(
+  nearest_lines,
+  add = TRUE,
+  lwd = 2)
+
+plot(
+  st_geometry(far_accidents),
+  add = TRUE,
+  pch = 19)
+```
+
+## Code
+
+```{r}
+#| eval: false
+far_accidents <- accident_bkk_utm %>%
+  filter(dist_to_road_m > 20)
+
+far_accidents %>%
+  st_drop_geometry() %>%
+  select(
+    acc_code,
+    latitude,
+    longitude,
+    dist_to_road_m,
+    route,
+    road_description) %>%
+  arrange(desc(dist_to_road_m))
+
 far_nearest_id <- st_nearest_feature(
   far_accidents,
   roads_bkk_utm)
@@ -453,6 +564,8 @@ plot(
   add = TRUE,
   pch = 19)
 ```
+:::
+
 ::: {.callout-tip title="Why Inspect Before Snapping?"}
 Automatically snapping all points may conceal substantial positional errors. Distance assessment and visual inspection help to distinguish minor coordinate offsets from potentially problematic locations.
 :::
@@ -476,7 +589,12 @@ A finite snapping tolerance avoids forcing substantially misaligned events onto 
 
 The snapped events were checked for record count, geometry type, CRS consistency, road assignment, and residual distance to the network.
 
+::: {.panel-tabset}
+
+## Output
+
 ```{r}
+#| echo: false
 nrow(accident_bkk_utm)
 nrow(accident_snapped)
 
@@ -490,9 +608,7 @@ accident_snapped %>%
   st_drop_geometry() %>%
   select(acc_code, nearest_line_id) %>%
   head()
-```
 
-```{r}
 check_road_id <- st_nearest_feature(
   accident_snapped,
   roads_bkk_utm)
@@ -505,6 +621,34 @@ check_distance <- st_distance(
 summary(as.numeric(check_distance))
 ```
 
+## Code
+
+```{r}
+#| echo: true
+#| eval: false
+
+nrow(accident_bkk_utm)
+nrow(accident_snapped)
+
+unique(st_geometry_type(accident_snapped))
+
+st_crs(accident_snapped) == st_crs(roads_bkk_utm)
+
+sum(is.na(accident_snapped$nearest_line_id))
+
+check_road_id <- st_nearest_feature(
+  accident_snapped,
+  roads_bkk_utm)
+
+check_distance <- st_distance(
+  accident_snapped,
+  roads_bkk_utm[check_road_id, ],
+  by_element = TRUE)
+
+summary(as.numeric(check_distance))
+```
+
+:::
 
 ## 1.7 Store Analysis-Ready Data
 
@@ -596,7 +740,7 @@ samples <- lines_center(lixels)
 
 ### 2.1.2 Bandwidth Selection
 
-A fixed bandwidth of 500 m was used for NKDE to capture relatively local variations in accident intensity along the road network.
+A fixed bandwidth of 500 m was selected as the analytical scale for NKDE to examine relatively local variations in accident intensity along the road network.
 
 ::: {.callout-tip title="Bandwidth Selection"}
 The bandwidth determines the network distance over which nearby accident events contribute to the estimated intensity. The NKDE results are sensitive to bandwidth selection; therefore, the 500 m bandwidth should be interpreted as an analytical scale for identifying local patterns rather than a uniquely optimal bandwidth.
@@ -913,8 +1057,8 @@ accident_animation <- ggplot() +
 ```
 
 ```{r}
-#| fig-width: 8
-#| fig-height: 6
+#| label: generate-accident-animation
+#| include: false
 
 animate(
   accident_animation,
@@ -991,3 +1135,160 @@ Incomplete reporting or inaccurate coordinates may affect the observed pattern. 
 7. **Accident Severity**
 
 All accidents are treated equally regardless of severity. The results therefore represent overall accident concentration rather than the concentration of severe or fatal accidents.
+
+
+# 5 Executive Summary
+
+[Executive Summary Slide](take-home_exercise/take-home_ex1_slide.html){target="_blank"}
+
+
+# References
+
+Geofabrik GmbH. (n.d.). *OpenStreetMap data extracts*. 
+https://download.geofabrik.de/
+
+OpenStreetMap contributors. (n.d.). *OpenStreetMap*. 
+https://www.openstreetmap.org/
+
+Runfola, D., Anderson, A., Baier, H., Crittenden, M., Dowker, E., Fuhrig, S., 
+Goodman, S., Grimsley, G., Layko, R., Melville, G., Mulder, M., Oberman, R., 
+Panganiban, J., Peckham, S., Seitz, L., Shea, K., Slevin, H., Youngerman, R., 
+& Hobbs, L. (2020). geoBoundaries: A global database of political 
+administrative boundaries. *PLOS ONE, 15*(4), e0231866. 
+https://doi.org/10.1371/journal.pone.0231866
+
+Okabe, A., & Sugihara, K. (2012). *Spatial analysis along networks: 
+Statistical and computational methods*. John Wiley & Sons.
+
+*R for Geospatial Data Science and Analytics: First-order spatial point patterns analysis methods*. (2026). https://r4gdsa.netlify.app/chap04
+
+*R for Geospatial Data Science and Analytics: Second-order spatial point patterns analysis methods*. (2026). https://r4gdsa.netlify.app/chap05
+
+*R for Geospatial Data Science and Analytics: Network-constrained spatial point patterns analysis*. (2026). https://r4gdsa.netlify.app/chap07
+
+
+# AI Tool Use Declaration
+
+Generative AI tools were used as supporting tools for brainstorming, refining written expression, and improving the organisation and presentation of this report. 
+
+All analytical procedures, R code, methodological decisions, results, and interpretations were conducted, reviewed, and validated by the author. AI-generated suggestions were critically evaluated and revised where necessary before being incorporated into the report.
+
+AI tools were also consulted for troubleshooting selected R and Quarto implementation issues.
+
+
+# Appendix
+
+## Appendix A: Data Source Documentation
+
+```{r}
+#| label: tbl-data-sources
+#| echo: false
+
+data_sources <- tibble::tribble(
+  ~Dataset, ~Source, ~Geographic_Coverage, ~Temporal_Coverage, ~Access_Date, ~Analytical_Role,
+  "Road Accident Records",
+  "Thailand Road Accident Dataset (Kaggle)",
+  "Thailand",
+  "2019–2022 (2022 selected)",
+  "12 September 2026",
+  "Accident point events",
+
+  "Administrative Boundary",
+  "geoBoundaries (ADM1)",
+  "Thailand",
+  "Not applicable",
+  "21 September 2026",
+  "Definition and clipping of Bangkok study area",
+
+  "Road Network",
+  "OpenStreetMap via Geofabrik",
+  "Thailand",
+  "Snapshot at time of download",
+  "21 September 2026",
+  "Road network for network-constrained spatial analysis"
+  )
+
+knitr::kable(
+  data_sources,
+  col.names = c(
+    "Dataset",
+    "Source",
+    "Geographic Coverage",
+    "Temporal Coverage",
+    "Access Date",
+    "Analytical Role"),
+  caption = "Data sources used in the analysis.",
+  align = "llllll")
+```
+
+## Appendix B: Summary of Methodological Decisions
+
+```{r}
+#| label: tbl-methodological-decisions
+#| echo: false
+
+methodological_decisions <- tibble::tribble(
+  ~Component, ~Decision, ~Selected_Setting, ~Basis_Rationale,
+
+  "Study Design",
+  "Study period",
+  "2022",
+  "Defines a consistent one-year analytical window",
+
+  "Study Design",
+  "Study area",
+  "Bangkok Province",
+  "Defines a consistent spatial extent for the analysis",
+
+  "Spatial Pre-processing",
+  "Projected CRS",
+  "EPSG:32647",
+  "Enables distance-based analysis in metres",
+
+  "Network Preparation",
+  "Snapping tolerance",
+  "30 m",
+  "Selected based on point-to-network distance validation",
+
+  "First-order Analysis",
+  "NKDE bandwidth",
+  "500 m",
+  "Selected after bandwidth comparison",
+
+  "First-order Analysis",
+  "Kernel function",
+  "Quartic",
+  "Provides smooth distance-decaying density estimation",
+
+  "Second-order Analysis",
+  "Distance range",
+  "0–1,000 m",
+  "Examines short- to intermediate-range network interaction",
+
+  "Second-order Analysis",
+  "G-function width",
+  "100 m",
+  "Selected to improve stability relative to narrower distance bands",
+
+  "CSR Simulation",
+  "Number of simulations",
+  "50",
+  "Used to construct Monte Carlo simulation envelopes",
+
+  "CSR Simulation",
+  "Null model",
+  "Network CSR",
+  "Represents random event placement along the eligible road network"
+)
+
+knitr::kable(
+  methodological_decisions,
+  col.names = c(
+    "Component",
+    "Decision",
+    "Selected Setting",
+    "Basis / Rationale"),
+  caption = "Summary of key methodological decisions and analytical settings.",
+  align = "llll")
+```
+

@@ -29,8 +29,10 @@ website:
           
       - text: Take-home Exercise
         menu:
-        - text: "Take-home Exercise 1"
-          href: take-home_exercise/take-home_ex1.qmd
+        - text: "Take-home Exercise 1 - Technical Report"
+          href: take-home_exercise/take-home_ex1_tr.qmd
+        - text: "Take-home Exercise 1 - Executive Summary"
+          href: take-home_exercise/take-home_ex1_slide.qmd
         
     right:
       - href: index.qmd
