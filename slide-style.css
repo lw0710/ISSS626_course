@@ -1,0 +1,156 @@
+/* ---------- Typography ---------- */
+
+.reveal {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  font-size: 27px;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4 {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  font-weight: 600;
+}
+
+.reveal h2 {
+  font-size: 1.65em;
+  margin-bottom: 0.55em;
+}
+
+.reveal h3 {
+  font-size: 1.15em;
+  margin-bottom: 0.35em;
+}
+
+/* ---------- PPT-style safe area ---------- */
+
+
+.reveal .slides > section:not(.title-slide) {
+  box-sizing: border-box !important;
+
+  padding-top: 40px !important;
+  padding-right: 70px !important;
+  padding-bottom: 65px !important;
+  padding-left: 70px !important;
+
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible;
+}
+
+
+/* ---------- Body spacing ---------- */
+
+.reveal p {
+  line-height: 1.25;
+  margin-top: 0.25em;
+  margin-bottom: 0.45em;
+}
+
+.reveal li {
+  line-height: 1.25;
+  margin-bottom: 0.25em;
+}
+
+
+/* ---------- Columns ---------- */
+
+.reveal .columns {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  gap: 1.2em;
+  width: 100%;
+}
+
+.reveal .column {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+
+/* ---------- Callouts ---------- */
+
+.reveal .callout {
+  font-family: inherit !important;
+  font-size: 1em !important;
+  line-height: 1.25;
+  margin-top: 0.5em;
+  margin-bottom: 0.6em;
+  border-radius: 8px;
+}
+
+.reveal .callout-title,
+.reveal .callout-body,
+.reveal .callout-body-container {
+  font-family: inherit !important;
+}
+
+.reveal .callout-body {
+  padding: 0.55em 0.75em;
+}
+
+.reveal .callout p {
+  font-family: inherit !important;
+  font-size: 1em;
+  line-height: 1.25;
+  margin: 0.15em 0 0.35em 0;
+}
+
+.reveal .callout li {
+  font-family: inherit !important;
+  font-size: 1em;
+  line-height: 1.25;
+}
+
+.reveal .callout h3 {
+  font-family: inherit !important;
+  font-size: 1.15em;
+  font-weight: 600;
+}
+
+
+/* ---------- Footer ---------- */
+
+.reveal .footer {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  font-size: 14px;
+  opacity: 0.65;
+}
+
+.reveal .slide-number {
+  bottom: 12px;
+  right: 20px;
+
+  font-size: 14px;
+}
+
+
+/* ---------- Figures ---------- */
+
+.reveal .main-figure img {
+  max-height: 520px;
+  width: auto;
+  object-fit: contain;
+}

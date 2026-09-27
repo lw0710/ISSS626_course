@@ -3,18 +3,21 @@ title: "Road Traffic Accident Patterns Along Bangkok's Road Network"
 subtitle: "ISSS626 Take-home Exercise 1 — Executive Summary"
 author: "Jin Jiaying"
 date: "2026 September"
+date-format: "YYYY MMMM"
 format:
   revealjs:
+    slide-level: 2
     theme: simple
     slide-number: true
     transition: fade
     center: false
     width: 1600
     height: 900
-    margin: 0.08
+    margin: 0
     embed-resources: true
-    code-fold: true
     footer: "SMU Restricted"
+    css: ../slide-style.css
+    toc: false
 execute:
   echo: false
   warning: false
@@ -23,103 +26,150 @@ execute:
 
 ## Contents
 
-1. Research question & study design  
-2. Data & preparation  
-3. First-order network analysis  
-4. Second-order network analysis  
-5. Temporal geovisualisation  
-6. Integrated findings, implications & limitations
+1. **Overview**
+2. **Data Preparation & Analysis Workflow**
+3. **Data Quality & Network Alignment**
+4. **First-Order Network-Constrained Analysis**
+5. **First-Order Finding**
+6. **Second-Order Network-Constrained Analysis**
+7. **Second-Order Finding**
+8. **Temporal Geovisualisation**
+9. **Integration & Public-Safety Planning**
+10. **Limitations & Takeaway**
+11. **References**
 
 ::: {.callout-note appearance="minimal"}
-**Executive-summary principle:** focus on the analytical story and visual evidence; detailed code remains in the Technical Report.
+**Note:** This summary will focus on the analytical story and visual evidence, detailed code will remain in the Technical Report.
 :::
 
-## 1. Research Question & Study Design
+## 1. Overview
 
 ::: {.columns}
-::: {.column width="55%"}
-### Research question
 
-**How are reported road traffic accidents distributed along Bangkok's road network in 2022, and do they exhibit spatial clustering beyond that expected under network-based Complete Spatial Randomness (CSR)?**
+::: {.column width="48%"}
 
-### Study design
+::: {.callout-note appearance="simple" icon=false}
+### Analysis Objective
+
+**Where are road accidents concentrated along Bangkok's road network, and do the observed spatial patterns differ from what would be expected under random conditions?**
+:::
+
+::: {.callout-note appearance="simple" icon=false}
+### Analysis Design
 
 - **Point event:** one reported road-accident record with a valid location.
 - **Spatial window:** Bangkok road network within the selected Bangkok boundary.
 - **Temporal window:** January–December 2022.
-- **Network perspective:** accidents are constrained to roads, so network distance is more meaningful than unconstrained planar distance.
+- **Network perspective:** network distance is used because accident locations are constrained by the road network.
 :::
 
-::: {.column width="45%"}
-### Analytical questions
-
-**First order — Where?**  
-Where is accident intensity concentrated along the network?
-
-**Second order — Interaction?**  
-Does the observed event arrangement differ from network CSR, and at what distance scales?
-
-**Time — How does the pattern emerge?**  
-How does the observed annual pattern accumulate through 2022?
-:::
 :::
 
-## 2. Data & Analysis Workflow
+::: {.column width="48%"}
+
+::: {.callout-tip appearance="simple" icon=false}
+### Analytical Questions
+
+**First order — Where?**
+
+Where is accident intensity concentrated along the road network?
+
+**Second order — Interaction?**
+
+Does the observed event pattern differ from network CSR across the examined distance scales?
+
+**Time — How does the pattern emerge?**
+
+How does the observed annual spatial pattern accumulate through 2022?
+:::
+
+:::
+
+:::
+
+
+## 2. Data Preparation & Analysis Workflow
 
 ::: {.columns}
-::: {.column width="47%"}
+
+::: {.column width="45%"}
+
+::: {.callout-note appearance="simple" icon=false}
 ### Core data
 
 - Thailand Road Accident **2019–2022** dataset → restricted to **2022**.
-- Administrative boundary used to define the study area.
-- OpenStreetMap road network used as the linear analysis space.
+- Administrative boundary → defines the study area.
+- OpenStreetMap road network → provides the linear analysis space.
+:::
 
-### Final analysis-ready events
+::: {.callout-tip appearance="simple" icon=false}
+### Final Analysis-Ready Dataset
 
 **1,799 accident events** were retained for the Bangkok network analysis.
 :::
 
-::: {.column width="53%"}
-### Workflow
+:::
+
+::: {.column width="51%"}
+
+::: {.callout-note appearance="simple" icon=false}
+### Analytical Workflow
 
 **Raw accident records**  
-↓ temporal + quality screening  
+↓ temporal + quality screening
+
 **2022 records**  
-↓ study-area filtering + coordinate validation  
+↓ study-area filtering + coordinate validation
+
 **Bangkok accident points**  
-↓ road filtering + geometry preparation  
+↓ road filtering + geometry preparation
+
 **Bangkok road network**  
-↓ point-to-network assessment + 30 m snapping  
+↓ point-to-network assessment + 30 m snapping
+
 **Analysis-ready network events**  
-↓  
+↓
+
 **NKDE → Network G/K → Temporal visualisation**
 :::
+
 :::
+
+:::
+
 
 ## 3. Data Quality & Network Alignment
 
 ::: {.columns}
-::: {.column width="52%"}
-### Why validation matters
 
-Network-constrained analysis assumes accident events are located on the eligible road network. Points were therefore assessed **before** snapping rather than automatically forced onto roads.
+::: {.column width="50%"}
 
-### Alignment results
+::: {.callout-note appearance="simple" icon=false}
+### Point-to-Network Validation
 
-- Median point-to-network distance: **≈ 3.64 m**
+Network-constrained analysis assumes that accident events are located on the eligible road network. Points were therefore assessed **before snapping**, rather than automatically forced onto roads.
+:::
+
+::: {.callout-tip appearance="simple" icon=false}
+### Network Alignment Results
+
+- Median distance: **≈ 3.64 m**
 - 95% of events: **within ≈ 9.71 m**
 - Only **1 of 1,799** events exceeded 20 m
 - No event exceeded 30 m
-- A **30 m snapping tolerance** was therefore used
+- Selected snapping tolerance: **30 m**
 :::
 
-::: {.column width="48%"}
-### Key methodological decisions
+:::
+
+::: {.column width="46%"}
+
+::: {.callout-note appearance="simple" icon=false}
+### Key Analytical Parameters
 
 | Decision | Choice |
 |---|---|
 | Analysis CRS | EPSG:32647 |
-| Network unit | LINESTRING road segments |
 | Snap tolerance | 30 m |
 | NKDE bandwidth | 500 m |
 | Kernel | Quartic |
@@ -127,164 +177,282 @@ Network-constrained analysis assumes accident events are located on the eligible
 | Monte Carlo simulations | 50 |
 | Null model | Network CSR |
 :::
+
 :::
 
-## 4. First-Order Analysis — Where Is Intensity Concentrated?
+:::
+
+
+## 4. First-Order Network-Constrained Analysis — Where Is Intensity Concentrated?
 
 ::: {.columns}
-::: {.column width="42%"}
+
+::: {.column width="40%"}
+
+::: {.callout-note appearance="simple" icon=false}
 ### Network Kernel Density Estimation (NKDE)
 
-NKDE estimates event intensity **along the road network**, rather than smoothing across unrestricted two-dimensional space.
+NKDE estimates accident intensity **along the road network**, rather than across unrestricted two-dimensional space.
 
-A **500 m fixed bandwidth** was used to retain relatively local variation. It should be interpreted as the selected analytical scale, not as a uniquely optimal bandwidth.
-
-### Distribution
-
-The estimated intensity was highly right-skewed: most road lixels had zero or very low estimated intensity, while elevated values were concentrated in a small portion of the network.
+A **500 m fixed bandwidth** was used as the selected analytical scale for examining relatively local variation.
 :::
 
-::: {.column width="58%"}
+::: {.callout-tip appearance="simple" icon=false}
+### Spatial Distribution of Network Accident Intensity
+
+Estimated intensity was highly right-skewed. Most road lixels had zero or low intensity, while elevated values were concentrated in a relatively small part of the network.
+:::
+
+:::
+
+::: {.column width="56%"}
+
 ![](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex1_files/figure-html/unnamed-chunk-46-1.png){fig-alt="Network Kernel Density of road accidents in Bangkok, 2022" width="100%"}
-:::
+
 :::
 
-## 5. First-Order Finding — Priority Screening Corridors
+:::
+
+
+## 5. First-Order Finding — High-Intensity Road Sections
 
 ::: {.columns}
-::: {.column width="66%"}
+
+::: {.column width="64%"}
+
 ![](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex1_files/figure-html/unnamed-chunk-47-1.png){fig-alt="Top five percent high-intensity road sections from NKDE" width="100%"}
+
 :::
 
-::: {.column width="34%"}
-### Main observation
+::: {.column width="32%"}
+
+::: {.callout-tip appearance="simple" icon=false}
+### First-Order Interpretation
 
 High-intensity lixels are concentrated along a limited set of road corridors rather than distributed evenly across the network.
 
-Several relatively continuous high-intensity corridors appear in western, central and southern Bangkok, with fewer high-intensity sections in the east.
+Several relatively continuous concentrations appear in western, central and southern Bangkok.
+:::
 
-::: {.callout-warning appearance="minimal"}
+::: {.callout-warning appearance="simple" icon=false}
+### Interpretation Boundary
+
 The **95th percentile is descriptive**, not a statistical significance threshold. It identifies relatively high-intensity sections for screening.
 :::
-:::
+
 :::
 
-## 6. Second-Order Analysis — Is the Pattern Non-Random?
+:::
 
-### Network G/K functions + Monte Carlo envelopes
+
+## 6. Second-Order Network-Constrained Analysis — Is the Pattern Non-Random?
+
+### Network G and K Function Analysis
 
 ::: {.columns}
-::: {.column width="50%"}
-**Network G function**  
-Examines short-range / nearest-neighbour interaction among accident events.
 
-**Network K function**  
-Examines cumulative spatial interaction across increasing network distances.
+::: {.column width="48%"}
+
+::: {.callout-note appearance="simple" icon=false}
+### Network G function
+
+Examines **short-range / nearest-neighbour interaction** among accident events.
 :::
 
-::: {.column width="50%"}
-**Null hypothesis (H₀)**  
+::: {.callout-note appearance="simple" icon=false}
+### Network K function
+
+Examines **cumulative spatial interaction** across increasing network distances.
+:::
+
+:::
+
+::: {.column width="48%"}
+
+::: {.callout-note appearance="simple" icon=false}
+### Null hypothesis
+
 Accidents are randomly and independently distributed along the eligible Bangkok road network.
-
-**Reference model**  
-Network-based Complete Spatial Randomness (CSR), assessed using **50 Monte Carlo simulations** over **0–1,000 m**.
-:::
 :::
 
-::: {.callout-note appearance="minimal"}
-Using a network-based reference is important because road accidents cannot occur uniformly over the entire planar study area; their feasible locations are constrained by the road network.
+::: {.callout-tip appearance="simple" icon=false}
+### Network CSR & Monte Carlo Simulation
+
+**Network CSR**
+
+- Distance range: **0–1,000 m**
+- Monte Carlo simulations: **50**
 :::
 
-## 7. Second-Order Finding — Clustering Across Network Distances
+:::
+
+:::
+
+::: {.callout-warning appearance="simple" icon=false}
+### Network-Based CSR
+
+Accident locations are constrained by the road network, so a planar random reference would not represent the feasible event space.
+:::
+
+
+## 7. Second-Order Finding — Observed Functions & Simulation Envelopes
 
 ::: {.columns}
-::: {.column width="50%"}
+
+::: {.column width="48%"}
+
 ![](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex1_files/figure-html/unnamed-chunk-49-1.png){fig-alt="Observed network K function and Monte Carlo reference envelope" width="100%"}
 
 **K:** observed values remain above the upper simulation envelope across the examined distance scales.
+
 :::
 
-::: {.column width="50%"}
+::: {.column width="48%"}
+
 ![](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex1_files/figure-html/unnamed-chunk-49-2.png){fig-alt="Observed network G function and Monte Carlo reference envelope" width="100%"}
 
 **G:** observed values also remain above the upper envelope, with the strongest observed interaction at short network distances and a peak around **50 m**.
-:::
+
 :::
 
-**Combined evidence:** the observed accident arrangement is inconsistent with network CSR; short-range interaction is strong and cumulative clustering persists across broader network-distance scales.
+:::
+
+::: {.callout-tip appearance="simple" icon=false}
+### Second-Order Interpretation
+
+Observed G and K values remain above their simulation envelopes across the examined network-distance scales, indicating that the observed accident arrangement differs from network CSR.
+:::
+
 
 ## 8. Temporal Geovisualisation — How the Annual Pattern Emerges
 
 ::: {.columns}
-::: {.column width="62%"}
+
+::: {.column width="60%"}
+
 ![](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex1_files/figure-html/unnamed-chunk-52-1.png){fig-alt="Cumulative road traffic accidents in Bangkok from January to December 2022" width="100%"}
+
 :::
 
-::: {.column width="38%"}
-### Purpose
+::: {.column width="36%"}
 
-A cumulative monthly animation complements the network statistics by showing how the observed annual spatial pattern progressively emerges through 2022.
+::: {.callout-note appearance="simple" icon=false}
+### Temporal Animation Design
+
+The cumulative animation shows how the observed annual spatial pattern progressively emerges through 2022.
 
 Repeated concentrations become increasingly visible along particular parts of the road network as events accumulate.
-
-::: {.callout-warning appearance="minimal"}
-Because the display is **cumulative**, increasing point counts do **not** demonstrate increasing accident risk over time. Month-specific analysis would be needed for seasonal inference.
-:::
-:::
 :::
 
-## 9. Integrated Findings & Public-Safety Use
+::: {.callout-warning appearance="simple" icon=false}
+### Temporal Interpretation
+
+Because the display is **cumulative**, increasing point counts do **not** indicate increasing accident risk over time.
+:::
+
+:::
+
+:::
+
+
+## 9. Integration & Public-Safety Planning
 
 ::: {.columns}
-::: {.column width="52%"}
-### Three complementary views
+
+::: {.column width="48%"}
+
+::: {.callout-note appearance="simple" icon=false}
+### Integrated Interpretation
 
 **Temporal animation**  
-Shows how the observed spatial pattern accumulates through the year.
+Shows how the observed annual spatial pattern accumulates through the year.
 
 **NKDE**  
-Identifies *where* relatively high accident intensity is concentrated along the road network.
+Identifies **where** relatively high accident intensity is concentrated along the road network.
 
 **Network G/K**  
-Assesses whether the event arrangement departs from a network-based random reference and at what network-distance scales.
+Tests whether the observed event arrangement differs from network CSR across network-distance scales.
+:::
+
 :::
 
 ::: {.column width="48%"}
-### Planning use
 
-- Use high-intensity corridors as an **initial screening layer** for targeted road-safety investigation.
-- Examine local conditions such as junction design, signage, lighting, pedestrian infrastructure and traffic conditions at screened locations.
-- Consider connected corridors and surrounding network structure when defining broader investigation areas.
-- Extend monitoring across multiple years to test whether concentrations persist, emerge or shift.
-:::
+::: {.callout-tip appearance="simple" icon=false}
+### Public-Safety Planning Implications
+
+- Use high-intensity corridors as an **initial screening layer**.
+- Investigate road design, signage, lighting, pedestrian infrastructure and traffic conditions at screened locations.
+- Consider surrounding network structure when defining investigation areas.
+- Extend analysis across multiple years to assess persistence or change.
 :::
 
-**Interpretation boundary:** the analysis identifies spatial structure and concentration; it does not establish why those locations experience more accidents.
+::: {.callout-warning appearance="simple" icon=false}
+### Interpretation Boundary
+
+The analysis identifies spatial concentration and interaction; it does not establish **why** particular locations experience more accidents.
+:::
+
+:::
+
+:::
+
 
 ## 10. Limitations & Takeaway
 
 ::: {.columns}
-::: {.column width="52%"}
-### Important limitations
 
-1. **Traffic exposure is absent** → NKDE represents accident intensity, not accident risk.
-2. **Bandwidth sensitivity** → 500 m is a selected analytical scale, not an optimum.
-3. **Road-network representation** depends on OSM completeness and road-class filtering.
-4. **Network CSR assumes equal event opportunity** along eligible roads despite unequal traffic exposure.
-5. **Single-year coverage** limits claims about persistent patterns.
-6. **Reporting/positional uncertainty** remains even after snapping.
-7. **Severity is not weighted** in the main point-pattern analysis.
+::: {.column width="50%"}
+
+::: {.callout-warning appearance="simple" icon=false}
+### Key Limitations
+
+1. **Traffic exposure is absent** → intensity ≠ risk.
+2. **Bandwidth sensitivity** → 500 m is a selected scale.
+3. **Road-network representation** depends on OSM data and filtering.
+4. **Network CSR assumes equal event opportunity** along eligible roads.
+5. **Single-year coverage** limits persistence claims.
+6. **Reporting/positional uncertainty** remains.
+7. **Severity is not weighted** in the main SPPA.
 :::
 
-::: {.column width="48%"}
-### Takeaway
+:::
+
+::: {.column width="46%"}
+
+::: {.callout-tip appearance="simple" icon=false}
+### Overall Takeaway
 
 The 2022 accident pattern shows **localised network intensity** together with **spatial interaction across multiple network-distance scales**.
 
-For road-safety planning, the results are best used to identify **where further investigation should be prioritised**, rather than to label corridors as inherently unsafe.
+The results are best used to identify **where further investigation should be prioritised**, rather than to label corridors as inherently unsafe.
+:::
 
-### Next analytical step
+::: {.callout-note appearance="simple" icon=false}
+### Future Analytical Extension
 
 Incorporating traffic exposure, road characteristics and surrounding environmental context would help distinguish accident concentration from underlying road-safety risk.
 :::
+
 :::
+
+:::
+
+
+## References
+
+### Data & Analytical Resources
+
+- **Thailand Road Accident Fatalities dataset** — source data used for accident-event analysis.
+
+- **OpenStreetMap** — road-network data used to construct the network-constrained analysis space.
+
+- **Bangkok administrative boundary data** — used to define the study area.
+
+- **R / spatial-analysis packages** — analytical implementation documented in the Technical Report.
+
+### Full Technical Report
+
+For complete data preparation, methodology, diagnostics, code and interpretation:
+
+**[View the full Technical Report](take-home_exercise/take-home_ex1_tr.html)**
