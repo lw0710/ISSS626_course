@@ -830,6 +830,6 @@
     "href": "take-home_exercise/take-home_ex1_slide.html#references",
     "title": "Road Traffic Accident Patterns Along Bangkok’s Road Network",
     "section": "References",
-    "text": "References\nData & Analytical Resources\n\nThailand Road Accident Fatalities dataset — source data used for accident-event analysis.\nOpenStreetMap — road-network data used to construct the network-constrained analysis space.\nBangkok administrative boundary data — used to define the study area.\nR / spatial-analysis packages — analytical implementation documented in the Technical Report.\n\nFull Technical Report\nFor complete data preparation, methodology, diagnostics, code and interpretation:\nView the full Technical Report"
+    "text": "References\nData & Analytical Resources\n\nThailand Road Accident Fatalities dataset — source data used for accident-event analysis.\nOpenStreetMap — road-network data used to construct the network-constrained analysis space.\nBangkok administrative boundary data — used to define the study area.\nR / spatial-analysis packages — analytical implementation documented in the Technical Report.\n\nFull Technical Report\nFor complete data preparation, methodology, diagnostics, code and interpretation: View the full Technical Report"
   }
 ]

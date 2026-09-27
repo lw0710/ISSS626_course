@@ -1139,7 +1139,7 @@ All accidents are treated equally regardless of severity. The results therefore 
 
 # 5 Executive Summary
 
-[Executive Summary Slide](take-home_exercise/take-home_ex1_slide.html){target="_blank"}
+[Executive Summary Slide](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex1_slide.html#/title-slide){target="_blank"}
 
 
 # References

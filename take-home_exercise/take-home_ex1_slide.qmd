@@ -453,6 +453,4 @@ Incorporating traffic exposure, road characteristics and surrounding environment
 
 ### Full Technical Report
 
-For complete data preparation, methodology, diagnostics, code and interpretation:
-
-**[View the full Technical Report](take-home_exercise/take-home_ex1_tr.html)**
+For complete data preparation, methodology, diagnostics, code and interpretation: **[View the full Technical Report](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex1.html)**
