@@ -14,6 +14,7 @@ pacman::p_load(spdep, tmap, sf, ClustGeo, ggpubr, cluster, factoextra, NbClust,h
 # 6 Geographical Segmentation with Spatially Constrained Clustering Techniques
 
 ## 6.1 Data Import and Prepatation
+
 ```{r}
 shan_sf <- st_read(dsn = "hands-on_ex6_data/geospatial", 
                    layer = "myanmar_township_boundaries") %>%
@@ -24,6 +25,9 @@ shan_sf
 
 glimpse(shan_sf)
 ```
+::: {.callout-tip title="Tip"}
+For clustering, variables should represent comparable characteristics of each spatial unit. Using normalised indicators can reduce the influence of population or household size.
+:::
 
 ```{r}
 ict <- read_csv ("hands-on_ex6_data/aspatial/Shan-ICT.csv")
@@ -49,10 +53,10 @@ ict_derived <- ict %>%
 summary(ict_derived)
 ```
 
-
 ## 6.2 Exploratory Data Analysis (EDA)
 
 ### 6.2.1 EDA using statistical graphics
+
 ```{r}
 ggplot(data=ict_derived, 
        aes(x=`RADIO`)) +
@@ -118,8 +122,15 @@ ggarrange(radio, tv, llphone, mphone, computer, internet,
           ncol = 3, 
           nrow = 2)
 ```
+::: {.callout-note title="EDA before clustering"}
+EDA helps identify skewed distributions, outliers and variables with very different ranges. These characteristics are important because distance-based clustering can be sensitive to extreme values and measurement scale.
+
+Strongly skewed variables or extreme observations may disproportionately influence Euclidean distances. This should be considered before clustering.
+:::
+:::
 
 ### 6.2.2 EDA using choropleth map
+
 ```{r}
 shan_sf <- left_join(shan_sf, 
                      ict_derived, by=c("TS_PCODE"="TS_PCODE"))
@@ -156,9 +167,16 @@ tm_shape(shan_sf) +
   tm_legend(legend.position = c("right", "bottom"))+
   tm_layout(outer.margins=0, asp=0)
 ```
+::: {.callout-note title="Why compare counts and rates spatially?"}
+Mapping both raw counts and normalised rates helps distinguish population-size effects from the underlying ICT characteristics of each township. A township may have a high number of devices simply because it contains more households.
+:::
 
+::: {.callout-tip title="Spatial EDA"}
+A choropleth map can reveal whether similar values appear geographically clustered. However, visual clustering on a map is descriptive and should not be confused with formal spatial clustering or spatial autocorrelation analysis.
+:::
 
 ## 6.3 Correlation Analysis
+
 ```{r}
 cluster_vars.cor = cor(ict_derived[,12:17])
 corrplot.mixed(cluster_vars.cor,
@@ -168,11 +186,16 @@ corrplot.mixed(cluster_vars.cor,
                diag = "l",
                tl.col = "black")
 ```
+::: {.callout-note title="Why check correlation before clustering?"}
+Highly correlated variables may contain overlapping information. Including several strongly correlated variables can give the same underlying characteristic excessive influence when distances are calculated.
 
+Correlation does not automatically mean that one variable must be removed. Variable selection should also consider the research objective and whether the variables represent conceptually different aspects of ICT access.
+:::
 
 ## 6.4 Hierarchy Cluster Analysis
 
 ### 6.4.1 Extracting clustering variables
+
 ```{r}
 cluster_vars <- shan_sf %>%
   st_set_geometry(NULL) %>%
@@ -189,22 +212,38 @@ write_rds(shan_ict, "hands-on_ex6_data/rds/shan_ict.rds")
 
 shan_ict <- read_rds("hands-on_ex6_data/rds/shan_ict.rds")
 ```
+::: {.callout-note title="Clustering input"}
+Only variables intended to define similarity between townships should be included in the clustering matrix. Identifiers such as township names are retained separately for interpretation but should not be used in distance calculations.
+:::
 
 ### 6.4.2 Data Standardisation
 
 ### 6.4.3 Min-Max standardisation
+
 ```{r}
 shan_ict.std <- normalize(shan_ict)
 summary(shan_ict.std)
 ```
 
 ### 6.4.4 Z-score standardisation
+
 ```{r}
 shan_ict.z <- scale(shan_ict)
 describe(shan_ict.z)
 ```
 
+::: {.callout-note title="Min-Max vs Z-score Standardisation"}
+**Min-Max standardisation** rescales values to a common range, typically 0–1.
+
+**Z-score standardisation** expresses each value in terms of standard deviations from the mean, producing variables with approximately mean 0 and standard deviation 1.
+
+Both methods remove differences in measurement scale, but they transform the numerical values differently.
+
+Standardisation changes scale, not the underlying ordering or distributional pattern of the observations. It also does not automatically solve problems caused by outliers.
+:::
+
 ### 6.4.5 Visualising the standardised clustering variables
+
 ```{r}
 r <- ggplot(data=ict_derived, 
              aes(x= `RADIO_PR`)) +
@@ -259,22 +298,38 @@ ggarrange(r, s, z,
           ncol = 3,
           nrow = 1)
 ```
+::: {.callout-note title="Interpretation"}
+The three plots have different numerical scales, but the overall shape of the distribution remains similar. Standardisation rescales the variable rather than fundamentally changing its distribution.
+:::
 
 ### 6.4.6 Computing proximity matrix
+
 ```{r}
 proxmat <- dist(shan_ict, method = 'euclidean')
 
 proxmat
 ```
+::: {.callout-note title="Proximity Matrix"}
+The proximity matrix stores the pairwise dissimilarity between townships based on their clustering variables. A smaller Euclidean distance indicates more similar ICT profiles, while a larger distance indicates greater dissimilarity.
+:::
 
 ### 6.4.7 Computing hierarchical clustering
+
 ```{r}
 hclust_ward <- hclust(proxmat, method = 'ward.D')
 
 plot(hclust_ward, cex = 0.6)
 ```
+::: {.callout-note title="Hierarchical clustering"}
+Hierarchical clustering progressively combines similar observations into larger groups. The dendrogram visualises the sequence and relative dissimilarity at which clusters are merged.
+:::
+
+::: {.callout-tip title="Ward's Method"}
+Ward's method aims to minimise the increase in within-cluster variation at each merging step, generally favouring relatively compact and internally homogeneous clusters.
+:::
 
 ### 6.4.8 Selecting the optimal clustering algorithm
+
 ```{r}
 m <- c( "average", "single", "complete", "ward")
 names(m) <- c( "average", "single", "complete", "ward")
@@ -285,8 +340,12 @@ ac <- function(x) {
 
 map_dbl(m, ac)
 ```
+::: {.callout-note title="Agglomerative Coefficient"}
+The agglomerative coefficient measures how strongly a hierarchical clustering structure is present in the data. A larger value generally indicates a stronger clustering structure under the corresponding linkage method.
+:::
 
 ### 6.4.9 Determining Optimal Clusters
+
 ```{r}
 set.seed(12345)
 gap_stat <- clusGap(shan_ict, 
@@ -301,16 +360,26 @@ print(gap_stat, method = "firstmax")
 ```{r}
 fviz_gap_stat(gap_stat)
 ```
+::: {.callout-note title="Gap Statistic"}
+The Gap Statistic compares the observed within-cluster variation with that expected under a reference distribution with no meaningful clustering structure.
+
+A suitable number of clusters is selected where the clustering structure provides sufficient improvement over the reference distribution.
+:::
 
 ### 6.4.10 Interpreting the dendrograms
+
 ```{r}
 plot(hclust_ward, cex = 0.6)
 rect.hclust(hclust_ward, 
             k = 6, 
             border = 2:5)
 ```
+::: {.callout-note title="Reading the dendrogram"}
+Cutting the dendrogram at a selected height converts the hierarchical tree into a fixed number of clusters. Here, `k = 6` produces six township groups.
+:::
 
 ### 6.4.11 Visually-driven hierarchical clustering analysis
+
 ```{r}
 shan_ict_mat <- data.matrix(shan_ict)
 
@@ -329,8 +398,12 @@ heatmaply(normalize(shan_ict_mat),
           ylab = "Townships of Shan State"
           )
 ```
+::: {.callout-tip title="Why use a cluster heatmap?"}
+A dendrogram shows how observations are grouped, while a heatmap also reveals which variables are relatively high or low within each group. This makes cluster interpretation easier.
+:::
 
 ### 6.4.12 Mapping the clusters formed
+
 ```{r}
 groups <- as.factor(cutree(hclust_ward, k=6))
 
@@ -339,15 +412,20 @@ shan_sf_cluster <- cbind(shan_sf, as.matrix(groups)) %>%
 
 qtm(shan_sf_cluster, "CLUSTER")
 ```
+::: {.callout-important title="Limitation of conventional clustering"}
+Conventional hierarchical clustering considers attribute similarity but not geographic connectivity. Therefore, townships belonging to the same cluster may be geographically separated.
+:::
 
 ## 6.5 Spatially Constrained Clustering: SKATER approach
 
 ### 6.5.1 Converting into SpatialPolygonsDataFrame
+
 ```{r}
 shan_sp <- as_Spatial(shan_sf)
 ```
 
 ### 6.5.2 Computing Neighbour List
+
 ```{r}
 shan.nb <- poly2nb(shan_sp)
 summary(shan.nb)
@@ -364,6 +442,7 @@ plot(shan.nb,
 ```
 
 ### 6.5.3 Computing minimum spanning tree
+
 ```{r}
 lcosts <- nbcosts(shan.nb, shan_ict)
 
@@ -391,8 +470,14 @@ plot.mst(shan.mst,
          cex.circles=0.005, 
          add=TRUE)
 ```
+::: {.callout-note title="Minimum Spanning Tree"}
+A Minimum Spanning Tree (MST) connects all spatial units through a set of links with minimum total cost while avoiding cycles.
+
+In SKATER, these links reflect both neighbourhood connectivity and attribute dissimilarity.
+:::
 
 ### 6.5.4 Computing spatially constrained clusters using SKATER method
+
 ```{r}
 clust6 <- spdep::skater(edges = shan.mst[,1:2], 
                  data = shan_ict, 
@@ -419,6 +504,7 @@ plot(clust6,
 ```
 
 ### 6.5.5 Visualising the clusters in choropleth map
+
 ```{r}
 groups_mat <- as.matrix(clust6$groups)
 shan_sf_spatialcluster <- cbind(shan_sf_cluster, as.factor(groups_mat)) %>%
@@ -438,10 +524,14 @@ shclust.map <- qtm(shan_sf_spatialcluster,
 tmap_arrange(hclust.map, shclust.map,
              asp=NA, ncol=2)
 ```
+::: {.callout-tip title="Trade-off"}
+Spatially constrained clustering may sacrifice some attribute homogeneity in order to obtain more geographically coherent regions. This is a trade-off rather than an automatic improvement.
+:::
 
 ## 6.6 Spatially Constrained Clustering: ClustGeo Method
 
 ### 6.6.1 Ward-like hierarchical clustering: ClustGeo
+
 ```{r}
 nongeo_cluster <- hclustgeo(proxmat)
 plot(nongeo_cluster, cex = 0.5)
@@ -460,12 +550,20 @@ qtm(shan_sf_ngeo_cluster, "CLUSTER")
 ```
 
 ### 6.6.2 Spatially Constrained Hierarchical Clustering
+
 ```{r}
 dist <- st_distance(shan_sf, shan_sf)
 distmat <- as.dist(dist)
 
 cr <- choicealpha(proxmat, distmat, range.alpha = seq(0, 1, 0.1), K=6, graph = TRUE)
 ```
+::: {.callout-important title="Role of Alpha"}
+In ClustGeo, alpha controls the balance between attribute dissimilarity and geographic dissimilarity.
+
+- Alpha = 0: clustering is driven entirely by attributes.
+- Increasing alpha gives greater importance to geographic proximity.
+- Larger alpha generally produces more spatially coherent clusters, potentially at the cost of attribute homogeneity.
+:::
 
 ```{r}
 clustG <- hclustgeo(proxmat, distmat, alpha = 0.2)
@@ -477,17 +575,25 @@ shan_sf_Gcluster <- cbind(shan_sf, as.matrix(groups)) %>%
 
 qtm(shan_sf_Gcluster, "CLUSTER")
 ```
+::: {.callout-tip title="Tip"}
+Alpha should be interpreted as a tuning parameter controlling the trade-off between the two dissimilarity structures, rather than as a literal percentage contribution of geography.
+:::
 
 ## 6.7 Visual Interpretation of Clusters
 
 ### 6.7.1 Visualising individual clustering variable
+
 ```{r}
 ggplot(data = shan_sf_ngeo_cluster,
        aes(x = CLUSTER, y = RADIO_PR)) +
   geom_boxplot()
 ```
+::: {.callout-note title="Cluster Profiling"}
+After clusters are formed, their characteristics should be examined. Boxplots help compare the distribution of individual ICT indicators across clusters and identify variables that distinguish one cluster from another.
+:::
 
 ### 6.7.2 Multivariate Visualisation
+
 ```{r}
 ggparcoord(data = shan_sf_ngeo_cluster, 
            columns = c(17:21), 
@@ -509,7 +615,6 @@ shan_sf_ngeo_cluster %>%
             mean_MPHONE_PR = mean(MPHONE_PR),
             mean_COMPUTER_PR = mean(COMPUTER_PR))
 ```
-
-
-
-
+::: {.callout-note title="Interpreting Cluster Profiles"}
+Cluster-level means provide a concise summary of the typical ICT characteristics of each group. These summaries can be used to assign meaningful descriptive labels to clusters.
+:::
