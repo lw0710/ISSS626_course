@@ -39,6 +39,8 @@ website:
           href: take-home_exercise/take-home_ex1_slide.qmd
         - text: "Take-home Exercise 2 - Technical Report"
           href: take-home_exercise/take-home_ex2_tr.qmd
+        - text: "Take-home Exercise 2 - Executive Summary"
+          href: take-home_exercise/take-home_ex2_slide.qmd
         
     right:
       - href: index.qmd

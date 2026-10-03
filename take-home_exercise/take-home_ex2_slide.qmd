@@ -1,0 +1,26 @@
+---
+title: "TITLE"
+subtitle: "ISSS626 Take-home Exercise 2 — Executive Summary"
+author: "Jin Jiaying"
+date: "2026 October"
+date-format: "YYYY MMMM"
+format:
+  revealjs:
+    slide-level: 2
+    theme: simple
+    slide-number: true
+    transition: fade
+    center: false
+    width: 1600
+    height: 900
+    margin: 0
+    embed-resources: true
+    footer: "SMU Restricted"
+    css: ../slide-style.css
+    toc: false
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
