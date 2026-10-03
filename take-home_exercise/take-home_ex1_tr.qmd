@@ -19,8 +19,8 @@ The analysis consists of four main tasks to examine **where road accidents are c
 
 - Integration and Interpretation: Compare findings from conventional and network-constrained approaches and discuss their implications for road-safety planning and public-safety management.
 
-
 # Loading Necessary R Packages
+
 ```{r}
 pacman::p_load(tidyverse, sf, lubridate, spNetwork, gganimate, gifski)
 ```
@@ -107,7 +107,6 @@ accident_2022 %>%
 
 As result, no duplicated accident identifiers or fully duplicated records were detected.
 
-
 ## 1.2 Study Area Definition
 
 Bangkok Province was selected as the study area because it provides a clearly defined urban road-safety case while retaining the complete set of accident events within the selected geographic extent.
@@ -133,12 +132,12 @@ tha_adm1 <- st_read("take-home_ex1_data/geoBoundaries-THA-ADM1.geojson")
 bkk_boundary <- tha_adm1 %>%
   filter(shapeName == "Bangkok")
 ```
-:::{.callout-tip title="Why Use a Spatial Boundary?"}
+
+::: {.callout-tip title="Why Use a Spatial Boundary?"}
 The province attribute identifies records labelled as Bangkok, while the administrative boundary provides an explicit spatial definition of the study area.
 
 A Spatial Boundary is used here to validate accident locations and to clip the road network to the same spatial extent.
 :::
-
 
 ## 1.3 Event and Attribute Preparation
 
@@ -175,6 +174,7 @@ accident_bkk <- accident_bkk %>%
       number_of_injuries > 0 ~ "Injury",
       TRUE ~ "Non-injury"))
 ```
+
 ::: {.callout-note title="Severity Definition"}
 Fatal accidents take precedence over injury accidents when both fatalities and injuries are recorded, while records with missing injury or fatality information are classified as "Unknown".
 :::
@@ -238,10 +238,10 @@ bkk_boundary_utm <- st_transform(
   bkk_boundary,
   32647)
 ```
+
 ::: {.callout-tip title="Why Use a Projected CRS?"}
 Network distances and bandwidths are measured in metres. A projected CRS is therefore required instead of geographic coordinates expressed in degrees.
 :::
-
 
 ## 1.5 Road Network Preparation
 
@@ -288,6 +288,7 @@ roads_motor %>%
   st_drop_geometry() %>%
   count(fclass, sort = TRUE)
 ```
+
 ::: {.callout-tip title="Why Filter Road Classes?"}
 Non-motorised or functionally irrelevant paths may not represent plausible locations for road traffic accidents. Thus filtering road classes can reduce network noise while retaining major and local motor-vehicle roads.
 :::
@@ -323,6 +324,7 @@ roads_bkk <- st_intersection(
   roads_bkk,
   bkk_boundary)
 ```
+
 ::: {.callout-tip title="Filter vs. Clip"}
 Spatial filtering identifies roads intersecting Bangkok, while geometric intersection trims those roads to the exact study-area boundary.
 :::
@@ -355,7 +357,6 @@ roads_bkk_utm <- st_transform(
   32647)
 ```
 
-
 ## 1.6 Point-to-Network Validation and Snapping
 
 Accident locations were compared with the road network before snapping to ensure that positional discrepancies were identified rather than corrected automatically.
@@ -379,8 +380,7 @@ accident_bkk_utm$dist_to_road_m <-
   as.numeric(nearest_road_dist)
 ```
 
-::: {.panel-tabset}
-
+::: panel-tabset
 ## Output
 
 ```{r}
@@ -436,7 +436,6 @@ accident_bkk_utm %>%
     over_30m = sum(dist_to_road_m > 30),
     over_50m = sum(dist_to_road_m > 50))
 ```
-
 :::
 
 ::: {.callout-note title="Validation Result"}
@@ -480,9 +479,7 @@ far_area <- st_bbox(
     dist = 500))
 ```
 
-
-::: {.panel-tabset}
-
+::: panel-tabset
 ## Output
 
 ```{r}
@@ -581,6 +578,7 @@ accident_snapped <- snapPointsToLines2(
   idField = "LineID",
   snap_dist = 30)
 ```
+
 ::: {.callout-tip title="Why Use a Snap Distance?"}
 A finite snapping tolerance avoids forcing substantially misaligned events onto the network. The 30 m threshold was applied after examining the observed point-to-network distance distribution.
 :::
@@ -589,8 +587,7 @@ A finite snapping tolerance avoids forcing substantially misaligned events onto 
 
 The snapped events were checked for record count, geometry type, CRS consistency, road assignment, and residual distance to the network.
 
-::: {.panel-tabset}
-
+::: panel-tabset
 ## Output
 
 ```{r}
@@ -647,7 +644,6 @@ check_distance <- st_distance(
 
 summary(as.numeric(check_distance))
 ```
-
 :::
 
 ## 1.7 Store Analysis-Ready Data
@@ -664,7 +660,6 @@ saveRDS(
   analysis_ready,
   "take-home_ex1_data/processed/analysis_ready.rds")
 ```
-
 
 # 2 Network-Constrained Spatial Point-Pattern Analysis (SPPA)
 
@@ -705,6 +700,7 @@ quantile(
     1),
   na.rm = TRUE)
 ```
+
 ::: {.callout-tip title="Lixel Length Selection"}
 The original road-segment lengths were examined before lixelisation. With a median length of approximately **65 m** and a 90th percentile of approximately **306 m**, a lixel length of **300 m** was selected to subdivide longer roads without unnecessarily fragmenting the already dense urban network. A minimum residual length of **50 m** was used to avoid excessively short remainder segments.
 
@@ -730,6 +726,7 @@ lixel_length_m <- as.numeric(st_length(lixels))
 summary(lixel_length_m)
 range(lixel_length_m)
 ```
+
 Lixelisation increased the network from 208,445 to 231,380 segments, indicating moderate subdivision without excessive fragmentation.
 
 Sampling points were then placed at the centre of each lixel for NKDE estimation.
@@ -783,6 +780,7 @@ run_nkde <- function(bw_value) {
 
 nkde_500 <- run_nkde(500)
 ```
+
 ```{r}
 length(nkde_500) == nrow(samples)
 ```
@@ -817,6 +815,7 @@ quantile(
   na.rm = TRUE
 )
 ```
+
 The NKDE intensity distribution was **highly right-skewed**, with at least 90% of lixels having an estimated intensity of zero. The intensity increased from approximately 0.00012 at the 95th percentile to 0.00543 at the 99th percentile, indicating that elevated accident intensity was concentrated within a relatively small proportion of the Bangkok road network.
 
 The 95th percentile was used as a descriptive threshold to identify road sections with relatively high estimated accident intensity.
@@ -861,7 +860,8 @@ ggplot() +
     title = "Network Kernel Density of Road Accidents",
     subtitle = "Bangkok, 2022 | Bandwidth = 500 m")
 ```
-:::{.callout-note title="Sqrt-transformed colour scale"}
+
+::: {.callout-note title="Sqrt-transformed colour scale"}
 The NKDE intensity distribution is highly right-skewed, with most road lixels having zero or very low estimated intensity.
 
 To improve visual differentiation, a square-root transformation was applied to the colour scale and its upper limit was capped at the 99th percentile.
@@ -900,7 +900,6 @@ The high-intensity lixels were concentrated along a limited number of road corri
 The 95th-percentile threshold identifies road sections with relatively high NKDE intensity within the analysed network. It is a descriptive threshold rather than a statistical significance test; formal assessment of spatial clustering is addressed in the subsequent second-order analysis.
 :::
 
-
 ## 2.2 Second-Order Network-Constrained SPPA (Network G/K function)
 
 Second-order network-constrained analysis was conducted using network G/K functions to assess whether accident events exhibited clustering along the road network beyond that expected under Complete Spatial Randomness (CSR), and to identify the network-distance scales at which such clustering occurred.
@@ -908,7 +907,6 @@ Second-order network-constrained analysis was conducted using network G/K functi
 ### 2.2.1 Network G/K Functions Analysis
 
 The network **G function** examines nearest-neighbour relationships between accident events, while the network **K function** evaluates spatial interaction across increasing network distances. Both functions were analysed together to provide complementary evidence of network-based spatial interaction.
-
 
 ### 2.2.2 Network CSR and Monte Carlo Simulation
 
@@ -970,15 +968,13 @@ Similarly, the observed G function remained above the upper simulation envelope 
 
 Both functions provide consistent evidence against network-based CSR. The G function highlights strong short-range interaction between accident events, while the K function indicates that clustering persists cumulatively across broader network-distance scales.
 
-
 ## 2.3 Overall Integration and Interpretation
 
-The first and second order analyses provide complementary perspectives on the spatial pattern of road accidents in Bangkok. NKDE identifies where accident intensity is concentrated along the road network, while the network G  and K functions assess whether and at what spatial scales the observed accident pattern departs from network-based Complete Spatial Randomness.
+The first and second order analyses provide complementary perspectives on the spatial pattern of road accidents in Bangkok. NKDE identifies where accident intensity is concentrated along the road network, while the network G and K functions assess whether and at what spatial scales the observed accident pattern departs from network-based Complete Spatial Randomness.
 
 The NKDE results reveal several concentrated and, in some locations, relatively continuous high-intensity road sections. When considered together with the network G and K function results, these concentrations form part of a broader non-random spatial pattern rather than appearing as isolated high-density locations.
 
 Overall, the combined analyses indicate that road accidents in Bangkok exhibit both localised network intensity and spatial interaction across multiple network-distance scales. However, these findings describe the spatial structure of accident occurrence rather than its underlying causes. Additional information on traffic exposure, road characteristics, and surrounding environmental conditions would be required to explain why particular road corridors experience higher accident intensity.
-
 
 # 3 Geovisualisation and Analytical Interpretation
 
@@ -1068,7 +1064,7 @@ animate(
     "images/bangkok_accidents_2022.gif"))
 ```
 
-![Bangkok Accident 2022](images/bangkok_accidents_2022.gif){width=80%}
+![Bangkok Accident 2022](images/bangkok_accidents_2022.gif){width="80%"}
 
 The resulting animation displays the cumulative distribution of reported road accidents across the Bangkok road network from January to December 2022. Each successive frame incorporates newly recorded accidents while retaining events from previous months.
 
@@ -1088,13 +1084,11 @@ The network G and K functions address a different question by evaluating whether
 
 Together, the three perspectives provide a more complete description of the observed accident pattern: the animation shows how the pattern develops over time, NKDE identifies where accident intensity is concentrated, and the network G and K functions assess whether and at what spatial scales the observed spatial arrangement differs from the network-based random reference.
 
-
 # 4 Public-Safety Planning and Management
 
 ## 4.1 Road-Safety Prioritization
 
-The NKDE results provide a network-based basis for prioritizing road sections for further road-safety investigation. Rather than allocating attention uniformly across Bangkok, planners can use high-intensity corridors as an initial screening layer for targeted investigation.
-Importantly, high NKDE intensity should not be interpreted directly as evidence of unsafe road design. Accident concentration may also reflect traffic exposure, road hierarchy, intersection density, land use, or other contextual factors that are not represented in the current dataset.
+The NKDE results provide a network-based basis for prioritizing road sections for further road-safety investigation. Rather than allocating attention uniformly across Bangkok, planners can use high-intensity corridors as an initial screening layer for targeted investigation. Importantly, high NKDE intensity should not be interpreted directly as evidence of unsafe road design. Accident concentration may also reflect traffic exposure, road hierarchy, intersection density, land use, or other contextual factors that are not represented in the current dataset.
 
 The identified high-intensity sections can therefore be treated as priority screening locations where more detailed investigation of road design, traffic conditions, intersection characteristics, and surrounding land use may be warranted.
 
@@ -1108,57 +1102,47 @@ The temporal animation adds a monitoring perspective by demonstrating how the an
 
 ## 4.3 Limitations and Further Analysis
 
-1. **Traffic Exposure**
+1.  **Traffic Exposure**
 
 Traffic volume and vehicle kilometres travelled are not considered. Therefore, NKDE represents **accident intensity rather than accident risk**.
 
-2. **Bandwidth Selection**
+2.  **Bandwidth Selection**
 
 NKDE results are sensitive to bandwidth selection. The 500 m bandwidth represents a selected analytical scale rather than an optimal value.
 
-3. **Road Network Representation**
+3.  **Road Network Representation**
 
 The road network is derived from OpenStreetMap and filtered by road class. Differences in network completeness or classification may affect the results.
 
-4. **Network CSR Assumption**
+4.  **Network CSR Assumption**
 
 Network CSR assumes that accidents are equally likely to occur across the eligible road network. In reality, traffic exposure varies between road sections.
 
-5. **Temporal Coverage**
+5.  **Temporal Coverage**
 
 Only accident records from 2022 are analysed. The identified patterns may therefore be specific to that year rather than persistent over time.
 
-6. **Reporting and Positional Accuracy**
+6.  **Reporting and Positional Accuracy**
 
 Incomplete reporting or inaccurate coordinates may affect the observed pattern. Snapping improves network alignment but does not guarantee the exact accident location.
 
-7. **Accident Severity**
+7.  **Accident Severity**
 
 All accidents are treated equally regardless of severity. The results therefore represent overall accident concentration rather than the concentration of severe or fatal accidents.
-
 
 # 5 Executive Summary
 
 [Executive Summary Slide](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex1_slide.html#/title-slide){target="_blank"}
 
-
 # References
 
-Geofabrik GmbH. (n.d.). *OpenStreetMap data extracts*. 
-https://download.geofabrik.de/
+Geofabrik GmbH. (n.d.). *OpenStreetMap data extracts*. https://download.geofabrik.de/
 
-OpenStreetMap contributors. (n.d.). *OpenStreetMap*. 
-https://www.openstreetmap.org/
+OpenStreetMap contributors. (n.d.). *OpenStreetMap*. https://www.openstreetmap.org/
 
-Runfola, D., Anderson, A., Baier, H., Crittenden, M., Dowker, E., Fuhrig, S., 
-Goodman, S., Grimsley, G., Layko, R., Melville, G., Mulder, M., Oberman, R., 
-Panganiban, J., Peckham, S., Seitz, L., Shea, K., Slevin, H., Youngerman, R., 
-& Hobbs, L. (2020). geoBoundaries: A global database of political 
-administrative boundaries. *PLOS ONE, 15*(4), e0231866. 
-https://doi.org/10.1371/journal.pone.0231866
+Runfola, D., Anderson, A., Baier, H., Crittenden, M., Dowker, E., Fuhrig, S., Goodman, S., Grimsley, G., Layko, R., Melville, G., Mulder, M., Oberman, R., Panganiban, J., Peckham, S., Seitz, L., Shea, K., Slevin, H., Youngerman, R., & Hobbs, L. (2020). geoBoundaries: A global database of political administrative boundaries. *PLOS ONE, 15*(4), e0231866. https://doi.org/10.1371/journal.pone.0231866
 
-Okabe, A., & Sugihara, K. (2012). *Spatial analysis along networks: 
-Statistical and computational methods*. John Wiley & Sons.
+Okabe, A., & Sugihara, K. (2012). *Spatial analysis along networks: Statistical and computational methods*. John Wiley & Sons.
 
 *R for Geospatial Data Science and Analytics: First-order spatial point patterns analysis methods*. (2026). https://r4gdsa.netlify.app/chap04
 
@@ -1166,15 +1150,13 @@ Statistical and computational methods*. John Wiley & Sons.
 
 *R for Geospatial Data Science and Analytics: Network-constrained spatial point patterns analysis*. (2026). https://r4gdsa.netlify.app/chap07
 
-
 # AI Tool Use Declaration
 
-Generative AI tools were used as supporting tools for brainstorming, refining written expression, and improving the organisation and presentation of this report. 
+Generative AI tools were used as supporting tools for brainstorming, refining written expression, and improving the organisation and presentation of this report.
 
 All analytical procedures, R code, methodological decisions, results, and interpretations were conducted, reviewed, and validated by the author. AI-generated suggestions were critically evaluated and revised where necessary before being incorporated into the report.
 
 AI tools were also consulted for troubleshooting selected R and Quarto implementation issues.
-
 
 # Appendix
 
@@ -1291,4 +1273,3 @@ knitr::kable(
   caption = "Summary of key methodological decisions and analytical settings.",
   align = "llll")
 ```
-

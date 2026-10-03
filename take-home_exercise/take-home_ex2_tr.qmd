@@ -1,0 +1,40 @@
+---
+title: "Take-home Exercise 2 - Technical Report"
+author: "Jin Jiaying"
+date: "03 Oct 2026"
+date-modified: last-modified
+---
+
+# Overview
+
+# Loading Necessary R Packages
+
+# Introduction and study context
+
+# Research question and objectives
+
+# Data and study design
+
+# Data preparation and quality assessment
+
+# Analytical assumptions and methodological decisions
+
+# LSMA analysis （LISA？）
+
+# EHSA
+
+# Integrated findings and discussion
+
+# Geovisualisation and geocommunication
+
+# Pease-keeping implications
+
+# Limitations
+
+# Executive Summary
+
+# References
+
+# AI Tool Use Declaration
+
+# Appendix

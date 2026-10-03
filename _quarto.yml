@@ -28,6 +28,8 @@ website:
           href: in-class_exercise/in-class_ex4.qmd
         - text: "In-class Exercise 5"
           href: in-class_exercise/in-class_ex5.qmd
+        - text: "In-class Exercise 6"
+          href: in-class_exercise/in-class_ex6.qmd
           
       - text: Take-home Exercise
         menu:
@@ -35,6 +37,8 @@ website:
           href: take-home_exercise/take-home_ex1_tr.qmd
         - text: "Take-home Exercise 1 - Executive Summary"
           href: take-home_exercise/take-home_ex1_slide.qmd
+        - text: "Take-home Exercise 2 - Technical Report"
+          href: take-home_exercise/take-home_ex2_tr.qmd
         
     right:
       - href: index.qmd
