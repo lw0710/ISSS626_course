@@ -4,7 +4,7 @@
     "href": "take-home_exercise/take-home_ex2_tr.html",
     "title": "Take-home Exercise 2 - Technical Report",
     "section": "",
-    "text": "Overview\n\n\nLoading Necessary R Packages\n\n\nIntroduction and study context\n\n\nResearch question and objectives\n\n\nData and study design\n\n\nData preparation and quality assessment\n\n\nAnalytical assumptions and methodological decisions\n\n\nLSMA analysis （LISA？）\n\n\nEHSA\n\n\nIntegrated findings and discussion\n\n\nGeovisualisation and geocommunication\n\n\nPease-keeping implications\n\n\nLimitations\n\n\nExecutive Summary\n\n\nReferences\n\n\nAI Tool Use Declaration\n\n\nAppendix"
+    "text": "Overview\n\n\nLoading Necessary R Packages\n\n\nIntroduction and study context\n\n\nResearch question and objectives\n\n\nData and study design\nhttps://geonode.themimu.info/layers/geonode%3Ammr_polbnda_adm3_250k_mimu_1\n\n\nData preparation and quality assessment\n\n\nAnalytical assumptions and methodological decisions\n\n\nLSMA analysis （LISA？）\n\n\nEHSA\n\n\nIntegrated findings and discussion\n\n\nGeovisualisation and geocommunication\n\n\nPease-keeping implications\n\n\nLimitations\n\n\nExecutive Summary\n\n\nReferences\n\n\nAI Tool Use Declaration\n\n\nAppendix"
   },
   {
     "objectID": "take-home_exercise/take-home_ex1_tr.html",
@@ -733,5 +733,110 @@
     "title": "Road Traffic Accident Patterns Along Bangkok’s Road Network",
     "section": "References",
     "text": "References\nData & Analytical Resources\n\nThailand Road Accident Fatalities dataset — source data used for accident-event analysis.\nOpenStreetMap — road-network data used to construct the network-constrained analysis space.\nBangkok administrative boundary data — used to define the study area.\nR / spatial-analysis packages — analytical implementation documented in the Technical Report.\n\nFull Technical Report\nFor complete data preparation, methodology, diagnostics, code and interpretation: View the full Technical Report"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#importing-data",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#importing-data",
+    "title": "Hands-on Exercise 7",
+    "section": "7.1.1 Importing Data",
+    "text": "7.1.1 Importing Data\n\nmpsz &lt;- st_read(dsn = \"hands-on_ex7_data/geospatial\", layer = \"MP14_SUBZONE_NO_SEA_PL\")\n\nReading layer `MP14_SUBZONE_NO_SEA_PL' from data source \n  `C:\\Users\\jiayi\\Documents\\SMU\\26_Aug_Term\\GAA\\lw0170_GAA\\ISSS626_course\\hands-on_exercise\\hands-on_ex7_data\\geospatial' \n  using driver `ESRI Shapefile'\nSimple feature collection with 323 features and 15 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 2667.538 ymin: 15748.72 xmax: 56396.44 ymax: 50256.33\nProjected CRS: SVY21\n\nhexagons &lt;- st_read(dsn = \"hands-on_ex7_data/geospatial\", layer = \"hexagons\")\n\nReading layer `hexagons' from data source \n  `C:\\Users\\jiayi\\Documents\\SMU\\26_Aug_Term\\GAA\\lw0170_GAA\\ISSS626_course\\hands-on_exercise\\hands-on_ex7_data\\geospatial' \n  using driver `ESRI Shapefile'\nSimple feature collection with 3125 features and 6 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 2667.538 ymin: 21506.33 xmax: 50010.26 ymax: 50256.33\nProjected CRS: SVY21 / Singapore TM\n\neldercare &lt;- st_read(dsn = \"hands-on_ex7_data/geospatial\", layer = \"ELDERCARE\")\n\nReading layer `ELDERCARE' from data source \n  `C:\\Users\\jiayi\\Documents\\SMU\\26_Aug_Term\\GAA\\lw0170_GAA\\ISSS626_course\\hands-on_exercise\\hands-on_ex7_data\\geospatial' \n  using driver `ESRI Shapefile'\nSimple feature collection with 120 features and 19 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 14481.92 ymin: 28218.43 xmax: 41665.14 ymax: 46804.9\nProjected CRS: SVY21 / Singapore TM"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#updating-crs-information",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#updating-crs-information",
+    "title": "Hands-on Exercise 7",
+    "section": "7.1.2 Updating CRS information",
+    "text": "7.1.2 Updating CRS information\n\nmpsz &lt;- st_transform(mpsz, 3414)\neldercare &lt;- st_transform(eldercare, 3414)\nhexagons &lt;- st_transform(hexagons, 3414)\n\nst_crs(mpsz)\n\nCoordinate Reference System:\n  User input: EPSG:3414 \n  wkt:\nPROJCRS[\"SVY21 / Singapore TM\",\n    BASEGEOGCRS[\"SVY21\",\n        DATUM[\"SVY21\",\n            ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n                LENGTHUNIT[\"metre\",1]]],\n        PRIMEM[\"Greenwich\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        ID[\"EPSG\",4757]],\n    CONVERSION[\"Singapore Transverse Mercator\",\n        METHOD[\"Transverse Mercator\",\n            ID[\"EPSG\",9807]],\n        PARAMETER[\"Latitude of natural origin\",1.36666666666667,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8801]],\n        PARAMETER[\"Longitude of natural origin\",103.833333333333,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8802]],\n        PARAMETER[\"Scale factor at natural origin\",1,\n            SCALEUNIT[\"unity\",1],\n            ID[\"EPSG\",8805]],\n        PARAMETER[\"False easting\",28001.642,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8806]],\n        PARAMETER[\"False northing\",38744.572,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8807]]],\n    CS[Cartesian,2],\n        AXIS[\"northing (N)\",north,\n            ORDER[1],\n            LENGTHUNIT[\"metre\",1]],\n        AXIS[\"easting (E)\",east,\n            ORDER[2],\n            LENGTHUNIT[\"metre\",1]],\n    USAGE[\n        SCOPE[\"Cadastre, engineering survey, topographic mapping.\"],\n        AREA[\"Singapore - onshore and offshore.\"],\n        BBOX[1.13,103.59,1.47,104.07]],\n    ID[\"EPSG\",3414]]"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#cleaning-and-updating-attribute-fields-of-the-geospatial-data",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#cleaning-and-updating-attribute-fields-of-the-geospatial-data",
+    "title": "Hands-on Exercise 7",
+    "section": "7.1.3 Cleaning and updating attribute fields of the geospatial data",
+    "text": "7.1.3 Cleaning and updating attribute fields of the geospatial data\n\neldercare &lt;- eldercare %&gt;%\n  select(fid, ADDRESSPOS) %&gt;%\n  mutate(capacity = 100)\n\nhexagons &lt;- hexagons %&gt;%\n  select(fid) %&gt;%\n  mutate(demand = 100)"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#importing-distance-matrix",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#importing-distance-matrix",
+    "title": "Hands-on Exercise 7",
+    "section": "7.2.1 Importing Distance Matrix",
+    "text": "7.2.1 Importing Distance Matrix\n\nODMatrix &lt;- read_csv(\"hands-on_ex7_data/aspatial/OD_Matrix.csv\", skip = 0)"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#tidying-distance-matrix",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#tidying-distance-matrix",
+    "title": "Hands-on Exercise 7",
+    "section": "7.2.2 Tidying distance matrix",
+    "text": "7.2.2 Tidying distance matrix\n\ndistmat &lt;- ODMatrix %&gt;%\n  select(origin_id, destination_id, total_cost) %&gt;%\n  spread(destination_id, total_cost)%&gt;%\n  select(c(-c('origin_id')))\n\ndistmat_km &lt;- as.matrix(distmat/1000)"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#computing-hansens-accessibility",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#computing-hansens-accessibility",
+    "title": "Hands-on Exercise 7",
+    "section": "7.3.1 Computing Hansen’s accessibility",
+    "text": "7.3.1 Computing Hansen’s accessibility\n\nacc_Hansen &lt;- data.frame(ac(hexagons$demand,\n                            eldercare$capacity,\n                            distmat_km, \n                            #d0 = 50,\n                            power = 0.5, \n                            family = \"Hansen\"))\n\ncolnames(acc_Hansen) &lt;- \"accHansen\"\nacc_Hansen &lt;- as_tibble(acc_Hansen)\nhexagon_Hansen &lt;- bind_cols(hexagons, acc_Hansen)"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#visualising-hansens-accessibility",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#visualising-hansens-accessibility",
+    "title": "Hands-on Exercise 7",
+    "section": "7.3.2 Visualising Hansen’s accessibility",
+    "text": "7.3.2 Visualising Hansen’s accessibility\n\nExtracting map extend\n\nmapex &lt;- st_bbox(hexagons)\n\ntm_shape(hexagon_Hansen,\n         bbox = mapex) + \n  tm_polygons(fill = \"accHansen\", \n              fill.scale = tm_scale_intervals(\n                style = \"quantile\",\n                n = 10,\n                values = \"brewer.blues\")) +\ntm_shape(eldercare) +\n  tm_dots(size = 0.3,\n          fill = \"red\",\n          col = \"black\") +\n  tm_title(\"Accessibility to eldercare: Hansen method\") +\n  tm_layout(frame = TRUE) +\n  tm_compass(type=\"8star\", size = 2) +\n  tm_scalebar() +\n  tm_grid(alpha = 0.2)"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#computing-kd2sfcas-accessibility",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#computing-kd2sfcas-accessibility",
+    "title": "Hands-on Exercise 7",
+    "section": "7.4.1 Computing KD2SFCA’s accessibility",
+    "text": "7.4.1 Computing KD2SFCA’s accessibility\n\nacc_KD2SFCA &lt;- data.frame(ac(hexagons$demand,\n                            eldercare$capacity,\n                            distmat_km, \n                            d0 = 5,\n                            power = 2, \n                            family = \"KD2SFCA\"))\n\ncolnames(acc_KD2SFCA) &lt;- \"accKD2SFCA\"\nacc_KD2SFCA &lt;- as_tibble(acc_KD2SFCA)\nhexagon_KD2SFCA &lt;- bind_cols(hexagons, acc_KD2SFCA)"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#visualising-kd2sfcas-accessibility",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#visualising-kd2sfcas-accessibility",
+    "title": "Hands-on Exercise 7",
+    "section": "7.4.2 Visualising KD2SFCA’s accessibility",
+    "text": "7.4.2 Visualising KD2SFCA’s accessibility\n\ntm_shape(hexagon_KD2SFCA,\n         bbox = mapex) + \n  tm_polygons(fill = \"accKD2SFCA\", \n              fill.scale = tm_scale_intervals(\n                style = \"quantile\",\n                n = 10,\n                values = \"brewer.blues\")) +\ntm_shape(eldercare) +\n  tm_dots(size = 0.3,\n          fill = \"red\",\n          col = \"black\") +\n  tm_title(\"Accessibility to eldercare: KD2SFCA method\") +\n  tm_layout(frame = TRUE) +\n  tm_compass(type=\"8star\", size = 2) +\n  tm_scalebar() +\n  tm_grid(alpha = 0.2)"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#statistical-graphic-visualisation-1",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#statistical-graphic-visualisation-1",
+    "title": "Hands-on Exercise 7",
+    "section": "7.4.3 Statistical graphic visualisation",
+    "text": "7.4.3 Statistical graphic visualisation\n\nhexagon_KD2SFCA &lt;- st_join(hexagon_KD2SFCA, mpsz, \n                          join = st_intersects)\n\nggplot(data=hexagon_KD2SFCA, \n       aes(y = accKD2SFCA, \n           x= REGION_N)) +\n  geom_boxplot() +\n  geom_point(stat=\"summary\", \n             fun.y=\"mean\", \n             colour =\"red\", \n             size=2)"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#computing-sam-accessibility",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#computing-sam-accessibility",
+    "title": "Hands-on Exercise 7",
+    "section": "7.5.1 Computing SAM accessibility",
+    "text": "7.5.1 Computing SAM accessibility\n\nacc_SAM &lt;- data.frame(ac(hexagons$demand,\n                         eldercare$capacity,\n                         distmat_km, \n                         d0 = 5,\n                         power = 2, \n                         family = \"SAM\"))\n\ncolnames(acc_SAM) &lt;- \"accSAM\"\nacc_SAM &lt;- as_tibble(acc_SAM)\nhexagon_SAM &lt;- bind_cols(hexagons, acc_SAM)"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#visualising-sams-accessibility",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#visualising-sams-accessibility",
+    "title": "Hands-on Exercise 7",
+    "section": "7.5.2 Visualising SAM’s accessibility",
+    "text": "7.5.2 Visualising SAM’s accessibility\n\ntm_shape(hexagon_SAM,\n         bbox = mapex) + \n  tm_polygons(fill = \"accSAM\", \n              fill.scale = tm_scale_intervals(\n                style = \"quantile\",\n                n = 10,\n                values = \"brewer.blues\")) +\ntm_shape(eldercare) +\n  tm_dots(size = 0.3,\n          fill = \"red\",\n          col = \"black\") +\n  tm_title(\"Accessibility to eldercare: SAM method\") +\n  tm_layout(frame = TRUE) +\n  tm_compass(type=\"8star\", size = 2) +\n  tm_scalebar() +\n  tm_grid(alpha = 0.2)"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_exercise_7.html#statistical-graphic-visualisation-2",
+    "href": "hands-on_exercise/hands-on_exercise_7.html#statistical-graphic-visualisation-2",
+    "title": "Hands-on Exercise 7",
+    "section": "7.5.3 Statistical graphic visualisation",
+    "text": "7.5.3 Statistical graphic visualisation\n\nhexagon_SAM &lt;- st_join(hexagon_SAM, mpsz, \n                       join = st_intersects)\n\nggplot(data=hexagon_SAM, \n       aes(y = accSAM, \n           x= REGION_N)) +\n  geom_boxplot() +\n  geom_point(stat=\"summary\", \n             fun.y=\"mean\", \n             colour =\"red\", \n             size=2)"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_ex7_data/geospatial/ELDERCARE.html",
+    "href": "hands-on_exercise/hands-on_ex7_data/geospatial/ELDERCARE.html",
+    "title": "ISSS626 GAA",
+    "section": "",
+    "text": "&lt;!DOCTYPE qgis PUBLIC ‘http://mrcc.com/qgis.dtd’ ‘SYSTEM’&gt;  ELDERCARE  ENG dataset\n\nELDERCARE\n\n                 0 0     false"
+  },
+  {
+    "objectID": "hands-on_exercise/hands-on_ex7_data/geospatial/hexagons.html",
+    "href": "hands-on_exercise/hands-on_ex7_data/geospatial/hexagons.html",
+    "title": "ISSS626 GAA",
+    "section": "",
+    "text": "&lt;!DOCTYPE qgis PUBLIC ‘http://mrcc.com/qgis.dtd’ ‘SYSTEM’&gt;     dataset\n\n\n                 0 0     false"
   }
 ]
