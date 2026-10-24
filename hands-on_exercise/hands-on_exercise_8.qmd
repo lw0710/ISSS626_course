@@ -14,6 +14,7 @@ This Hands-on Exercise is focusing on Market area analaysis (also known as Trade
 Huff model is a geospatial analysis method commonly used in market area analysis to predict the probability that a consumer from a specific area will patronize a particular store, based on the store’s attractiveness and distance relative to competitors. It calculates a store’s market share by considering factors like size or sales for attractiveness and distance or travel time, with the probability decreasing as distance or competition increases. This tool helps businesses assess potential revenue, define trade areas, and make informed decisions about site selection
 
 ## 8.2 Getting Started
+
 ```{r}
 pacman::p_load(sf, tidyverse, MCI, tmap, ggstatsplot)
 ```
@@ -21,6 +22,7 @@ pacman::p_load(sf, tidyverse, MCI, tmap, ggstatsplot)
 ## 8.3 Importing Data
 
 ### 8.3.1 Importing geospatial data
+
 ```{r}
 stores <- st_read(
   dsn = "hands-on_ex8_data/geospatial",
@@ -48,6 +50,7 @@ tmap_mode("plot")
 ```
 
 ### 8.3.2 Importing aspatial data
+
 ```{r}
 pop2019 <- read_csv(
   "hands-on_ex8_data/aspatial/pop2019.csv")
@@ -58,10 +61,10 @@ store_sales <- read_csv(
 summary(store_sales)
 ```
 
-
 ## 8.4 Data Preparation
 
 ### 8.4.1 Aggregating store sales
+
 ```{r}
 store_sales_aggre <- store_sales %>%
   group_by(`Store Code`) %>%
@@ -71,6 +74,7 @@ store_sales_aggre <- store_sales %>%
 ```
 
 ### 8.4.2 Relational join
+
 ```{r}
 stores <- stores %>%
   left_join(store_sales_aggre,
@@ -82,6 +86,7 @@ summary(stores)
 ```
 
 ### 8.4.3 Tidying pop2019 data.frame
+
 ```{r}
 glimpse(pop2019)
 
@@ -100,6 +105,7 @@ village <- village %>%
 ```
 
 ### 8.4.4 Check for missing or zero values
+
 ```{r}
 summary(village)
 ```
@@ -117,8 +123,8 @@ any(is.na(village$M_CNT))
 any(is.na(village$F_CNT))
 ```
 
-
 ## 8.5 Computing Distance Matrix
+
 ```{r}
 village_center <- st_point_on_surface(village)
 distmat <- st_distance(village_center, stores)
@@ -139,8 +145,8 @@ distmat_long <- distmat %>%
   mutate(distance = as.numeric(distance)) 
 ```
 
-
 ## 8.6 Preparing Interaction Matrix
+
 ```{r}
 interaction_matrix <- distmat_long %>%
   left_join(
@@ -154,8 +160,8 @@ interaction_matrix <- distmat_long %>%
 summary(interaction_matrix)
 ```
 
-
 ## 8.7 Computing Huff model
+
 ```{r}
 huff_share <- huff.shares(
   interaction_matrix, "VILLCODE", "Store_CD", 
@@ -163,6 +169,7 @@ huff_share <- huff.shares(
 ```
 
 ### 8.7.1 Trade area analysis for a single store
+
 ```{r}
 market_share <- huff_share %>%
   filter(Store_CD == "BT")
@@ -196,6 +203,7 @@ tm_shape(Trade_area) +
 ```
 
 ### 8.7.2 Store sales analysis
+
 ```{r}
 huff_share_pp <- huff_share %>%
   left_join(village %>% 

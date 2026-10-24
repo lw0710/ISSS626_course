@@ -5,24 +5,444 @@ date: "03 Oct 2026"
 date-modified: last-modified
 ---
 
-# Overview
+# 1 Overview
+
+This technical report examines the spatial and spatio-temporal patterns of political violence in Myanmar from January 2021 to September 2025. Using event-level data from the Armed Conflict Location & Event Data Project [**(ACLED)**](https://acleddata.com/conflict-data/download-data) and township administrative boundaries from the Myanmar Information Management Unit [**(MIMU)**](https://data.themimu.info/en/dataset/myanmar-administrative-boundary), the analysis is conducted at the township level to investigate how conflict events are distributed, clustered, and evolving across space and time.
+
+The analytical framework consists of two main components. First, Local Measures of Spatial Association (L-MSA), including Local Moran’s I and Getis-Ord Gi*, are applied to identify significant spatial clusters, spatial outliers, hot spots, and cold spots of political violence. Second, Emerging Hot Spot Analysis (EHSA) is used to examine how these spatial concentrations change over time and to distinguish different forms of evolving hot-spot behaviour.
+
+The report further integrates statistical findings with geovisualisation to communicate the geographical patterns identified and discusses their potential implications for conflict monitoring, humanitarian prioritisation, and peace-related decision-making in Myanmar.
+
+# 2 Loading Necessary R Packages
+```{r}
+pacman::p_load(sf, sfdep, tidyverse, tmap, plotly, Kendall, knitr)
+```
+
+```{r}
+#| echo: false
+package_table <- data.frame(
+  Package = c(
+    "sf",
+    "sfdep",
+    "tidyverse",
+    "tmap",
+    "plotly",
+    "Kendall",
+    "knitr"
+  ),
+  Purpose = c(
+    "Spatial data handling",
+    "Spatial dependence and hot spot analysis",
+    "Data wrangling and visualisation",
+    "Thematic mapping",
+    "Interactive visualisation",
+    "Mann-Kendall trend analysis",
+    "Table formatting"
+  )
+)
+
+knitr::kable(
+  package_table,
+  caption = "R packages used in this analysis",
+  align = c("l", "l")
+)
+```
+
+# 3 Introduction and study context
+
+Myanmar has experienced prolonged political instability and escalating armed conflict following the military takeover in February 2021. Since then, conflict has expanded across multiple states and regions, creating substantial humanitarian and security challenges. By early 2025, more than 3.5 million people were estimated to be internally displaced, while active conflict continued across several parts of the country.
+
+However, political violence is not distributed evenly across Myanmar. The intensity and concentration of conflict events vary considerably between townships and may also change over time. Examining only national-level event totals may therefore conceal important localised patterns of conflict concentration and emerging areas of concern. A geospatial and spatio-temporal perspective enables these variations to be examined systematically by identifying significant spatial clusters, local anomalies, and changes in hot spot patterns across time.
+
+Against this context, this study examines political violence at the township level from January 2021 to September 2025, with particular attention to its spatial concentration and temporal evolution.
+
+# 3 Research question and objectives
+
+## 3.1 Research Questions
+
+This study aims to understand both the spatial concentration and temporal evolution of political violence across Myanmar at the township level. It addresses the following research questions:
+
+**RQ1 — Spatial Pattern:**  
+Where are statistically significant clusters, hot spots, cold spots, and spatial outliers of political violence located across Myanmar townships?
+
+**RQ2 — Spatio-temporal Evolution:**  
+How have significant hot spots of political violence evolved from January 2021 to September 2025, and which townships exhibit emerging, persistent, intensifying, or diminishing patterns?
+
+## 3.2 Research Objectives
+
+To address these questions, the study aims to:
+
+1. **Identify spatial concentrations and anomalies** of political violence using township-level spatial association and hot spot analysis.
+
+2. **Examine the evolution of conflict hot spots over time** to distinguish temporary concentrations from persistent or changing patterns.
+
+3. **Integrate spatial and temporal findings** to develop a clearer understanding of where political violence is concentrated and how these areas are changing.
+
+4. **Support geographic prioritisation and decision-making** by identifying townships that may warrant closer monitoring or attention, providing spatial evidence that can inform conflict monitoring, humanitarian planning, resource prioritisation, and peace-building initiatives.
+
+## 3.3 Practical Relevance
+
+The practical value of this analysis lies not only in identifying where conflict events are concentrated, but also in distinguishing areas with different spatial and temporal trajectories. For example, a persistent hot spot may indicate a location requiring sustained monitoring, while an emerging or intensifying hot spot may signal an area where attention is becoming increasingly important. Conversely, diminishing hot spots may indicate changing conflict dynamics that warrant further investigation.
+
+These insights can provide an evidence-based geographical perspective for organisations involved in conflict monitoring, humanitarian response, public safety, and peace-building. The analysis is intended to support prioritisation rather than predict individual conflict events or establish the causes of violence.
+
+# 4 Data and study design
+
+## 4.1 Data Sources
+
+This study integrates two geospatial datasets. Political violence events are obtained from the **ACLED** (Armed Conflict Location & Event Data Project), which provides event-level information including event date, event type, geographic coordinates, administrative location, and reported fatalities. Township administrative boundaries are obtained from the **MIMU** (Myanmar Information Management Unit) administrative boundary dataset.
+
+The ACLED dataset covers events recorded between **1 January 2021 and 30 September 2025**, while the MIMU dataset provides the spatial boundaries of **330 townships** across Myanmar.
+
+## 4.2 Spatial and Temporal Units of Analysis
+
+The **township (ADM3)** is selected as the primary spatial unit of analysis. Township-level analysis provides sufficient geographical detail to identify localised patterns while maintaining a consistent administrative unit that can support comparison across Myanmar.
+
+For the spatial analysis, political violence events are aggregated by township. For the spatio-temporal analysis, the data are further aggregated into **monthly intervals**, producing a township-month structure covering **57 months** from January 2021 to September 2025.
+
+## 4.3 Definition of Political Violence
+
+The primary analytical variable is the **number of political violence events recorded within each township**. For this study, political violence is operationalised using three ACLED event categories:
+
+- **Battles**
+- **Explosions/Remote violence**
+- **Violence against civilians**
+
+These categories are selected because they represent direct forms of violent conflict, while events such as protests, riots, and strategic developments are excluded from the primary measure to maintain a clearer focus on physical political violence.
+
+Reported fatalities are retained as a supplementary variable for descriptive analysis but are not used as the main measure of conflict intensity.
+
+## 4.4 Study Design
+
+The study adopts an **observational geospatial and spatio-temporal analytical design**. It examines recorded patterns of political violence rather than attempting to establish causal relationships between conflict and external socioeconomic or political factors.
+
+The analytical design consists of two complementary perspectives. First, township-level spatial analysis is used to identify significant geographical concentrations, clusters, and spatial outliers of political violence. Second, monthly township-level observations are used to examine how these spatial concentrations evolve over time.
+
+This design enables the study to distinguish between areas that experience high levels of recorded violence at a particular point in time and areas that demonstrate persistent, emerging, intensifying, or diminishing spatial patterns across the study period.
 
 
-# Loading Necessary R Packages
+# 5 Data preparation and quality assessment
 
-# Introduction and study context
+## 5.1 Data Import
+```{r}
+acled_raw <- read_csv("take-home_ex2_data/ACLED_Data_Myanmar_Jan2021-Sep2025.csv")
 
-# Research question and objectives
+township_raw <- st_read("take-home_ex2_data/geonode-mmr_polbnda_adm3_250k_mimu_1.kml")
+```
 
-# Data and study design
+## 5.2 Check Data Quality
 
-https://geonode.themimu.info/layers/geonode%3Ammr_polbnda_adm3_250k_mimu_1
+```{r}
+#| echo: true
+#| output: false
 
-# Data preparation and quality assessment
+dim(acled_raw)
+names(acled_raw)
+
+dim(township_raw)
+names(township_raw)
+st_crs(township_raw)
+st_geometry_type(township_raw)
+```
+
+### 5.2.1 Duplicate Check
+```{r}
+acled_raw %>%
+  summarise(
+    total_records = n(),
+    unique_event_ids = n_distinct(event_id_cnty),
+    start_date = min(as.Date(event_date)),
+    end_date = max(as.Date(event_date))
+  )
+```
+
+The ACLED dataset contained 87,109 event records covering the intended study period from January 2021 to September 2025. All event identifiers were unique, indicating no duplicated event records based on event_id_cnty.
+
+### 5.2.2 Country Coverage Check
+```{r}
+acled_raw %>%
+  count(country, sort = TRUE)
+
+acled_mm <- acled_raw %>%
+  filter(country == "Myanmar")
+```
+
+Although the dataset was extracted for Myanmar, six records were coded under the Indian Ocean. These observations were excluded to maintain consistency with the defined study area.
+
+
+### 5.2.3 Missing Values Check
+```{r}
+acled_mm %>%
+  summarise(
+    missing_event_date = sum(is.na(event_date)),
+    missing_event_type = sum(is.na(event_type)),
+    missing_admin3 = sum(is.na(admin3)),
+    missing_latitude = sum(is.na(latitude)),
+    missing_longitude = sum(is.na(longitude)),
+    missing_geo_precision = sum(is.na(geo_precision)),
+    missing_fatalities = sum(is.na(fatalities))
+  )
+```
+
+Missing values were observed in the ACLED admin3 field. However, township assignment in this study was based on the geographic coordinates of each event and the MIMU township polygons rather than relying solely on ACLED administrative labels. Therefore, missing admin3 values did not automatically result in record exclusion.
+
+### 5.2.4 Geo-precision Quality Assessment
+```{r}
+acled_mm %>%
+  count(geo_precision) %>%
+  mutate(percentage = n / sum(n) * 100)
+```
+
+ACLED records include a geographic precision indicator reflecting the level of certainty associated with each event location. While a substantial proportion of events were coded with the highest geographic precision, a considerable number were assigned lower precision levels. Excluding all lower-precision observations would remove a large proportion of the available conflict records and could introduce additional selection bias.
+
+Therefore, all eligible political violence events were retained for the primary analysis. Geographic precision is instead treated as an important data limitation, and the robustness of key spatial findings may be evaluated using higher-precision observations as a sensitivity check.
+
+## 5.3 Prepare Political Violence Events
+```{r}
+political_violence <- acled_mm %>%
+  filter(
+    event_type %in% c(
+      "Battles",
+      "Explosions/Remote violence",
+      "Violence against civilians"
+    )
+  ) %>%
+  mutate(
+    event_date = as.Date(event_date),
+    month = floor_date(event_date, unit = "month")
+  )
+
+political_violence %>%
+  count(event_type, sort = TRUE)
+```
+
+## 5.4 Prepare MIMU Township Boundary
+```{r}
+extract_field <- function(x, field) {
+  
+  pattern <- paste0(
+    '<span class="atr-name">',
+    field,
+    '</span>:</strong>\\s*',
+    '<span class="atr-value">([^<]+)'
+  )
+  
+  str_match(x, pattern)[, 2]
+}
+```
+
+```{r}
+township <- township_raw %>%
+  mutate(
+    ST = extract_field(Description, "ST"),
+    ST_PCODE = extract_field(Description, "ST_PCODE"),
+    DT = extract_field(Description, "DT"),
+    DT_PCODE = extract_field(Description, "DT_PCODE"),
+    TS = extract_field(Description, "TS"),
+    TS_PCODE = extract_field(Description, "TS_PCODE"),
+    PCode_V = extract_field(Description, "PCode_V")
+  ) %>%
+  select(
+    ST,
+    ST_PCODE,
+    DT,
+    DT_PCODE,
+    TS,
+    TS_PCODE,
+    PCode_V,
+    geometry
+  )
+```
+
+## 5.5 Fix GeometryCollection
+```{r}
+township <- township %>%
+  st_collection_extract("POLYGON") %>%
+  st_make_valid()
+
+st_geometry_type(township)
+
+sum(!st_is_valid(township))
+
+nrow(township)
+
+n_distinct(township$TS_PCODE)
+```
+
+The original KML file stored township features as geometry collections. Polygon components were extracted and geometries were validated before spatial analysis. The resulting boundary dataset contained 330 township features, all with valid geometries and unique township PCodes.
+
+## 5.6
+
+TS_PCODE was used as the primary township identifier because township names are not necessarily unique across Myanmar.
+
+## 5.7 Convert ACLED Events into Spatial Points
+```{r}
+political_violence_sf <- political_violence %>%
+  st_as_sf(
+    coords = c("longitude", "latitude"),
+    crs = 4326,
+    remove = FALSE
+  )
+```
+
+```{r}
+st_crs(political_violence_sf)
+st_crs(township)
+```
+
+## 5.8 Spatial Join
+```{r}
+violence_joined <- st_join(
+  political_violence_sf,
+  township %>%
+    select(TS_PCODE, TS, ST),
+  join = st_intersects,
+  left = TRUE
+)
+
+violence_joined %>%
+  st_drop_geometry() %>%
+  summarise(
+    total_events = n(),
+    matched_events = sum(!is.na(TS_PCODE)),
+    unmatched_events = sum(is.na(TS_PCODE)),
+    match_rate = matched_events / total_events * 100
+  )
+```
+
+## 5.9 Unmatached Events
+```{r}
+unmatched_events <- violence_joined %>%
+  filter(is.na(TS_PCODE)) %>%
+  st_drop_geometry() %>%
+  select(
+    event_id_cnty,
+    event_date,
+    event_type,
+    admin1,
+    admin2,
+    admin3,
+    location,
+    latitude,
+    longitude,
+    geo_precision
+  )
+
+unmatched_events
+```
+
+Eight eligible political violence events could not be assigned to a MIMU township polygon through coordinate-based spatial matching. Given their negligible proportion of the analytical dataset, these observations were excluded from township-level analysis but documented as part of the spatial data quality assessment.
+
+```{r}
+violence_matched <- violence_joined %>%
+  filter(!is.na(TS_PCODE))
+```
+
+## 5.10 Summary
+```{r}
+quality_summary <- tibble(
+  `Quality Check` = c(
+    "Raw ACLED records",
+    "Unique event IDs",
+    "Myanmar records",
+    "Political violence records retained",
+    "Missing coordinates",
+    "Township boundary features",
+    "Unique township PCodes",
+    "Invalid township geometries",
+    "Spatially matched political violence events",
+    "Unmatched political violence events"
+  ),
+  
+  Result = c(
+    nrow(acled_raw),
+    n_distinct(acled_raw$event_id_cnty),
+    nrow(acled_mm),
+    nrow(political_violence),
+    sum(
+      is.na(acled_mm$latitude) |
+      is.na(acled_mm$longitude)
+    ),
+    nrow(township),
+    n_distinct(township$TS_PCODE),
+    sum(!st_is_valid(township)),
+    sum(!is.na(violence_joined$TS_PCODE)),
+    sum(is.na(violence_joined$TS_PCODE))
+  )
+)
+
+knitr::kable(
+  quality_summary,
+  caption = "Summary of Data Quality Assessment"
+)
+```
+
+## 5.11 Prepare Analysis-ready Spatial Dataset
+```{r}
+violence_township <- violence_matched %>%
+  st_drop_geometry() %>%
+  count(
+    TS_PCODE,
+    name = "violent_events"
+  )
+
+township_analysis <- township %>%
+  left_join(
+    violence_township,
+    by = "TS_PCODE"
+  ) %>%
+  mutate(
+    violent_events = replace_na(
+      violent_events,
+      0
+    )
+  )
+```
+
+```{r}
+nrow(township_analysis)
+
+sum(is.na(township_analysis$violent_events))
+```
+
+## 5.12 EHSA
+```{R}
+violence_monthly <- violence_matched %>%
+  st_drop_geometry() %>%
+  count(
+    TS_PCODE,
+    month,
+    name = "violent_events"
+  )
+
+all_months <- seq(
+  from = as.Date("2021-01-01"),
+  to = as.Date("2025-09-01"),
+  by = "month"
+)
+
+township_monthly <- expand_grid(
+  TS_PCODE = township$TS_PCODE,
+  month = all_months
+) %>%
+  left_join(
+    violence_monthly,
+    by = c("TS_PCODE", "month")
+  ) %>%
+  mutate(
+    violent_events = replace_na(
+      violent_events,
+      0
+    )
+  )
+
+nrow(township_monthly)
+```
+
 
 # Analytical assumptions and methodological decisions
 
-# LSMA analysis （LISA？）
+# Local Measures of Spatial Association (LSMA) analysis
 
 # EHSA
 

@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -125,6 +160,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="../hands-on_exercise/hands-on_exercise_7.html">
  <span class="dropdown-text">Hands-on Exercise 7</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../hands-on_exercise/hands-on_exercise_8.html">
+ <span class="dropdown-text">Hands-on Exercise 8</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -147,6 +186,10 @@ ul.task-list li input[type="checkbox"] {
         <li>
     <a class="dropdown-item" href="../in-class_exercise/in-class_ex6.html">
  <span class="dropdown-text">In-class Exercise 6</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../in-class_exercise/in-class_ex8.html">
+ <span class="dropdown-text">In-class Exercise 8</span></a>
   </li>  
     </ul>
   </li>
@@ -199,15 +242,46 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
-  <li><a href="#loading-necessary-r-packages" id="toc-loading-necessary-r-packages" class="nav-link" data-scroll-target="#loading-necessary-r-packages">Loading Necessary R Packages</a></li>
-  <li><a href="#introduction-and-study-context" id="toc-introduction-and-study-context" class="nav-link" data-scroll-target="#introduction-and-study-context">Introduction and study context</a></li>
-  <li><a href="#research-question-and-objectives" id="toc-research-question-and-objectives" class="nav-link" data-scroll-target="#research-question-and-objectives">Research question and objectives</a></li>
-  <li><a href="#data-and-study-design" id="toc-data-and-study-design" class="nav-link" data-scroll-target="#data-and-study-design">Data and study design</a></li>
-  <li><a href="#data-preparation-and-quality-assessment" id="toc-data-preparation-and-quality-assessment" class="nav-link" data-scroll-target="#data-preparation-and-quality-assessment">Data preparation and quality assessment</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">1 Overview</a></li>
+  <li><a href="#loading-necessary-r-packages" id="toc-loading-necessary-r-packages" class="nav-link" data-scroll-target="#loading-necessary-r-packages">2 Loading Necessary R Packages</a></li>
+  <li><a href="#introduction-and-study-context" id="toc-introduction-and-study-context" class="nav-link" data-scroll-target="#introduction-and-study-context">3 Introduction and study context</a></li>
+  <li><a href="#research-question-and-objectives" id="toc-research-question-and-objectives" class="nav-link" data-scroll-target="#research-question-and-objectives">3 Research question and objectives</a>
+  <ul class="collapse">
+  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions">3.1 Research Questions</a></li>
+  <li><a href="#research-objectives" id="toc-research-objectives" class="nav-link" data-scroll-target="#research-objectives">3.2 Research Objectives</a></li>
+  <li><a href="#practical-relevance" id="toc-practical-relevance" class="nav-link" data-scroll-target="#practical-relevance">3.3 Practical Relevance</a></li>
+  </ul></li>
+  <li><a href="#data-and-study-design" id="toc-data-and-study-design" class="nav-link" data-scroll-target="#data-and-study-design">4 Data and study design</a>
+  <ul class="collapse">
+  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources">4.1 Data Sources</a></li>
+  <li><a href="#spatial-and-temporal-units-of-analysis" id="toc-spatial-and-temporal-units-of-analysis" class="nav-link" data-scroll-target="#spatial-and-temporal-units-of-analysis">4.2 Spatial and Temporal Units of Analysis</a></li>
+  <li><a href="#definition-of-political-violence" id="toc-definition-of-political-violence" class="nav-link" data-scroll-target="#definition-of-political-violence">4.3 Definition of Political Violence</a></li>
+  <li><a href="#study-design" id="toc-study-design" class="nav-link" data-scroll-target="#study-design">4.4 Study Design</a></li>
+  </ul></li>
+  <li><a href="#data-preparation-and-quality-assessment" id="toc-data-preparation-and-quality-assessment" class="nav-link" data-scroll-target="#data-preparation-and-quality-assessment">5 Data preparation and quality assessment</a>
+  <ul class="collapse">
+  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import">5.1 Data Import</a></li>
+  <li><a href="#check-data-quality" id="toc-check-data-quality" class="nav-link" data-scroll-target="#check-data-quality">5.2 Check Data Quality</a>
+  <ul class="collapse">
+  <li><a href="#duplicate-check" id="toc-duplicate-check" class="nav-link" data-scroll-target="#duplicate-check">5.2.1 Duplicate Check</a></li>
+  <li><a href="#country-coverage-check" id="toc-country-coverage-check" class="nav-link" data-scroll-target="#country-coverage-check">5.2.2 Country Coverage Check</a></li>
+  <li><a href="#missing-values-check" id="toc-missing-values-check" class="nav-link" data-scroll-target="#missing-values-check">5.2.3 Missing Values Check</a></li>
+  <li><a href="#geo-precision-quality-assessment" id="toc-geo-precision-quality-assessment" class="nav-link" data-scroll-target="#geo-precision-quality-assessment">5.2.4 Geo-precision Quality Assessment</a></li>
+  </ul></li>
+  <li><a href="#prepare-political-violence-events" id="toc-prepare-political-violence-events" class="nav-link" data-scroll-target="#prepare-political-violence-events">5.3 Prepare Political Violence Events</a></li>
+  <li><a href="#prepare-mimu-township-boundary" id="toc-prepare-mimu-township-boundary" class="nav-link" data-scroll-target="#prepare-mimu-township-boundary">5.4 Prepare MIMU Township Boundary</a></li>
+  <li><a href="#fix-geometrycollection" id="toc-fix-geometrycollection" class="nav-link" data-scroll-target="#fix-geometrycollection">5.5 Fix GeometryCollection</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">5.6</a></li>
+  <li><a href="#convert-acled-events-into-spatial-points" id="toc-convert-acled-events-into-spatial-points" class="nav-link" data-scroll-target="#convert-acled-events-into-spatial-points">5.7 Convert ACLED Events into Spatial Points</a></li>
+  <li><a href="#spatial-join" id="toc-spatial-join" class="nav-link" data-scroll-target="#spatial-join">5.8 Spatial Join</a></li>
+  <li><a href="#unmatached-events" id="toc-unmatached-events" class="nav-link" data-scroll-target="#unmatached-events">5.9 Unmatached Events</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">5.10 Summary</a></li>
+  <li><a href="#prepare-analysis-ready-spatial-dataset" id="toc-prepare-analysis-ready-spatial-dataset" class="nav-link" data-scroll-target="#prepare-analysis-ready-spatial-dataset">5.11 Prepare Analysis-ready Spatial Dataset</a></li>
+  <li><a href="#ehsa" id="toc-ehsa" class="nav-link" data-scroll-target="#ehsa">5.12 EHSA</a></li>
+  </ul></li>
   <li><a href="#analytical-assumptions-and-methodological-decisions" id="toc-analytical-assumptions-and-methodological-decisions" class="nav-link" data-scroll-target="#analytical-assumptions-and-methodological-decisions">Analytical assumptions and methodological decisions</a></li>
-  <li><a href="#lsma-analysis-lisa" id="toc-lsma-analysis-lisa" class="nav-link" data-scroll-target="#lsma-analysis-lisa">LSMA analysis （LISA？）</a></li>
-  <li><a href="#ehsa" id="toc-ehsa" class="nav-link" data-scroll-target="#ehsa">EHSA</a></li>
+  <li><a href="#local-measures-of-spatial-association-lsma-analysis" id="toc-local-measures-of-spatial-association-lsma-analysis" class="nav-link" data-scroll-target="#local-measures-of-spatial-association-lsma-analysis">Local Measures of Spatial Association (LSMA) analysis</a></li>
+  <li><a href="#ehsa-1" id="toc-ehsa-1" class="nav-link" data-scroll-target="#ehsa-1">EHSA</a></li>
   <li><a href="#integrated-findings-and-discussion" id="toc-integrated-findings-and-discussion" class="nav-link" data-scroll-target="#integrated-findings-and-discussion">Integrated findings and discussion</a></li>
   <li><a href="#geovisualisation-and-geocommunication" id="toc-geovisualisation-and-geocommunication" class="nav-link" data-scroll-target="#geovisualisation-and-geocommunication">Geovisualisation and geocommunication</a></li>
   <li><a href="#pease-keeping-implications" id="toc-pease-keeping-implications" class="nav-link" data-scroll-target="#pease-keeping-implications">Pease-keeping implications</a></li>
@@ -248,7 +322,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">October 7, 2026</p>
+      <p class="date-modified">October 24, 2026</p>
     </div>
   </div>
     
@@ -260,31 +334,670 @@ ul.task-list li input[type="checkbox"] {
 
 
 <section id="overview" class="level1">
-<h1>Overview</h1>
+<h1>1 Overview</h1>
+<p>This technical report examines the spatial and spatio-temporal patterns of political violence in Myanmar from January 2021 to September 2025. Using event-level data from the Armed Conflict Location &amp; Event Data Project <a href="https://acleddata.com/conflict-data/download-data"><strong>(ACLED)</strong></a> and township administrative boundaries from the Myanmar Information Management Unit <a href="https://data.themimu.info/en/dataset/myanmar-administrative-boundary"><strong>(MIMU)</strong></a>, the analysis is conducted at the township level to investigate how conflict events are distributed, clustered, and evolving across space and time.</p>
+<p>The analytical framework consists of two main components. First, Local Measures of Spatial Association (L-MSA), including Local Moran’s I and Getis-Ord Gi*, are applied to identify significant spatial clusters, spatial outliers, hot spots, and cold spots of political violence. Second, Emerging Hot Spot Analysis (EHSA) is used to examine how these spatial concentrations change over time and to distinguish different forms of evolving hot-spot behaviour.</p>
+<p>The report further integrates statistical findings with geovisualisation to communicate the geographical patterns identified and discusses their potential implications for conflict monitoring, humanitarian prioritisation, and peace-related decision-making in Myanmar.</p>
 </section>
 <section id="loading-necessary-r-packages" class="level1">
-<h1>Loading Necessary R Packages</h1>
+<h1>2 Loading Necessary R Packages</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, sfdep, tidyverse, tmap, plotly, Kendall, knitr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>R packages used in this analysis</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Package</th>
+<th style="text-align: left;">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">sf</td>
+<td style="text-align: left;">Spatial data handling</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sfdep</td>
+<td style="text-align: left;">Spatial dependence and hot spot analysis</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tidyverse</td>
+<td style="text-align: left;">Data wrangling and visualisation</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tmap</td>
+<td style="text-align: left;">Thematic mapping</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">plotly</td>
+<td style="text-align: left;">Interactive visualisation</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kendall</td>
+<td style="text-align: left;">Mann-Kendall trend analysis</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">knitr</td>
+<td style="text-align: left;">Table formatting</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 <section id="introduction-and-study-context" class="level1">
-<h1>Introduction and study context</h1>
+<h1>3 Introduction and study context</h1>
+<p>Myanmar has experienced prolonged political instability and escalating armed conflict following the military takeover in February 2021. Since then, conflict has expanded across multiple states and regions, creating substantial humanitarian and security challenges. By early 2025, more than 3.5 million people were estimated to be internally displaced, while active conflict continued across several parts of the country.</p>
+<p>However, political violence is not distributed evenly across Myanmar. The intensity and concentration of conflict events vary considerably between townships and may also change over time. Examining only national-level event totals may therefore conceal important localised patterns of conflict concentration and emerging areas of concern. A geospatial and spatio-temporal perspective enables these variations to be examined systematically by identifying significant spatial clusters, local anomalies, and changes in hot spot patterns across time.</p>
+<p>Against this context, this study examines political violence at the township level from January 2021 to September 2025, with particular attention to its spatial concentration and temporal evolution.</p>
 </section>
 <section id="research-question-and-objectives" class="level1">
-<h1>Research question and objectives</h1>
+<h1>3 Research question and objectives</h1>
+<section id="research-questions" class="level2">
+<h2 class="anchored" data-anchor-id="research-questions">3.1 Research Questions</h2>
+<p>This study aims to understand both the spatial concentration and temporal evolution of political violence across Myanmar at the township level. It addresses the following research questions:</p>
+<p><strong>RQ1 — Spatial Pattern:</strong><br>
+Where are statistically significant clusters, hot spots, cold spots, and spatial outliers of political violence located across Myanmar townships?</p>
+<p><strong>RQ2 — Spatio-temporal Evolution:</strong><br>
+How have significant hot spots of political violence evolved from January 2021 to September 2025, and which townships exhibit emerging, persistent, intensifying, or diminishing patterns?</p>
+</section>
+<section id="research-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="research-objectives">3.2 Research Objectives</h2>
+<p>To address these questions, the study aims to:</p>
+<ol type="1">
+<li><p><strong>Identify spatial concentrations and anomalies</strong> of political violence using township-level spatial association and hot spot analysis.</p></li>
+<li><p><strong>Examine the evolution of conflict hot spots over time</strong> to distinguish temporary concentrations from persistent or changing patterns.</p></li>
+<li><p><strong>Integrate spatial and temporal findings</strong> to develop a clearer understanding of where political violence is concentrated and how these areas are changing.</p></li>
+<li><p><strong>Support geographic prioritisation and decision-making</strong> by identifying townships that may warrant closer monitoring or attention, providing spatial evidence that can inform conflict monitoring, humanitarian planning, resource prioritisation, and peace-building initiatives.</p></li>
+</ol>
+</section>
+<section id="practical-relevance" class="level2">
+<h2 class="anchored" data-anchor-id="practical-relevance">3.3 Practical Relevance</h2>
+<p>The practical value of this analysis lies not only in identifying where conflict events are concentrated, but also in distinguishing areas with different spatial and temporal trajectories. For example, a persistent hot spot may indicate a location requiring sustained monitoring, while an emerging or intensifying hot spot may signal an area where attention is becoming increasingly important. Conversely, diminishing hot spots may indicate changing conflict dynamics that warrant further investigation.</p>
+<p>These insights can provide an evidence-based geographical perspective for organisations involved in conflict monitoring, humanitarian response, public safety, and peace-building. The analysis is intended to support prioritisation rather than predict individual conflict events or establish the causes of violence.</p>
+</section>
 </section>
 <section id="data-and-study-design" class="level1">
-<h1>Data and study design</h1>
-<p>https://geonode.themimu.info/layers/geonode%3Ammr_polbnda_adm3_250k_mimu_1</p>
+<h1>4 Data and study design</h1>
+<section id="data-sources" class="level2">
+<h2 class="anchored" data-anchor-id="data-sources">4.1 Data Sources</h2>
+<p>This study integrates two geospatial datasets. Political violence events are obtained from the <strong>ACLED</strong> (Armed Conflict Location &amp; Event Data Project), which provides event-level information including event date, event type, geographic coordinates, administrative location, and reported fatalities. Township administrative boundaries are obtained from the <strong>MIMU</strong> (Myanmar Information Management Unit) administrative boundary dataset.</p>
+<p>The ACLED dataset covers events recorded between <strong>1 January 2021 and 30 September 2025</strong>, while the MIMU dataset provides the spatial boundaries of <strong>330 townships</strong> across Myanmar.</p>
+</section>
+<section id="spatial-and-temporal-units-of-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="spatial-and-temporal-units-of-analysis">4.2 Spatial and Temporal Units of Analysis</h2>
+<p>The <strong>township (ADM3)</strong> is selected as the primary spatial unit of analysis. Township-level analysis provides sufficient geographical detail to identify localised patterns while maintaining a consistent administrative unit that can support comparison across Myanmar.</p>
+<p>For the spatial analysis, political violence events are aggregated by township. For the spatio-temporal analysis, the data are further aggregated into <strong>monthly intervals</strong>, producing a township-month structure covering <strong>57 months</strong> from January 2021 to September 2025.</p>
+</section>
+<section id="definition-of-political-violence" class="level2">
+<h2 class="anchored" data-anchor-id="definition-of-political-violence">4.3 Definition of Political Violence</h2>
+<p>The primary analytical variable is the <strong>number of political violence events recorded within each township</strong>. For this study, political violence is operationalised using three ACLED event categories:</p>
+<ul>
+<li><strong>Battles</strong></li>
+<li><strong>Explosions/Remote violence</strong></li>
+<li><strong>Violence against civilians</strong></li>
+</ul>
+<p>These categories are selected because they represent direct forms of violent conflict, while events such as protests, riots, and strategic developments are excluded from the primary measure to maintain a clearer focus on physical political violence.</p>
+<p>Reported fatalities are retained as a supplementary variable for descriptive analysis but are not used as the main measure of conflict intensity.</p>
+</section>
+<section id="study-design" class="level2">
+<h2 class="anchored" data-anchor-id="study-design">4.4 Study Design</h2>
+<p>The study adopts an <strong>observational geospatial and spatio-temporal analytical design</strong>. It examines recorded patterns of political violence rather than attempting to establish causal relationships between conflict and external socioeconomic or political factors.</p>
+<p>The analytical design consists of two complementary perspectives. First, township-level spatial analysis is used to identify significant geographical concentrations, clusters, and spatial outliers of political violence. Second, monthly township-level observations are used to examine how these spatial concentrations evolve over time.</p>
+<p>This design enables the study to distinguish between areas that experience high levels of recorded violence at a particular point in time and areas that demonstrate persistent, emerging, intensifying, or diminishing spatial patterns across the study period.</p>
+</section>
 </section>
 <section id="data-preparation-and-quality-assessment" class="level1">
-<h1>Data preparation and quality assessment</h1>
+<h1>5 Data preparation and quality assessment</h1>
+<section id="data-import" class="level2">
+<h2 class="anchored" data-anchor-id="data-import">5.1 Data Import</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>acled_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"take-home_ex2_data/ACLED_Data_Myanmar_Jan2021-Sep2025.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>township_raw <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"take-home_ex2_data/geonode-mmr_polbnda_adm3_250k_mimu_1.kml"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `geonode:mmr_polbnda_adm3_250k_mimu_1' from data source 
+  `C:\Users\jiayi\Documents\SMU\26_Aug_Term\GAA\lw0170_GAA\ISSS626_course\take-home_exercise\take-home_ex2_data\geonode-mmr_polbnda_adm3_250k_mimu_1.kml' 
+  using driver `KML'
+Simple feature collection with 330 features and 2 fields
+Geometry type: GEOMETRYCOLLECTION
+Dimension:     XY
+Bounding box:  xmin: 92.1721 ymin: 9.605884 xmax: 101.17 ymax: 28.54554
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+</section>
+<section id="check-data-quality" class="level2">
+<h2 class="anchored" data-anchor-id="check-data-quality">5.2 Check Data Quality</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(acled_raw)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(acled_raw)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(township_raw)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(township_raw)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(township_raw)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">st_geometry_type</span>(township_raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="duplicate-check" class="level3">
+<h3 class="anchored" data-anchor-id="duplicate-check">5.2.1 Duplicate Check</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>acled_raw <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_records =</span> <span class="fu">n</span>(),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">unique_event_ids =</span> <span class="fu">n_distinct</span>(event_id_cnty),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">start_date =</span> <span class="fu">min</span>(<span class="fu">as.Date</span>(event_date)),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">end_date =</span> <span class="fu">max</span>(<span class="fu">as.Date</span>(event_date))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  total_records unique_event_ids start_date end_date  
+          &lt;int&gt;            &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+1         87109            87109 2021-01-01 2025-09-30</code></pre>
+</div>
+</div>
+<p>The ACLED dataset contained 87,109 event records covering the intended study period from January 2021 to September 2025. All event identifiers were unique, indicating no duplicated event records based on event_id_cnty.</p>
+</section>
+<section id="country-coverage-check" class="level3">
+<h3 class="anchored" data-anchor-id="country-coverage-check">5.2.2 Country Coverage Check</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>acled_raw <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(country, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  country          n
+  &lt;chr&gt;        &lt;int&gt;
+1 Myanmar      87103
+2 Indian Ocean     6</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>acled_mm <span class="ot">&lt;-</span> acled_raw <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"Myanmar"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Although the dataset was extracted for Myanmar, six records were coded under the Indian Ocean. These observations were excluded to maintain consistency with the defined study area.</p>
+</section>
+<section id="missing-values-check" class="level3">
+<h3 class="anchored" data-anchor-id="missing-values-check">5.2.3 Missing Values Check</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>acled_mm <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">missing_event_date =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(event_date)),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">missing_event_type =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(event_type)),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">missing_admin3 =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(admin3)),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">missing_latitude =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(latitude)),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">missing_longitude =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(longitude)),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">missing_geo_precision =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(geo_precision)),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">missing_fatalities =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(fatalities))</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 7
+  missing_event_date missing_event_type missing_admin3 missing_latitude
+               &lt;int&gt;              &lt;int&gt;          &lt;int&gt;            &lt;int&gt;
+1                  0                  0           1112                0
+# ℹ 3 more variables: missing_longitude &lt;int&gt;, missing_geo_precision &lt;int&gt;,
+#   missing_fatalities &lt;int&gt;</code></pre>
+</div>
+</div>
+<p>Missing values were observed in the ACLED admin3 field. However, township assignment in this study was based on the geographic coordinates of each event and the MIMU township polygons rather than relying solely on ACLED administrative labels. Therefore, missing admin3 values did not automatically result in record exclusion.</p>
+</section>
+<section id="geo-precision-quality-assessment" class="level3">
+<h3 class="anchored" data-anchor-id="geo-precision-quality-assessment">5.2.4 Geo-precision Quality Assessment</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>acled_mm <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(geo_precision) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percentage =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n) <span class="sc">*</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  geo_precision     n percentage
+          &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt;
+1             1 49261     56.6  
+2             2 37460     43.0  
+3             3   382      0.439</code></pre>
+</div>
+</div>
+<p>ACLED records include a geographic precision indicator reflecting the level of certainty associated with each event location. While a substantial proportion of events were coded with the highest geographic precision, a considerable number were assigned lower precision levels. Excluding all lower-precision observations would remove a large proportion of the available conflict records and could introduce additional selection bias.</p>
+<p>Therefore, all eligible political violence events were retained for the primary analysis. Geographic precision is instead treated as an important data limitation, and the robustness of key spatial findings may be evaluated using higher-precision observations as a sensitivity check.</p>
+</section>
+</section>
+<section id="prepare-political-violence-events" class="level2">
+<h2 class="anchored" data-anchor-id="prepare-political-violence-events">5.3 Prepare Political Violence Events</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>political_violence <span class="ot">&lt;-</span> acled_mm <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    event_type <span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Battles"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Explosions/Remote violence"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Violence against civilians"</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">event_date =</span> <span class="fu">as.Date</span>(event_date),</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">month =</span> <span class="fu">floor_date</span>(event_date, <span class="at">unit =</span> <span class="st">"month"</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>political_violence <span class="sc">%&gt;%</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(event_type, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  event_type                     n
+  &lt;chr&gt;                      &lt;int&gt;
+1 Explosions/Remote violence 22925
+2 Battles                    21121
+3 Violence against civilians  9954</code></pre>
+</div>
+</div>
+</section>
+<section id="prepare-mimu-township-boundary" class="level2">
+<h2 class="anchored" data-anchor-id="prepare-mimu-township-boundary">5.4 Prepare MIMU Township Boundary</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>extract_field <span class="ot">&lt;-</span> <span class="cf">function</span>(x, field) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  pattern <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'&lt;span class="atr-name"&gt;'</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    field,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'&lt;/span&gt;:&lt;/strong&gt;</span><span class="sc">\\</span><span class="st">s*'</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'&lt;span class="atr-value"&gt;([^&lt;]+)'</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_match</span>(x, pattern)[, <span class="dv">2</span>]</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>township <span class="ot">&lt;-</span> township_raw <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">ST =</span> <span class="fu">extract_field</span>(Description, <span class="st">"ST"</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ST_PCODE =</span> <span class="fu">extract_field</span>(Description, <span class="st">"ST_PCODE"</span>),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">DT =</span> <span class="fu">extract_field</span>(Description, <span class="st">"DT"</span>),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">DT_PCODE =</span> <span class="fu">extract_field</span>(Description, <span class="st">"DT_PCODE"</span>),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">TS =</span> <span class="fu">extract_field</span>(Description, <span class="st">"TS"</span>),</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">TS_PCODE =</span> <span class="fu">extract_field</span>(Description, <span class="st">"TS_PCODE"</span>),</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">PCode_V =</span> <span class="fu">extract_field</span>(Description, <span class="st">"PCode_V"</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    ST,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    ST_PCODE,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    DT,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    DT_PCODE,</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    TS,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    TS_PCODE,</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    PCode_V,</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    geometry</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="fix-geometrycollection" class="level2">
+<h2 class="anchored" data-anchor-id="fix-geometrycollection">5.5 Fix GeometryCollection</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>township <span class="ot">&lt;-</span> township <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_collection_extract</span>(<span class="st">"POLYGON"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_make_valid</span>()</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">st_geometry_type</span>(township)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+ [10] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+ [19] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+ [28] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+ [37] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+ [46] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+ [55] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+ [64] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+ [73] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+ [82] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+ [91] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[100] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[109] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[118] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[127] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[136] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[145] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[154] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[163] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[172] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[181] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[190] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[199] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[208] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[217] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[226] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[235] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[244] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[253] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[262] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[271] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[280] POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON POLYGON
+[289] POLYGON
+18 Levels: GEOMETRY POINT LINESTRING POLYGON MULTIPOINT ... TRIANGLE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">st_is_valid</span>(township))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(township)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 289</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">n_distinct</span>(township<span class="sc">$</span>TS_PCODE)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 289</code></pre>
+</div>
+</div>
+<p>The original KML file stored township features as geometry collections. Polygon components were extracted and geometries were validated before spatial analysis. The resulting boundary dataset contained 330 township features, all with valid geometries and unique township PCodes.</p>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section">5.6</h2>
+<p>TS_PCODE was used as the primary township identifier because township names are not necessarily unique across Myanmar.</p>
+</section>
+<section id="convert-acled-events-into-spatial-points" class="level2">
+<h2 class="anchored" data-anchor-id="convert-acled-events-into-spatial-points">5.7 Convert ACLED Events into Spatial Points</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>political_violence_sf <span class="ot">&lt;-</span> political_violence <span class="sc">%&gt;%</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">crs =</span> <span class="dv">4326</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">remove =</span> <span class="cn">FALSE</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(political_violence_sf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coordinate Reference System:
+  User input: EPSG:4326 
+  wkt:
+GEOGCRS["WGS 84",
+    ENSEMBLE["World Geodetic System 1984 ensemble",
+        MEMBER["World Geodetic System 1984 (Transit)"],
+        MEMBER["World Geodetic System 1984 (G730)"],
+        MEMBER["World Geodetic System 1984 (G873)"],
+        MEMBER["World Geodetic System 1984 (G1150)"],
+        MEMBER["World Geodetic System 1984 (G1674)"],
+        MEMBER["World Geodetic System 1984 (G1762)"],
+        MEMBER["World Geodetic System 1984 (G2139)"],
+        MEMBER["World Geodetic System 1984 (G2296)"],
+        ELLIPSOID["WGS 84",6378137,298.257223563,
+            LENGTHUNIT["metre",1]],
+        ENSEMBLEACCURACY[2.0]],
+    PRIMEM["Greenwich",0,
+        ANGLEUNIT["degree",0.0174532925199433]],
+    CS[ellipsoidal,2],
+        AXIS["geodetic latitude (Lat)",north,
+            ORDER[1],
+            ANGLEUNIT["degree",0.0174532925199433]],
+        AXIS["geodetic longitude (Lon)",east,
+            ORDER[2],
+            ANGLEUNIT["degree",0.0174532925199433]],
+    USAGE[
+        SCOPE["Horizontal component of 3D system."],
+        AREA["World."],
+        BBOX[-90,-180,90,180]],
+    ID["EPSG",4326]]</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(township)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coordinate Reference System:
+  User input: WGS 84 
+  wkt:
+GEOGCRS["WGS 84",
+    DATUM["World Geodetic System 1984",
+        ELLIPSOID["WGS 84",6378137,298.257223563,
+            LENGTHUNIT["metre",1]]],
+    PRIMEM["Greenwich",0,
+        ANGLEUNIT["degree",0.0174532925199433]],
+    CS[ellipsoidal,2],
+        AXIS["geodetic latitude (Lat)",north,
+            ORDER[1],
+            ANGLEUNIT["degree",0.0174532925199433]],
+        AXIS["geodetic longitude (Lon)",east,
+            ORDER[2],
+            ANGLEUNIT["degree",0.0174532925199433]],
+    ID["EPSG",4326]]</code></pre>
+</div>
+</div>
+</section>
+<section id="spatial-join" class="level2">
+<h2 class="anchored" data-anchor-id="spatial-join">5.8 Spatial Join</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>violence_joined <span class="ot">&lt;-</span> <span class="fu">st_join</span>(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  political_violence_sf,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  township <span class="sc">%&gt;%</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(TS_PCODE, TS, ST),</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">join =</span> st_intersects,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">left =</span> <span class="cn">TRUE</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>violence_joined <span class="sc">%&gt;%</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_events =</span> <span class="fu">n</span>(),</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">matched_events =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(TS_PCODE)),</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">unmatched_events =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(TS_PCODE)),</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">match_rate =</span> matched_events <span class="sc">/</span> total_events <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  total_events matched_events unmatched_events match_rate
+         &lt;int&gt;          &lt;int&gt;            &lt;int&gt;      &lt;dbl&gt;
+1        54000          48534             5466       89.9</code></pre>
+</div>
+</div>
+</section>
+<section id="unmatached-events" class="level2">
+<h2 class="anchored" data-anchor-id="unmatached-events">5.9 Unmatached Events</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>unmatched_events <span class="ot">&lt;-</span> violence_joined <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(TS_PCODE)) <span class="sc">%&gt;%</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    event_id_cnty,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    event_date,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    event_type,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    admin1,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    admin2,</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    admin3,</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    location,</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    latitude,</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    longitude,</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    geo_precision</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>unmatched_events</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5,466 × 10
+   event_id_cnty event_date event_type    admin1 admin2 admin3 location latitude
+   &lt;chr&gt;         &lt;date&gt;     &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;
+ 1 MMR10948      2021-01-08 Explosions/R… Rakhi… Kyauk… Ann    Pe Pa D…     19.9
+ 2 MMR10969      2021-01-10 Explosions/R… Rakhi… Mrauk… Minbya Sa Par …     20.5
+ 3 MMR10970      2021-01-21 Violence aga… Rakhi… Maung… Maung… Inn Din      20.5
+ 4 MMR11019      2021-01-23 Violence aga… Mon    Mawla… Mudon  Kamarwet     16.1
+ 5 MMR11217      2021-02-07 Violence aga… Rakhi… Sittwe Rathe… Laung Z…     20.4
+ 6 MMR11646      2021-02-17 Explosions/R… Rakhi… Kyauk… Ann    Tha Yet…     19.9
+ 7 MMR68565      2021-02-20 Violence aga… Ayeya… Pathe… Pathe… Pathein      16.8
+ 8 MMR12368      2021-02-22 Explosions/R… Rakhi… Maung… Maung… Taung P…     21.3
+ 9 MMR13102      2021-02-25 Violence aga… Rakhi… Maung… Maung… U Daung      20.7
+10 MMR12573      2021-03-01 Violence aga… Tanin… Myeik  Myeik  Myeik        12.4
+# ℹ 5,456 more rows
+# ℹ 2 more variables: longitude &lt;dbl&gt;, geo_precision &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Eight eligible political violence events could not be assigned to a MIMU township polygon through coordinate-based spatial matching. Given their negligible proportion of the analytical dataset, these observations were excluded from township-level analysis but documented as part of the spatial data quality assessment.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>violence_matched <span class="ot">&lt;-</span> violence_joined <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(TS_PCODE))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">5.10 Summary</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>quality_summary <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Quality Check</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Raw ACLED records"</span>,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Unique event IDs"</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Myanmar records"</span>,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Political violence records retained"</span>,</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Missing coordinates"</span>,</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Township boundary features"</span>,</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Unique township PCodes"</span>,</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Invalid township geometries"</span>,</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Spatially matched political violence events"</span>,</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Unmatched political violence events"</span></span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">Result =</span> <span class="fu">c</span>(</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(acled_raw),</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">n_distinct</span>(acled_raw<span class="sc">$</span>event_id_cnty),</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(acled_mm),</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(political_violence),</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">is.na</span>(acled_mm<span class="sc">$</span>latitude) <span class="sc">|</span></span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">is.na</span>(acled_mm<span class="sc">$</span>longitude)</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(township),</span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">n_distinct</span>(township<span class="sc">$</span>TS_PCODE),</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">st_is_valid</span>(township)),</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(violence_joined<span class="sc">$</span>TS_PCODE)),</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">is.na</span>(violence_joined<span class="sc">$</span>TS_PCODE))</span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>  quality_summary,</span>
+<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Summary of Data Quality Assessment"</span></span>
+<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Summary of Data Quality Assessment</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Quality Check</th>
+<th style="text-align: right;">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Raw ACLED records</td>
+<td style="text-align: right;">87109</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Unique event IDs</td>
+<td style="text-align: right;">87109</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Myanmar records</td>
+<td style="text-align: right;">87103</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Political violence records retained</td>
+<td style="text-align: right;">54000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing coordinates</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Township boundary features</td>
+<td style="text-align: right;">289</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Unique township PCodes</td>
+<td style="text-align: right;">289</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Invalid township geometries</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spatially matched political violence events</td>
+<td style="text-align: right;">48534</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Unmatched political violence events</td>
+<td style="text-align: right;">5466</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="prepare-analysis-ready-spatial-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="prepare-analysis-ready-spatial-dataset">5.11 Prepare Analysis-ready Spatial Dataset</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>violence_township <span class="ot">&lt;-</span> violence_matched <span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    TS_PCODE,</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"violent_events"</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>township_analysis <span class="ot">&lt;-</span> township <span class="sc">%&gt;%</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    violence_township,</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"TS_PCODE"</span></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">violent_events =</span> <span class="fu">replace_na</span>(</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>      violent_events,</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>      <span class="dv">0</span></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(township_analysis)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 289</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(township_analysis<span class="sc">$</span>violent_events))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+</section>
+<section id="ehsa" class="level2">
+<h2 class="anchored" data-anchor-id="ehsa">5.12 EHSA</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>violence_monthly <span class="ot">&lt;-</span> violence_matched <span class="sc">%&gt;%</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    TS_PCODE,</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    month,</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"violent_events"</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>all_months <span class="ot">&lt;-</span> <span class="fu">seq</span>(</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">from =</span> <span class="fu">as.Date</span>(<span class="st">"2021-01-01"</span>),</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">to =</span> <span class="fu">as.Date</span>(<span class="st">"2025-09-01"</span>),</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">"month"</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>township_monthly <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">TS_PCODE =</span> township<span class="sc">$</span>TS_PCODE,</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">month =</span> all_months</span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>    violence_monthly,</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"TS_PCODE"</span>, <span class="st">"month"</span>)</span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">violent_events =</span> <span class="fu">replace_na</span>(</span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>      violent_events,</span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a>      <span class="dv">0</span></span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(township_monthly)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16473</code></pre>
+</div>
+</div>
+</section>
 </section>
 <section id="analytical-assumptions-and-methodological-decisions" class="level1">
 <h1>Analytical assumptions and methodological decisions</h1>
 </section>
-<section id="lsma-analysis-lisa" class="level1">
-<h1>LSMA analysis （LISA？）</h1>
+<section id="local-measures-of-spatial-association-lsma-analysis" class="level1">
+<h1>Local Measures of Spatial Association (LSMA) analysis</h1>
 </section>
-<section id="ehsa" class="level1">
+<section id="ehsa-1" class="level1">
 <h1>EHSA</h1>
 </section>
 <section id="integrated-findings-and-discussion" class="level1">
