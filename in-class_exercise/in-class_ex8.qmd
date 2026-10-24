@@ -80,7 +80,10 @@ stores <- stores %>%
   left_join(store_sales_aggre,
             by = join_by(
               Store_CD == `Store Code`)) %>%
-  mutate(Store_size = 100)
+  mutate(Store_size = 1)
+
+stores_tidied <- stores %>%
+  st_drop_geometry()
 
 summary(stores)
 ```
@@ -148,23 +151,37 @@ distmat_long <- distmat %>%
 ## 8.6 Preparing Interaction Matrix
 
 ```{r}
-interaction_matrix <- distmat_long %>%
+ijmatrix <- distmat_long %>%
   left_join(
-    stores %>% 
-      st_drop_geometry() %>% 
+    stores_tidied %>%
       select(Store_CD, Store_size),
     by = "Store_CD") %>%
   relocate(
     distance, .after = last_col())
-
-summary(interaction_matrix)
 ```
+
+```{r}
+village_tidies <- village %>%
+  select(VILLCODE, H_CNT, P_CNT) %>%
+  mutate(HH_SIZE = P_CNT/H_CNT) %>%
+  st_drop_geometry()
+```
+
+```{r}
+ijmatrix <- ijmatrix %>%
+  left_join(
+    village_tidies,
+    by = "VILLCODE") %>%
+  relocate(
+    HH_SIZE, .after = last_col())
+```
+
 
 ## 8.7 Computing Huff model
 
 ```{r}
 huff_share <- huff.shares(
-  interaction_matrix, "VILLCODE", "Store_CD", 
+  ijmatrix, "VILLCODE", "Store_CD", 
   "Store_size", "distance")
 ```
 
@@ -215,7 +232,7 @@ huff_share_pp <- huff_share %>%
 
 huff_total <- shares.total(
   huff_share_pp, "VILLCODE", "Store_CD",
-  "p_ij", "P_CNT")
+  "U_ij", "H_CNT")
 
 store_sales_est <- stores %>%
   left_join(huff_total,
@@ -238,4 +255,34 @@ huff_share_wider <- huff_share %>%
   select(VILLCODE, Store_CD, p_ij) %>%
     pivot_wider(names_from = Store_CD, 
                 values_from = p_ij)
+```
+
+```{r}
+huff_TA <- huff_share_wider %>%
+  mutate(
+    TA = names(pick(2:29))[
+      max.col(pick(2:29),
+              ties.method = "first")
+    ]
+  )
+```
+
+```{r}
+huff_TA_tidied <- huff_TA %>%
+  select(VILLCODE, TA)
+
+village_TA <- village %>%
+  left_join(huff_TA_tidied,
+            by = join_by(VILLCODE))
+```
+
+```{r}
+tm_shape(village_TA) +
+  tm_polygons(fill = "TA") +
+  tm_title("Trade Areas of Stores") +
+  tm_layout(frame = TRUE) +
+  tm_borders(fill_alpha = 0.5) +
+  tm_compass(type="8star", size = 2) +
+  tm_scalebar() +
+  tm_grid(alpha =0.2)
 ```
