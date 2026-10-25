@@ -1,0 +1,16 @@
+/* Style designed to echo the user's Exercise 1 Simple-theme Quarto executive-summary slides. */
+.reveal { font-family: "Aptos", "Arial", sans-serif; color: #23374c; }
+.reveal .slides { text-align: left; }
+.reveal h1, .reveal h2, .reveal h3 { color: #1b304a; font-weight: 700; letter-spacing: -.018em; }
+.reveal h2 { border-bottom: 3px solid #2d8a87; padding-bottom: .13em; font-size: 1.38em; }
+.reveal h3 { font-size: 1.0em; margin-bottom: .35em; }
+.reveal p, .reveal li { font-size: .73em; line-height: 1.27; }
+.reveal .callout { border-radius: 12px; box-shadow: none; margin-top: .55em; margin-bottom: .45em; }
+.reveal .callout-body { padding: .5em .8em; }
+.reveal .callout-note { background: #f1f5f9; border-left: 5px solid #5179a8; }
+.reveal .callout-tip { background: #eff7f6; border-left: 5px solid #2d8a87; }
+.reveal .callout-warning { background: #fff7e8; border-left: 5px solid #c9ae4e; }
+.reveal .callout-title-container { font-size: .76em; color: #1b304a; font-weight: 700; }
+.reveal table { font-size: .62em; }
+.reveal img { object-fit: contain; max-height: 620px; }
+.reveal footer { font-size: 12px; color: #657486; }

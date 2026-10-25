@@ -335,10 +335,6 @@ stopifnot(
 ```
 
 ```{r}
-
-#| label: validate-mimu-geometry
-#| echo: false
-
 geometry_check <- tibble(
   Check = c(
     "Total townships",
@@ -644,9 +640,6 @@ knitr::kable(same_month_comparison, digits = 2)
 
 ## 7.3 Monthly Trend by Event Type
 ```{r}
-
-#| label: monthly-event-composition
-
 monthly_by_type <- violence_matched %>%
   st_drop_geometry() %>%
   count(month, event_type)
@@ -724,9 +717,6 @@ township_analysis$neighbour_avg[spdep::card(queen_nb) == 0] <- NA_real_
 The following table summarises the key methodological decisions adopted for the spatial and spatio-temporal analyses. These choices aim to ensure consistency, statistical interpretability, and appropriate treatment of geographical constraints.
 
 ```{r}
-#| label: methodological-decisions
-#| echo: false
-
 method_table <- data.frame(
   Aspect = c(
     "Analytical variable",
@@ -1170,9 +1160,6 @@ stopifnot(sfdep::is_spacetime_cube(st_cube))
 
 ### 11.1.2 Summary Table
 ```{r}
-#| label: ehsa-cube-summary
-#| echo: false
-
 cube_summary <- tibble(
   Metric = c(
     "Total townships",
@@ -1254,9 +1241,6 @@ The EHSA results are classified according to the temporal characteristics of loc
 The distribution of EHSA classifications is summarised at the township level and visualised using thematic mapping to highlight geographical differences in temporal patterns.
 
 ```{r}
-#| label: ehsa-classification-summary
-#| echo: false
-
 ehsa_summary <- ehsa_results %>%
   as_tibble() %>%
   count(
@@ -1405,9 +1389,6 @@ ggplot(ehsa_map) +
 ```
 
 ```{r}
-#| label: ehsa-summary-table
-#| echo: false
-
 ehsa_map %>%
   st_drop_geometry() %>%
   count(EHSA_plot, name = "Townships") %>%
@@ -1651,9 +1632,6 @@ stopifnot(
 The selected SKATER solution identifies six geographically constrained clusters covering 327 townships. Cluster sizes are examined to assess the distribution of townships across the resulting groups.
 
 ```{r}
-#| label: skater-cluster-summary
-#| echo: false
-
 skater_assign <- tibble(
   TS_PCODE = lisa_data$TS_PCODE,
   SKATER_cluster = paste0(
@@ -2079,7 +2057,7 @@ Future research could incorporate population data, displacement information, roa
 
 # 16 Executive Summary
 
-Executive Summary Slide[]
+[Executive Summary Slide](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex2_slide.html#/title-slide)
 
 
 # 17 References
