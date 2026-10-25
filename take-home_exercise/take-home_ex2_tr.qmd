@@ -86,9 +86,9 @@ This study operationalises political violence using the frequency of recorded co
 
 The primary measure includes three ACLED event types: Battles, Explosions/Remote violence, and Violence against civilians. Each recorded event contributes equally to the event count.
 
-The event_type classification is selected as the primary analytical level because it provides interpretable categories of direct political violence while excluding non-violent strategic developments and demonstrations.
+The event_type classification is selected as the primary analytical level, focusing on Battles, Explosions/Remote violence, and Violence against civilians.
 
-The sub_event_type field is retained for supplementary analysis of violence composition. The broader disorder_type classification is considered in a sensitivity analysis to assess the implications of excluding other politically violent events.
+The broader disorder_type classification is reviewed descriptively to assess differences in event coverage. However, the spatial analyses are conducted using the selected event_type definition only.
 
 Accordingly, the term "violence level" in this report refers to recorded political violence event frequency, rather than a direct measure of casualties, severity, or population-level risk.
 
@@ -96,9 +96,9 @@ Accordingly, the term "violence level" in this report refers to recorded politic
 
 The study adopts an **observational geospatial and spatio-temporal analytical design**. It examines recorded patterns of political violence rather than attempting to establish causal relationships between conflict and external socioeconomic or political factors.
 
-The analytical design consists of two complementary perspectives. First, township-level spatial analysis is used to identify significant geographical concentrations, clusters, and spatial outliers of political violence. Second, monthly township-level observations are used to examine how these spatial concentrations evolve over time.
+The analytical design combines three perspectives. First, LISA and Getis-Ord Gi* identify spatial concentrations and outliers across the study period. Second, EHSA examines changes in local hot and cold spot patterns using monthly observations. Third, SKATER groups geographically connected townships with similar historical violence profiles.
 
-This design enables the study to distinguish between areas that experience high levels of recorded violence at a particular point in time and areas that demonstrate persistent, emerging, intensifying, or diminishing spatial patterns across the study period.
+Together, these approaches provide complementary insights into spatial concentration, temporal behaviour, and regional similarity.
 
 
 # 5 Loading Necessary R Packages
@@ -279,6 +279,7 @@ township <- township_raw %>%
 ```
 
 ```{r}
+#| include: false
 nrow(township)
 n_distinct(township$TS_PCODE)
 ```
@@ -664,9 +665,9 @@ ggplot(
   theme_minimal() +
   theme(legend.position = "none")
 ```
-Monthly event frequencies are examined separately for Battles, Explosions/Remote violence, and Violence against civilians. This analysis aims to identify temporal fluctuations and differences in the occurrence patterns of the three event categories.
+Battles and Explosions/Remote violence generally increased after 2021, with notable peaks around late 2023 and early 2024. In contrast, Violence against civilians reached relatively high levels during 2021–2022 before generally declining in later years.
 
-By comparing these trends, the study provides additional context for interpreting the subsequent spatio-temporal analysis and identifying whether changes in overall political violence frequency are associated with particular event categories.
+These differences suggest that the three event types followed distinct temporal patterns, highlighting the importance of examining violence composition rather than relying solely on overall event counts.
 
 
 # 8 Spatial Neighbourhood and Weights
@@ -731,10 +732,10 @@ method_table <- data.frame(
     "Log-transformed mean monthly event frequency (log1p) for LISA and Gi*",
     "Queen contiguity (shared boundary or vertex)",
     "Row-standardised weights for LISA; self-inclusive weights for Gi*",
-    "Excluded from neighbour-based tests; disconnected components handled separately",
+    "Three isolated townships are excluded from neighbour-based analysis but retained in the final maps",
     "999 permutations and BH-adjusted p < 0.05 for LISA and Gi*",
     "57 monthly observations; EHSA with k = 1 and 199 simulations",
-    "Component-wise SKATER using annual monthly averages and event persistence"
+    "SKATER applied to the main connected component (327 townships), using annual average monthly event frequencies and event persistence"
   )
 )
 
@@ -1409,11 +1410,9 @@ ehsa_map %>%
 
 ## 11.5 Results and Interpretation
 
-The EHSA results reveal heterogeneous spatio-temporal patterns of recorded political violence across Myanmar townships. The identified classifications include sporadic and oscillating hot spots, as well as sporadic, oscillating, and persistent cold spots, indicating differences in the temporal behaviour of local spatial concentrations.
+The EHSA results reveal diverse spatio-temporal patterns of recorded political violence across Myanmar. Among the 327 analysed townships, sporadic coldspots are the most common classification (156), followed by no pattern detected (105) and sporadic hotspots (43). Smaller numbers of oscillating hotspots (10), persistent coldspots (8), and oscillating coldspots (5) are also identified.
 
-These findings complement the cross-sectional LISA and Gi* results by distinguishing intermittent concentrations from more sustained spatial patterns. Importantly, cold spot classifications indicate relatively low concentrations of recorded events within the statistical framework and should not be interpreted as evidence of safety or an absence of conflict.
-
-The results provide a foundation for examining whether townships identified as cross-sectional hot spots also exhibit persistent or intermittent patterns over time.
+These findings suggest that intermittent spatial concentrations are more common than persistent patterns under the selected EHSA settings. Unlike the preceding LISA and Gi* analyses, EHSA highlights how local concentrations change across monthly observations. Importantly, coldspot classifications indicate relatively low spatial concentrations of recorded events during particular periods, rather than an absence of conflict or evidence of safety.
 
 
 # 12 Spatially Constrained Clustering
@@ -1500,7 +1499,7 @@ summary(skater_scaled)
 
 Six temporal features were prepared for each township, including average monthly event counts from 2021 to 2025 and the proportion of months with recorded violence.
 
-Annual event counts were log-transformed to reduce the influence of extreme values. All features were then standardised to ensure fair comparison during clustering. The results confirm that each standardised feature has a mean of approximately zero, while differences between townships are preserved.
+Annual average monthly event frequencies were log-transformed to reduce the influence of extreme values. All features were then standardised to ensure fair comparison during clustering. The results confirm that each standardised feature has a mean of approximately zero, while differences between townships are preserved.
 
 ## 12.3 SKATER Clustering
 
@@ -1602,10 +1601,12 @@ A sensitivity analysis was conducted to compare SKATER solutions with 3 to 8 clu
 
 Although WSS decreased as the number of clusters increased, no clear elbow point was observed. The 6-cluster solution offers a reasonable balance, reducing the largest cluster from 167 to 88 townships while maintaining a minimum cluster size of 13.
 
-Therefore, the 6-cluster solution is considered a preliminary choice, subject to further evaluation of geographical patterns and temporal profiles.
+Therefore, the six-cluster solution was selected based on within-cluster similarity, cluster sizes, and geographical interpretability.
 
 ### 12.3.4 Run SKATER
 ```{r}
+#| include: false
+
 skater_fit <- spdep::skater(
   edges = skater_mst[, 1:2, drop = FALSE],
   data = as.data.frame(skater_scaled),
