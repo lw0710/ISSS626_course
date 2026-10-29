@@ -11,25 +11,29 @@ date-modified: last-modified
 
 This hands-on exercise is focus on how to build hedonic pricing models by using Geographically weighted regression (GWR) methods. The dependent variable is the resale prices of condominium in 2015. The independent variables are divided into either structural and locational.
 
-
 ## 9.2 Getting Started
+
 ```{r}
 pacman::p_load(olsrr, corrplot, ggpubr, 
                sf, sfdep, GWmodel, tmap, 
                tidyverse, gtsummary,
                performance, RColorBrewer,gt)
-```
 
+packageVersion("tmap")
+tmap_mode("plot")
+```
 
 ## 9.3 Geospatial Data Wrangling
 
 ### 9.3.1 Importing geospatial data
+
 ```{r}
 mpsz = st_read(dsn = "hands-on_ex9_data/geospatial", 
                layer = "MP14_SUBZONE_WEB_PL")
 ```
 
 ### 9.3.2 Updating CRS information
+
 ```{r}
 mpsz_svy21 <- st_transform(mpsz, 3414)
 
@@ -38,10 +42,10 @@ st_crs(mpsz_svy21)
 st_bbox(mpsz_svy21)
 ```
 
-
 ## 9.4 Aspatial Data Wrangling
 
 ### 9.4.1 Importing the aspatial data
+
 ```{r}
 condo_resale = read_csv(
   "hands-on_ex9_data/aspatial/Condo_resale_2015.csv")
@@ -53,6 +57,7 @@ summary(condo_resale)
 ```
 
 ### 9.4.2 Converting aspatial data frame into a sf object
+
 ```{r}
 condo_resale.sf <- st_as_sf(condo_resale,
                             coords = c("LONGITUDE", "LATITUDE"),
@@ -62,10 +67,10 @@ condo_resale.sf <- st_as_sf(condo_resale,
 head(condo_resale.sf)
 ```
 
-
 ## 9.5 Exploratory Data Analysis (EDA)
 
 ### 9.5.1 EDA using statistical graphics
+
 ```{r}
 ggplot(data=condo_resale.sf, 
        aes(x=`SELLING_PRICE`)) +
@@ -86,6 +91,7 @@ ggplot(data=condo_resale.sf,
 ```
 
 ### 9.5.2 Multiple Histogram Plots distribution of variables
+
 ```{r}
 AREA_SQM <- ggplot(data=condo_resale.sf, 
                    aes(x= `AREA_SQM`)) +
@@ -167,9 +173,8 @@ ggarrange(AREA_SQM, AGE, PROX_CBD, PROX_CHILDCARE,
 ```
 
 ### 9.5.3 Drawing Statistical Point Map
-```{r}
-tmap_mode("view")
 
+```{r}
 tm_shape(mpsz_svy21)+
   tm_polygons() +
 tm_shape(condo_resale.sf) +  
@@ -179,14 +184,12 @@ tm_shape(condo_resale.sf) +
           fill.scale = tm_scale_intervals(
             style="quantile")) +
   tm_view(set_zoom_limits = c(11,14))
-
-tmap_mode("plot")
 ```
-
 
 ## 9.6 Hedonic Pricing Modelling in R
 
 ### 9.6.1 Simple Linear Regression Method
+
 ```{r}
 condo.slr <- lm(formula=SELLING_PRICE ~ AREA_SQM, 
                 data = condo_resale.sf)
@@ -202,6 +205,7 @@ ggplot(data=condo_resale.sf,
 ```
 
 ### 9.6.2 Multiple Linear Regression Method
+
 ```{r}
 corrplot(cor(condo_resale[, 5:23]), 
          diag = FALSE, 
@@ -213,6 +217,7 @@ corrplot(cor(condo_resale[, 5:23]),
 ```
 
 ### 9.6.3 Building a hedonic pricing model using multiple linear regression method
+
 ```{r}
 condo.mlr <- lm(
   formula = SELLING_PRICE ~ AREA_SQM + AGE  + 
@@ -229,6 +234,7 @@ summary(condo.mlr)
 ```
 
 ### 9.6.4 Revising the model
+
 ```{r}
 condo.mlr1 <- lm(
   formula = SELLING_PRICE ~ AREA_SQM + AGE + 
@@ -242,6 +248,7 @@ summary(condo.mlr1)
 ```
 
 ### 9.6.5 Preparing Publication Quality Table: gtsummary method
+
 ```{r}
 tbl_regression(condo.mlr1, intercept = TRUE)
 
@@ -257,6 +264,7 @@ tbl_regression(condo.mlr1,
 ### 9.6.6 Regression Diagnostics
 
 #### 9.6.6.1 Multicollinearity test
+
 ```{r}
 check_collinearity(condo.mlr1)
 
@@ -265,12 +273,14 @@ plot(mlr.vif)
 ```
 
 #### 9.6.6.2 Test for Non-Linearity
+
 ```{r}
 check_model(condo.mlr1,
             check = "linearity")
 ```
 
 #### 9.6.6.3 Test for Normality Assumption
+
 ```{r}
 check_normality(condo.mlr1)
 
@@ -282,6 +292,7 @@ check_model(condo.mlr1,
 ```
 
 #### 9.6.6.4 Testing for Spatial Autocorrelation
+
 ```{r}
 mlr.output <- as.data.frame(condo.mlr1$residuals)
 
@@ -291,8 +302,6 @@ rename(`MLR_RES` = `condo.mlr1.residuals`)
 ```
 
 ```{r}
-tmap_mode("view")
-
 tm_shape(mpsz_svy21) +
   tm_polygons(fill_alpha = 0.4) +
 tm_shape(condo_resale.sf) +  
@@ -311,8 +320,6 @@ tm_shape(condo_resale.sf) +
   tm_title("LM Residuals (Quantile Classification)") +
   tm_layout(legend.outside = TRUE) +
   tm_view(set_zoom_limits = c(11,14))
-
-tmap_mode("plot")
 ```
 
 ```{r}
@@ -334,12 +341,12 @@ global_moran_perm(
   nsim = 499)
 ```
 
-
 ## 9.7 Building Hedonic Pricing Models using GWmodel
 
 ### 9.7.1 Building Fixed Bandwidth GWR Model
 
 #### 9.7.1.1 Computing fixed bandwith
+
 ```{r}
 bw.fixed <- bw.gwr(
   formula = SELLING_PRICE ~ AREA_SQM + AGE  + 
@@ -356,6 +363,7 @@ bw.fixed <- bw.gwr(
 ```
 
 #### 9.7.1.2 GWModel method - fixed bandwith
+
 ```{r}
 gwr.fixed <- gwr.basic(
   formula = SELLING_PRICE ~ AREA_SQM + AGE  + 
@@ -375,6 +383,7 @@ gwr.fixed
 ### 9.7.2 Building Adaptive Bandwidth GWR Model
 
 #### 9.7.2.1 Computing the adaptive bandwidth
+
 ```{r}
 bw.adaptive <- bw.gwr(
   formula = SELLING_PRICE ~ AREA_SQM + AGE  + 
@@ -391,6 +400,7 @@ bw.adaptive <- bw.gwr(
 ```
 
 #### 9.7.2.2 Constructing the adaptive bandwidth gwr model
+
 ```{r}
 gwr.adaptive <- gwr.basic(
   formula = SELLING_PRICE ~ AREA_SQM + AGE + 
@@ -408,6 +418,7 @@ gwr.adaptive
 ```
 
 ### 9.7.3 Visualising GWR Output
+
 ```{r}
 gwr_table <- st_as_sf(gwr.adaptive$SDF) %>%
   st_drop_geometry() %>%
@@ -436,6 +447,7 @@ gwr_table %>%
 ```
 
 ### 9.7.4 Converting SDF into sf data.frame
+
 ```{r}
 condo_resale.sf.adaptive <-
   st_as_sf(gwr.adaptive$SDF) %>%
@@ -449,9 +461,8 @@ summary(gwr.adaptive$SDF$yhat)
 ```
 
 ### 9.7.5 Visualising local R2
-```{r}
-tmap_mode("view")
 
+```{r}
 tm_shape(mpsz_svy21)+
   tm_polygons(fill_alpha = 0.1) +
 tm_shape(condo_resale.sf.adaptive) +  
@@ -459,14 +470,11 @@ tm_shape(condo_resale.sf.adaptive) +
           border.col = "gray60",
           border.lwd = 1) +
   tm_view(set.zoom.limits = c(11,14))
-
-tmap_mode("plot")
 ```
 
 ### 9.7.6 Visualising coefficient estimates
-```{r}
-tmap_mode("view")
 
+```{r}
 AREA_SQM_SE <- tm_shape(mpsz_svy21)+
   tm_polygons(alpha = 0.1) +
 tm_shape(condo_resale.sf.adaptive) +  
@@ -486,6 +494,4 @@ tm_shape(condo_resale.sf.adaptive) +
 tmap_arrange(AREA_SQM_SE, AREA_SQM_TV, 
              asp=1, ncol=2,
              sync = TRUE)
-
-tmap_mode("plot")
 ```
