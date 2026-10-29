@@ -23,6 +23,8 @@ website:
           href: hands-on_exercise/hands-on_exercise_7.qmd
         - text: "Hands-on Exercise 8"
           href: hands-on_exercise/hands-on_exercise_8.qmd
+        - text: "Hands-on Exercise 9"
+          href: hands-on_exercise/hands-on_exercise_9.qmd
           
       - text: In-class Exercise
         menu:
