@@ -475,4 +475,4 @@ Prioritise **population and employment data**, pedestrian paths, feeder services
 
 ### Full Technical Report
 
-For complete methodology, diagnostics, underlying code, references and AI disclosure: [**View the full Technical Report**](take-home_ex3_tr.html)
+For complete methodology, diagnostics, underlying code, references and AI disclosure: [**View the full Technical Report**](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex3_tr.html)

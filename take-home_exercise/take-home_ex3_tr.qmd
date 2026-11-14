@@ -3306,7 +3306,7 @@ Overall, the study provides a reproducible spatial analytical framework for expl
 
 # 11 Executive Summary
 
-
+[Executive Summary Slides](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex3_slide.html#/title-slide)
 
 # 12 References
 
