@@ -9,10 +9,9 @@ date-modified: last-modified
 
 This technical report examines the spatial and spatio-temporal patterns of political violence in Myanmar from January 2021 to September 2025. Using event-level data from the Armed Conflict Location & Event Data Project [**(ACLED)**](https://acleddata.com/conflict-data/download-data) and township administrative boundaries from the Myanmar Information Management Unit [**(MIMU)**](https://data.themimu.info/en/dataset/myanmar-administrative-boundary), the analysis is conducted at the township level to investigate how conflict events are distributed, clustered, and evolving across space and time.
 
-The analytical framework consists of three complementary components. First, Local Measures of Spatial Association (LISA), including Local Moran's I and Getis-Ord Gi*, are applied to identify statistically significant spatial clusters, hot spots, cold spots, and spatial outliers. Second, Emerging Hot Spot Analysis (EHSA) examines the evolution of spatial concentrations across monthly observations. Third, spatially constrained clustering is employed to identify geographically connected townships with similar historical patterns of recorded political violence.
+The analytical framework consists of three complementary components. First, Local Measures of Spatial Association (LISA), including Local Moran's I and Getis-Ord Gi\*, are applied to identify statistically significant spatial clusters, hot spots, cold spots, and spatial outliers. Second, Emerging Hot Spot Analysis (EHSA) examines the evolution of spatial concentrations across monthly observations. Third, spatially constrained clustering is employed to identify geographically connected townships with similar historical patterns of recorded political violence.
 
 Together, these approaches provide a more comprehensive understanding of where violence is concentrated, how these concentrations evolve over time, and how neighbouring townships can be grouped into meaningful geographical regions.
-
 
 # 2 Introduction and Study Context
 
@@ -22,8 +21,7 @@ The conflict landscape has also become increasingly fragmented. An [ACLED report
 
 However, political violence is not evenly distributed across Myanmar. The frequency and geographical concentration of recorded conflict events may vary substantially between townships and across different periods. National-level summaries may therefore conceal important localised patterns, while cumulative event counts alone may overlook emerging or changing concentrations of violence. Examining neighbouring townships and temporal variations can provide a more comprehensive understanding of these geographical differences.
 
-Against this background, this study examines recorded political violence across Myanmar's townships from January 2021 to September 2025. It applies Local Measures of Spatial Association (LISA and Getis-Ord Gi*) to identify significant spatial concentrations and outliers, Emerging Hot Spot Analysis (EHSA) to investigate their temporal evolution, and Spatially Constrained Clustering to identify geographically connected areas with similar historical violence patterns. By integrating these approaches, the study aims to provide a geographically informed perspective that can support conflict monitoring and humanitarian planning.
-
+Against this background, this study examines recorded political violence across Myanmar's townships from January 2021 to September 2025. It applies Local Measures of Spatial Association (LISA and Getis-Ord Gi\*) to identify significant spatial concentrations and outliers, Emerging Hot Spot Analysis (EHSA) to investigate their temporal evolution, and Spatially Constrained Clustering to identify geographically connected areas with similar historical violence patterns. By integrating these approaches, the study aims to provide a geographically informed perspective that can support conflict monitoring and humanitarian planning.
 
 # 3 Research Questions and Objectives
 
@@ -31,36 +29,33 @@ Against this background, this study examines recorded political violence across 
 
 This study aims to understand both the spatial concentration and temporal evolution of political violence across Myanmar at the township level. It addresses the following research questions:
 
-**Q1 — Concentration:**  
+**Q1 — Concentration:**\
 Where are significant spatial clusters, hot spots, cold spots, and spatial outliers of recorded political violence located across Myanmar townships?
 
-**Q2 — Spatio-temporal Evolution:**  
+**Q2 — Spatio-temporal Evolution:**\
 How have spatial concentrations of recorded political violence evolved between January 2021 and September 2025?
 
-**Q3 — Spatially Constrained Regional Patterns:**
-Can geographically contiguous townships be grouped into meaningful regions based on similarities in their historical violence patterns?
+**Q3 — Spatially Constrained Regional Patterns:** Can geographically contiguous townships be grouped into meaningful regions based on similarities in their historical violence patterns?
 
-**Q4 — Practical Implications:**
-How can the combined spatial, temporal, and regional findings support geographically informed conflict monitoring and humanitarian planning?
+**Q4 — Practical Implications:** How can the combined spatial, temporal, and regional findings support geographically informed conflict monitoring and humanitarian planning?
 
 ## 3.2 Research Objectives
 
 To address these questions, the study aims to:
 
-1. **Identify spatial concentrations and anomalies** of political violence using township-level spatial association and hot spot analysis.
+1.  **Identify spatial concentrations and anomalies** of political violence using township-level spatial association and hot spot analysis.
 
-2. **Examine the evolution of conflict hot spots over time** to distinguish temporary concentrations from persistent or changing patterns.
+2.  **Examine the evolution of conflict hot spots over time** to distinguish temporary concentrations from persistent or changing patterns.
 
-3. **Integrate spatial and temporal findings** to develop a clearer understanding of where political violence is concentrated and how these areas are changing.
+3.  **Integrate spatial and temporal findings** to develop a clearer understanding of where political violence is concentrated and how these areas are changing.
 
-4. **Support geographic prioritisation and decision-making** by identifying townships that may warrant closer monitoring or attention, providing spatial evidence that can inform conflict monitoring, humanitarian planning, resource prioritisation, and peace-building initiatives.
+4.  **Support geographic prioritisation and decision-making** by identifying townships that may warrant closer monitoring or attention, providing spatial evidence that can inform conflict monitoring, humanitarian planning, resource prioritisation, and peace-building initiatives.
 
 ## 3.3 Practical Relevance
 
 The practical value of this analysis lies not only in identifying where conflict events are concentrated, but also in distinguishing areas with different spatial and temporal trajectories. For example, a persistent hot spot may indicate a location requiring sustained monitoring, while an emerging or intensifying hot spot may signal an area where attention is becoming increasingly important. Conversely, diminishing hot spots may indicate changing conflict dynamics that warrant further investigation.
 
 These insights can provide an evidence-based geographical perspective for organisations involved in conflict monitoring, humanitarian response, public safety, and peace-building. The analysis is intended to support prioritisation rather than predict individual conflict events or establish the causes of violence.
-
 
 # 4 Data and Study Design
 
@@ -96,12 +91,12 @@ Accordingly, the term "violence level" in this report refers to recorded politic
 
 The study adopts an **observational geospatial and spatio-temporal analytical design**. It examines recorded patterns of political violence rather than attempting to establish causal relationships between conflict and external socioeconomic or political factors.
 
-The analytical design combines three perspectives. First, LISA and Getis-Ord Gi* identify spatial concentrations and outliers across the study period. Second, EHSA examines changes in local hot and cold spot patterns using monthly observations. Third, SKATER groups geographically connected townships with similar historical violence profiles.
+The analytical design combines three perspectives. First, LISA and Getis-Ord Gi\* identify spatial concentrations and outliers across the study period. Second, EHSA examines changes in local hot and cold spot patterns using monthly observations. Third, SKATER groups geographically connected townships with similar historical violence profiles.
 
 Together, these approaches provide complementary insights into spatial concentration, temporal behaviour, and regional similarity.
 
-
 # 5 Loading Necessary R Packages
+
 ```{r}
 pacman::p_load(sf, sfdep, spdep, tidyverse, tmap, plotly, Kendall, knitr)
 ```
@@ -138,10 +133,10 @@ knitr::kable(
 )
 ```
 
-
 # 6 Data preparation and quality assessment
 
 ## 6.1 Data Import
+
 ```{r}
 acled_raw <- read_csv("take-home_ex2_data/ACLED_Data_Myanmar_Jan2021-Sep2025.csv")
 
@@ -149,6 +144,7 @@ township_raw <- st_read("take-home_ex2_data/geonode-mmr_polbnda_adm3_250k_mimu_1
 ```
 
 ## 6.2 Check Data Quality
+
 ```{r}
 #| echo: true
 #| output: false
@@ -163,6 +159,7 @@ st_geometry_type(township_raw)
 ```
 
 ### 6.2.1 Duplicate Check
+
 ```{r}
 acled_raw %>%
   summarise(
@@ -172,9 +169,11 @@ acled_raw %>%
     end_date = max(as.Date(event_date))
   )
 ```
+
 The ACLED dataset contained 87,109 event records covering the intended study period from January 2021 to September 2025. All event identifiers were unique, indicating no duplicated event records based on event_id_cnty.
 
 ### 6.2.2 Country Coverage Check
+
 ```{r}
 acled_raw %>%
   count(country, sort = TRUE)
@@ -182,9 +181,11 @@ acled_raw %>%
 acled_mm <- acled_raw %>%
   filter(country == "Myanmar")
 ```
+
 Although the dataset was extracted for Myanmar, six records were coded under the Indian Ocean. These observations were excluded to maintain consistency with the defined study area.
 
 ### 6.2.3 Missing Values Check
+
 ```{r}
 acled_mm %>%
   summarise(
@@ -197,19 +198,23 @@ acled_mm %>%
     missing_fatalities = sum(is.na(fatalities))
   )
 ```
+
 Missing values were observed in the ACLED admin3 field. However, township assignment in this study was based on the geographic coordinates of each event and the MIMU township polygons rather than relying solely on ACLED administrative labels. Therefore, missing admin3 values did not automatically result in record exclusion.
 
 ### 6.2.4 Geo-precision Quality Assessment
+
 ```{r}
 acled_mm %>%
   count(geo_precision) %>%
   mutate(percentage = n / sum(n) * 100)
 ```
+
 ACLED records include a geographic precision indicator reflecting the level of certainty associated with each event location. While a substantial proportion of events were coded with the highest geographic precision, a considerable number were assigned lower precision levels. Excluding all lower-precision observations would remove a large proportion of the available conflict records and could introduce additional selection bias.
 
 Therefore, all eligible political violence events were retained for the primary analysis. Geographic precision is instead treated as an important data limitation, and the robustness of key spatial findings may be evaluated using higher-precision observations as a sensitivity check.
 
 ## 6.3 Prepare Political Violence Events
+
 ```{r}
 political_violence <- acled_mm %>%
   filter(
@@ -241,6 +246,7 @@ acled_mm %>%
 ```
 
 ## 6.4 Prepare MIMU Township Boundary
+
 ```{r}
 extract_field <- function(x, field) {
   
@@ -285,6 +291,7 @@ n_distinct(township$TS_PCODE)
 ```
 
 ## 6.5 Fix GeometryCollection
+
 ```{r}
 stopifnot(nrow(township) == 330)
 
@@ -360,9 +367,11 @@ knitr::kable(
 
 table(st_geometry_type(township))
 ```
+
 The original MIMU KML contained 330 township features stored as GeometryCollections, including 41 features with nested polygon geometries. A recursive extraction approach was applied to retain all polygon components while removing non-spatial-boundary elements such as points. The extracted geometries were standardised into MultiPolygon format, followed by geometry validity and township identifier checks to ensure data completeness before spatial analysis.
 
 ## 6.6 Convert ACLED Events into Spatial Points
+
 ```{r}
 political_violence_sf <- political_violence %>%
   st_as_sf(
@@ -378,6 +387,7 @@ st_crs(township)
 ```
 
 ## 6.7 Spatial Join
+
 ```{r}
 violence_joined <- st_join(
   political_violence_sf,
@@ -398,6 +408,7 @@ violence_joined %>%
 ```
 
 ## 6.8 Unmatached Events
+
 ```{r}
 unmatched_events <- violence_joined %>%
   filter(is.na(TS_PCODE)) %>%
@@ -417,6 +428,7 @@ unmatched_events <- violence_joined %>%
 
 unmatched_events
 ```
+
 Eight eligible political violence events could not be assigned to a MIMU township polygon through coordinate-based spatial matching. Given their negligible proportion of the analytical dataset, these observations were excluded from township-level analysis but documented as part of the spatial data quality assessment.
 
 ```{r}
@@ -425,6 +437,7 @@ violence_matched <- violence_joined %>%
 ```
 
 ## 6.9 Summary
+
 ```{r}
 quality_summary <- tibble(
   `Quality Check` = c(
@@ -464,6 +477,7 @@ knitr::kable(
 ```
 
 ## 6.10 Prepare Analysis-ready Spatial Dataset
+
 ```{r}
 violence_township <- violence_matched %>%
   st_drop_geometry() %>%
@@ -492,6 +506,7 @@ sum(is.na(township_analysis$violent_events))
 ```
 
 ## 6.11 Prepare Complete Township-Month Panel
+
 ```{R}
 violence_monthly <- violence_matched %>%
   st_drop_geometry() %>%
@@ -528,6 +543,7 @@ nrow(township_monthly)
 ## 6.12 Final Check
 
 ### 6.12.1 Check township_analysis Data
+
 ```{r}
 nrow(township_analysis)
 
@@ -549,6 +565,7 @@ township_analysis %>%
 ```
 
 ### 6.12.2 Check township_monthly Data
+
 ```{r}
 nrow(township_monthly)
 
@@ -564,6 +581,7 @@ township_monthly %>%
 
 sum(township_monthly$violent_events)
 ```
+
 The final cross-sectional dataset contained 330 unique townships with no missing event-count values. Township-month aggregation produced a complete panel of 18,810 observations, representing 330 townships across 57 monthly periods from January 2021 to September 2025. Zero-event township-month combinations were retained as valid zero observations rather than treated as missing values.
 
 The total number of events remained consistent after township and monthly aggregation, confirming that no additional event records were lost or duplicated during data restructuring.
@@ -582,10 +600,10 @@ nrow(township)
 n_distinct(township$TS_PCODE)
 ```
 
-
 # 7 Exploratory and Temporal Analysis
 
 ## 7.1 Create Annual Trend
+
 ```{r}
 annual_summary <- township_monthly %>%
   mutate(year = lubridate::year(month)) %>%
@@ -622,6 +640,7 @@ ggplot(
 ```
 
 ## 7.2 Same-Month Annual Comparison
+
 ```{r}
 same_month_comparison <- township_monthly %>%
   filter(lubridate::month(month) <= 9) %>%
@@ -640,6 +659,7 @@ knitr::kable(same_month_comparison, digits = 2)
 ```
 
 ## 7.3 Monthly Trend by Event Type
+
 ```{r}
 monthly_by_type <- violence_matched %>%
   st_drop_geometry() %>%
@@ -665,12 +685,13 @@ ggplot(
   theme_minimal() +
   theme(legend.position = "none")
 ```
+
 Battles and Explosions/Remote violence generally increased after 2021, with notable peaks around late 2023 and early 2024. In contrast, Violence against civilians reached relatively high levels during 2021–2022 before generally declining in later years.
 
 These differences suggest that the three event types followed distinct temporal patterns, highlighting the importance of examining violence composition rather than relying solely on overall event counts.
 
-
 # 8 Spatial Neighbourhood and Weights
+
 ```{r}
 original_s2 <- sf::sf_use_s2()
 
@@ -712,7 +733,6 @@ township_analysis <- township_analysis %>%
 township_analysis$neighbour_avg[spdep::card(queen_nb) == 0] <- NA_real_
 ```
 
-
 # 9 Analytical assumptions and methodological decisions
 
 The following table summarises the key methodological decisions adopted for the spatial and spatio-temporal analyses. These choices aim to ensure consistency, statistical interpretability, and appropriate treatment of geographical constraints.
@@ -745,7 +765,6 @@ knitr::kable(
   align = c("l", "l")
 )
 ```
-
 
 # 10 Local Measures of Spatial Association (LSMA) analysis
 
@@ -826,6 +845,7 @@ head(lisa_stats)
 ```
 
 ### 10.2.1 LISA Classification
+
 ```{r}
 listw_lisa <- spdep::nb2listw(nb_lisa, style = "W")
 
@@ -862,6 +882,7 @@ lisa_data %>%
 ```
 
 ### 10.2.2 LISA Cluster Map
+
 ```{r}
 lisa_map <- township_analysis %>%
   left_join(
@@ -925,6 +946,7 @@ ggplot(lisa_map) +
 ```
 
 ### 10.2.3 LISA Summary Table
+
 ```{r}
 lisa_summary <- lisa_map %>%
   st_drop_geometry() %>%
@@ -943,13 +965,14 @@ knitr::kable(
 )
 ```
 
-## 10.3 Getis-Ord Gi* Hot and Cold Spot Analysis
+## 10.3 Getis-Ord Gi\* Hot and Cold Spot Analysis
 
-Getis-Ord Gi* is employed to identify statistically significant geographical concentrations of high and low political violence event frequencies. Unlike Local Moran's I, which also identifies spatial outliers, Gi* focuses on the concentration of values within local neighbourhoods.
+Getis-Ord Gi\* is employed to identify statistically significant geographical concentrations of high and low political violence event frequencies. Unlike Local Moran's I, which also identifies spatial outliers, Gi\* focuses on the concentration of values within local neighbourhoods.
 
-Self-inclusive Queen contiguity weights are used to calculate Gi* statistics. Hot and cold spots are classified based on the direction of the statistic and BH-adjusted permutation p-values at the 5% significance level.
+Self-inclusive Queen contiguity weights are used to calculate Gi\* statistics. Hot and cold spots are classified based on the direction of the statistic and BH-adjusted permutation p-values at the 5% significance level.
 
-### 10.3.1 Calculate Gi*
+### 10.3.1 Calculate Gi\*
+
 ```{r}
 nb_gistar <- sfdep::include_self(nb_lisa)
 
@@ -971,6 +994,7 @@ head(gi_stats)
 ```
 
 ### 10.3.2 Hot / Cold Spot Classification
+
 ```{r}
 gi_col <- intersect(
   c("gi_star", "gi"),
@@ -1011,7 +1035,8 @@ gi_data %>%
   )
 ```
 
-### 10.3.3 Plot Gi* Map
+### 10.3.3 Plot Gi\* Map
+
 ```{r}
 gi_map <- township_analysis %>%
   left_join(
@@ -1066,7 +1091,8 @@ ggplot(gi_map) +
   theme_void()
 ```
 
-### 10.3.4 Gi* Summary Table
+### 10.3.4 Gi\* Summary Table
+
 ```{r}
 gi_summary <- gi_map %>%
   st_drop_geometry() %>%
@@ -1085,7 +1111,8 @@ knitr::kable(
 )
 ```
 
-## 10.4 Comparing LISA and Gi*
+## 10.4 Comparing LISA and Gi\*
+
 ```{r}
 spatial_comparison <- lisa_map %>%
   st_drop_geometry() %>%
@@ -1110,12 +1137,12 @@ knitr::kable(
   caption = "Comparison of Local Moran's I and Getis-Ord Gi*"
 )
 ```
-The results demonstrate strong agreement between Local Moran's I and Getis-Ord Gi* in identifying spatial concentrations of recorded political violence. Among the 26 High–High (HH) townships identified by LISA, 25 (96.2%) are also classified as Gi* hot spots. Similarly, 28 of the 29 Low–Low (LL) townships (96.6%) correspond to Gi* cold spots.
 
-Nevertheless, some differences are observed. Gi* identifies one additional hot spot and four cold spots among townships classified as non-significant by LISA. Furthermore, one Low–High spatial outlier is classified as a Gi* hot spot, reflecting differences in how the two methods measure local spatial patterns.
+The results demonstrate strong agreement between Local Moran's I and Getis-Ord Gi\* in identifying spatial concentrations of recorded political violence. Among the 26 High–High (HH) townships identified by LISA, 25 (96.2%) are also classified as Gi\* hot spots. Similarly, 28 of the 29 Low–Low (LL) townships (96.6%) correspond to Gi\* cold spots.
 
-Overall, the findings suggest that LISA and Gi* provide consistent yet complementary insights into the geographical concentration of political violence. Of the 330 townships, three have no contiguous neighbours and are excluded from local spatial tests. While these results reveal spatial concentrations across the full study period, the subsequent Emerging Hot Spot Analysis (EHSA) will investigate how these patterns evolve over time.
+Nevertheless, some differences are observed. Gi\* identifies one additional hot spot and four cold spots among townships classified as non-significant by LISA. Furthermore, one Low–High spatial outlier is classified as a Gi\* hot spot, reflecting differences in how the two methods measure local spatial patterns.
 
+Overall, the findings suggest that LISA and Gi\* provide consistent yet complementary insights into the geographical concentration of political violence. Of the 330 townships, three have no contiguous neighbours and are excluded from local spatial tests. While these results reveal spatial concentrations across the full study period, the subsequent Emerging Hot Spot Analysis (EHSA) will investigate how these patterns evolve over time.
 
 # 11 Emerging Hot Spot Analysis (EHSA)
 
@@ -1126,6 +1153,7 @@ A township-month space-time cube is constructed to examine the temporal evolutio
 To maintain consistency with the preceding spatial analysis, three townships without contiguous neighbours are excluded from EHSA calculations but retained in the final visualisation. The resulting analysis covers 327 townships.
 
 ### 11.1.1 Prepare EHSA Data
+
 ```{r}
 ehsa_geometry <- lisa_data %>%
   select(TS_PCODE)
@@ -1160,6 +1188,7 @@ stopifnot(sfdep::is_spacetime_cube(st_cube))
 ```
 
 ### 11.1.2 Summary Table
+
 ```{r}
 cube_summary <- tibble(
   Metric = c(
@@ -1191,7 +1220,7 @@ knitr::kable(
 
 ## 11.2 Emerging Hot Spot Analysis
 
-Emerging Hot Spot Analysis (EHSA) is applied to examine changes in the spatial concentration of recorded political violence across 57 monthly periods. The analysis combines local Getis-Ord Gi* statistics with the Mann–Kendall trend test to identify evolving spatial patterns.
+Emerging Hot Spot Analysis (EHSA) is applied to examine changes in the spatial concentration of recorded political violence across 57 monthly periods. The analysis combines local Getis-Ord Gi\* statistics with the Mann–Kendall trend test to identify evolving spatial patterns.
 
 Queen contiguity is used to define spatial neighbours, with a one-month temporal lag (k = 1). The analysis employs 199 simulations and a significance threshold of 0.01 for EHSA classification. Unlike the preceding cross-sectional analysis, which uses log-transformed average monthly event frequency, EHSA uses monthly event counts to preserve temporal variation.
 
@@ -1264,6 +1293,7 @@ knitr::kable(
 ```
 
 ## 11.4 Plot EHSA Classification Map
+
 ```{r}
 ehsa_map <- township_analysis %>%
   left_join(
@@ -1412,8 +1442,7 @@ ehsa_map %>%
 
 The EHSA results reveal diverse spatio-temporal patterns of recorded political violence across Myanmar. Among the 327 analysed townships, sporadic coldspots are the most common classification (156), followed by no pattern detected (105) and sporadic hotspots (43). Smaller numbers of oscillating hotspots (10), persistent coldspots (8), and oscillating coldspots (5) are also identified.
 
-These findings suggest that intermittent spatial concentrations are more common than persistent patterns under the selected EHSA settings. Unlike the preceding LISA and Gi* analyses, EHSA highlights how local concentrations change across monthly observations. Importantly, coldspot classifications indicate relatively low spatial concentrations of recorded events during particular periods, rather than an absence of conflict or evidence of safety.
-
+These findings suggest that intermittent spatial concentrations are more common than persistent patterns under the selected EHSA settings. Unlike the preceding LISA and Gi\* analyses, EHSA highlights how local concentrations change across monthly observations. Importantly, coldspot classifications indicate relatively low spatial concentrations of recorded events during particular periods, rather than an absence of conflict or evidence of safety.
 
 # 12 Spatially Constrained Clustering
 
@@ -1421,13 +1450,14 @@ These findings suggest that intermittent spatial concentrations are more common 
 
 Spatially Constrained Clustering is performed using the SKATER algorithm to identify geographically contiguous townships with similar historical patterns of recorded political violence.
 
-Unlike LISA and Gi*, SKATER is an unsupervised clustering method rather than a statistical significance test. It incorporates both spatial adjacency and attribute similarity to form geographically connected groups.
+Unlike LISA and Gi\*, SKATER is an unsupervised clustering method rather than a statistical significance test. It incorporates both spatial adjacency and attribute similarity to form geographically connected groups.
 
 Six temporal features are selected: the average monthly event frequency for each year from 2021 to 2025, and the proportion of months with at least one recorded event. Log transformation and standardisation are applied to reduce the influence of extreme observations and ensure comparability across features.
 
 ## 12.2 Temporal Feature Preparation
 
 ### 12.2.1 Annual Temporal Profiles
+
 ```{r}
 annual_profiles <- township_monthly %>%
   mutate(
@@ -1476,6 +1506,7 @@ knitr::kable(
 ```
 
 ### 12.2.2 Feature Transformation
+
 ```{r}
 skater_features <- skater_profiles %>%
   select(all_of(feature_cols))
@@ -1504,6 +1535,7 @@ Annual average monthly event frequencies were log-transformed to reduce the infl
 ## 12.3 SKATER Clustering
 
 ### 12.3.1 Check Neighbourhood Connectivity
+
 ```{r}
 stopifnot(
   length(nb_lisa) == nrow(lisa_data),
@@ -1518,6 +1550,7 @@ spdep::n.comp.nb(nb_lisa)$nc
 ```
 
 ### 12.3.2 Minimum Spanning Tree
+
 ```{r}
 stopifnot(spdep::n.comp.nb(nb_lisa)$nc == 1)
 
@@ -1542,6 +1575,7 @@ head(skater_mst)
 ```
 
 ### 12.3.3 Cluster Number Evaluation (SA)
+
 ```{r}
 candidate_cuts <- 2:7
 
@@ -1604,6 +1638,7 @@ Although WSS decreased as the number of clusters increased, no clear elbow point
 Therefore, the six-cluster solution was selected based on within-cluster similarity, cluster sizes, and geographical interpretability.
 
 ### 12.3.4 Run SKATER
+
 ```{r}
 #| include: false
 
@@ -1624,9 +1659,7 @@ stopifnot(
 )
 ```
 
-
 ## 12.4 Cluster Evaluation and Mapping
-
 
 ### 12.4.1 Cluster Size Distribution
 
@@ -1703,6 +1736,7 @@ stopifnot(all(cluster_connected))
 All six clusters passed the connectivity check, confirming that the selected partition satisfies the defined spatial constraints.
 
 ### 12.4.3 SKATER Cluster Mapping
+
 ```{r}
 skater_map <- township_analysis %>%
   left_join(
@@ -1928,12 +1962,11 @@ Cluster 1 shows a gradual increase before stabilising, whereas Clusters 4 and 5 
 
 Overall, these findings demonstrate that geographically connected townships can exhibit distinct historical violence patterns, highlighting the value of incorporating temporal features into spatially constrained clustering.
 
-
 # 13 Integrated findings and discussion
 
 ## 13.1 Integrated Spatial and Temporal Patterns
 
-The combined results reveal both consistent and changing spatial patterns of recorded political violence across Myanmar. LISA and Getis-Ord Gi* show strong agreement in identifying high- and low-frequency spatial concentrations, with 25 of the 26 High–High townships also classified as Gi* hot spots and 28 of the 29 Low–Low townships classified as cold spots.
+The combined results reveal both consistent and changing spatial patterns of recorded political violence across Myanmar. LISA and Getis-Ord Gi\* show strong agreement in identifying high- and low-frequency spatial concentrations, with 25 of the 26 High–High townships also classified as Gi\* hot spots and 28 of the 29 Low–Low townships classified as cold spots.
 
 EHSA adds a temporal perspective by identifying sporadic, oscillating, and persistent spatial patterns. This highlights the importance of distinguishing overall spatial concentrations from patterns that appear or change across individual months.
 
@@ -1986,6 +2019,7 @@ stopifnot(
 ```
 
 ### 13.1.1 Comparison — Cross-sectional Gi vs EHSA
+
 ```{r}
 integrated %>%
   st_drop_geometry() %>%
@@ -1999,9 +2033,11 @@ integrated %>%
     caption = "EHSA Patterns Among Gi* Hot Spots"
   )
 ```
-Of the 27 Gi hot spots, 17 are classified as sporadic coldspots by EHSA. This difference reflects the use of aggregated event frequencies in Gi* versus monthly spatial patterns in EHSA. The classifications should therefore not be interpreted as directly equivalent.
 
-### 13.1.2 Comparison — SKATER vs Gi*
+Of the 27 Gi hot spots, 17 are classified as sporadic coldspots by EHSA. This difference reflects the use of aggregated event frequencies in Gi\* versus monthly spatial patterns in EHSA. The classifications should therefore not be interpreted as directly equivalent.
+
+### 13.1.2 Comparison — SKATER vs Gi\*
+
 ```{r}
 integrated %>%
   st_drop_geometry() %>%
@@ -2019,29 +2055,28 @@ integrated %>%
     caption = "Gi* Hot and Cold Spots Across SKATER Clusters"
   )
 ```
-Cluster sizes vary, so Gi hot and cold spot counts should be interpreted relative to the number of townships in each cluster. Cluster 2 contains most Gi* hot spots (23 of 27), while Cluster 5 contains most Gi* cold spots (21 of 32).
+
+Cluster sizes vary, so Gi hot and cold spot counts should be interpreted relative to the number of townships in each cluster. Cluster 2 contains most Gi\* hot spots (23 of 27), while Cluster 5 contains most Gi\* cold spots (21 of 32).
 
 ## 13.2 Regional Characteristics of SKATER Clusters
 
-The six SKATER clusters show distinct spatial and temporal patterns of recorded political violence. Clusters 2 and 3 have relatively high event frequencies but different trends. Cluster 2 peaks in 2023 before declining, while Cluster 3 shows an overall increase. Notably, Cluster 2 contains 23 of the 27 Gi* hot spots.
+The six SKATER clusters show distinct spatial and temporal patterns of recorded political violence. Clusters 2 and 3 have relatively high event frequencies but different trends. Cluster 2 peaks in 2023 before declining, while Cluster 3 shows an overall increase. Notably, Cluster 2 contains 23 of the 27 Gi\* hot spots.
 
-In contrast, Clusters 4 and 5 maintain relatively low event frequencies, with Cluster 5 containing 21 of the 32 Gi* cold spots (72.4% of its townships). Cluster 1 shows gradual growth, while Cluster 6 generally declines.
+In contrast, Clusters 4 and 5 maintain relatively low event frequencies, with Cluster 5 containing 21 of the 32 Gi\* cold spots (72.4% of its townships). Cluster 1 shows gradual growth, while Cluster 6 generally declines.
 
 These findings highlight differences in both geographical concentration and historical violence patterns. However, cluster membership does not directly indicate violence severity or current safety.
-
 
 # 14 Implications for Humanitarian Monitoring and Peacebuilding
 
 The integrated findings offer practical insights for geographically informed conflict monitoring and humanitarian planning.
 
-**Targeted Monitoring:** Cluster 2 contains 23 of the 27 Gi* hot spots, indicating a notable concentration of historically recorded political violence. These areas may warrant further monitoring and contextual investigation.
+**Targeted Monitoring:** Cluster 2 contains 23 of the 27 Gi\* hot spots, indicating a notable concentration of historically recorded political violence. These areas may warrant further monitoring and contextual investigation.
 
-**Temporal Awareness:** Of the 27 Gi* hot spots, 17 are classified as sporadic coldspots by EHSA. This highlights the importance of considering temporal changes rather than relying solely on aggregated spatial statistics.
+**Temporal Awareness:** Of the 27 Gi\* hot spots, 17 are classified as sporadic coldspots by EHSA. This highlights the importance of considering temporal changes rather than relying solely on aggregated spatial statistics.
 
 **Regional Coordination:** SKATER identifies geographically connected townships with similar historical violence patterns. These regional groupings may support coordinated monitoring and further assessment across neighbouring areas.
 
 Overall, the findings provide a spatial evidence base for identifying areas that may require closer attention. However, operational decisions should also consider current conflict conditions, population vulnerability, and humanitarian needs.
-
 
 # 15 Limitations and Future Research
 
@@ -2055,17 +2090,15 @@ Despite providing useful spatial and temporal insights, this study has several l
 
 Future research could incorporate population data, displacement information, road accessibility, and cross-border factors to better understand geographical differences and potential implications for humanitarian planning.
 
-
 # 16 Executive Summary
 
 [Executive Summary Slide](https://isss-626-course.vercel.app/take-home_exercise/take-home_ex2_slide.html#/title-slide)
-
 
 # 17 References
 
 Armed Conflict Location & Event Data (ACLED). (n.d.-a). *ACLED codebook*. https://acleddata.com/methodology/acled-codebook
 
-Armed Conflict Location & Event Data (ACLED). (n.d.-b). *Data export tool* [Data set]. https://acleddata.com/conflict-data/data-export-tool
+Armed Conflict Location & Event Data (ACLED). (n.d.-b). *Data export tool* \[Data set\]. https://acleddata.com/conflict-data/data-export-tool
 
 Council on Foreign Relations. (2026, July 29). *Civil war in Myanmar*. Global Conflict Tracker. https://www.cfr.org/global-conflict-tracker/conflict/rohingya-crisis-myanmar
 
@@ -2075,18 +2108,16 @@ Kam, T. S. (2026, July 20). *11. Emerging hot spot analysis*. In *R for geospati
 
 Kam, T. S. (2026, July 20). *12. Geographical segmentation with spatially constrained clustering techniques*. In *R for geospatial data science and analytics*. https://r4gdsa.netlify.app/chap12
 
-Myanmar Information Management Unit. (n.d.). *Myanmar township boundaries (Admin 3; PCode v9.4)* [Data set]. MIMU GeoNode. https://geonode.themimu.info/layers/geonode%3Ammr_polbnda_adm3_250k_mimu_1
+Myanmar Information Management Unit. (n.d.). *Myanmar township boundaries (Admin 3; PCode v9.4)* \[Data set\]. MIMU GeoNode. https://geonode.themimu.info/layers/geonode%3Ammr_polbnda_adm3_250k_mimu_1
 
 Su Mon. (2024, November 26). *Between cooperation and competition: The struggle of resistance groups in Myanmar*. ACLED. https://acleddata.com/report/between-cooperation-and-competition-struggle-resistance-groups-myanmar
 
 United Nations Office for the Coordination of Humanitarian Affairs. (2025, February 19). *Myanmar humanitarian update No. 44*. United Nations in Myanmar. https://myanmar.un.org/en/289497-myanmar-humanitarian-update-no-44
 
-
 # 18 AI Tool Use Declaration
 
 Generative AI tools, including ChatGPT, were used to support brainstorming, report organisation, academic writing, and the presentation and interpretation of analytical results.
 
-The core geospatial methods, including LISA, Getis-Ord Gi*, EHSA, and Spatially Constrained Clustering, were informed by the course materials. AI assistance was also used to further understand and implement project-specific techniques beyond the worked examples, particularly MIMU geometry repair, temporal feature engineering, statistical parameter selection, SKATER cluster evaluation, and integration of different analytical results.
+The core geospatial methods, including LISA, Getis-Ord Gi\*, EHSA, and Spatially Constrained Clustering, were informed by the course materials. AI assistance was also used to further understand and implement project-specific techniques beyond the worked examples, particularly MIMU geometry repair, temporal feature engineering, statistical parameter selection, SKATER cluster evaluation, and integration of different analytical results.
 
 AI tools additionally assisted with developing and troubleshooting selected R and Quarto code. AI-generated suggestions were reviewed and adapted, while analytical code was executed and its outputs examined by the author. The final methodological choices, interpretations, and conclusions remain the author's responsibility.
-

@@ -1,8 +1,7 @@
----
-title: "Geospatial Analytics and Applications"
-format:
-  html:
-    body-classes: home-page
+--- 
+title: "Geospatial Analytics and Applications" 
+format: html
+body-classes: home-page 
 ---
 
 **Welcome to My Website**

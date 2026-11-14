@@ -26,15 +26,15 @@ execute:
 
 ## Contents
 
-1. Study overview
-2. Data preparation and quality
-3. Analytical framework
-4. Cross-sectional clusters: LISA and Gi*
-5. EHSA: spatio-temporal patterns
-6. Why temporal interpretation matters
-7. Selecting the SKATER partition
-8. Connected regional groups
-9. Cluster temporal profiles
+1.  Study overview
+2.  Data preparation and quality
+3.  Analytical framework
+4.  Cross-sectional clusters: LISA and Gi\*
+5.  EHSA: spatio-temporal patterns
+6.  Why temporal interpretation matters
+7.  Selecting the SKATER partition
+8.  Connected regional groups
+9.  Cluster temporal profiles
 10. Integrated insights and limitations
 
 ::: {.callout-note appearance="minimal" icon="false"}
@@ -60,25 +60,25 @@ execute:
 :::
 :::::
 
-::::: {.column width="45%"}
+:::: {.column width="45%"}
 ::: {.callout-note appearance="simple" icon="false"}
 ### Analytical questions
 
 **Where?** Local Moran's I (LISA).
 
-**How concentrated?** Getis-Ord Gi*.
+**How concentrated?** Getis-Ord Gi\*.
 
 **How does concentration change?** EHSA.
 
 **Which regions have similar histories?** SKATER.
 :::
-:::::
+::::
 ::::::::
 
 ## 2. Data Preparation and Quality
 
-:::::::: columns
-::::: {.column width="48%"}
+::::::: columns
+:::: {.column width="48%"}
 ::: {.callout-note appearance="simple" icon="false"}
 ### Input and event definition
 
@@ -86,9 +86,9 @@ execute:
 - **MIMU:** complete township boundary dataset.
 - **57 monthly periods:** zero-event township-months retained.
 :::
-:::::
+::::
 
-::::: {.column width="48%"}
+:::: {.column width="48%"}
 ::: {.callout-tip appearance="simple" icon="false"}
 ### Key data quality findings
 
@@ -97,8 +97,8 @@ execute:
 - **3** townships without contiguous neighbours retained on maps separately.
 - **18,639** complete township-month observations in EHSA.
 :::
-:::::
-::::::::
+::::
+:::::::
 
 ::: {.callout-note appearance="minimal" icon="false"}
 **Workflow:** ACLED event screening → MIMU boundary repair → spatial assignment → complete monthly panel → spatial and spatio-temporal analysis.
@@ -106,7 +106,7 @@ execute:
 
 ## 3. Analytical Framework
 
-:::::::: columns
+::::::::: columns
 ::::: {.column width="48%"}
 ::: {.callout-note appearance="simple" icon="false"}
 ### LISA — local spatial association
@@ -115,7 +115,7 @@ High–High, Low–Low and spatial outliers.
 :::
 
 ::: {.callout-note appearance="simple" icon="false"}
-### Gi* — local concentration
+### Gi\* — local concentration
 
 Statistically significant hot and cold spots.
 :::
@@ -134,13 +134,13 @@ Sporadic, oscillating and persistent spatial patterns using monthly data.
 Contiguous townships with similar yearly violence profiles and event persistence.
 :::
 :::::
-::::::::
+:::::::::
 
 ::: {.callout-warning appearance="minimal" icon="false"}
-**Interpretation boundary:** LISA/Gi* significance, EHSA temporal classification and SKATER cluster membership describe different properties. They are not interchangeable risk scores.
+**Interpretation boundary:** LISA/Gi\* significance, EHSA temporal classification and SKATER cluster membership describe different properties. They are not interchangeable risk scores.
 :::
 
-## 4. LISA and Gi* — Strong Spatial Agreement
+## 4. LISA and Gi\* — Strong Spatial Agreement
 
 ::::::: columns
 ::: {.column width="59%"}
@@ -153,9 +153,9 @@ Contiguous townships with similar yearly violence profiles and event persistence
 ::: {.callout-tip appearance="simple" icon="false"}
 ### Main findings
 
-- **25 of 26** LISA High–High townships are Gi* hot spots.
-- **28 of 29** LISA Low–Low townships are Gi* cold spots.
-- Overall Gi*: **27 hot**, **32 cold**.
+- **25 of 26** LISA High–High townships are Gi\* hot spots.
+- **28 of 29** LISA Low–Low townships are Gi\* cold spots.
+- Overall Gi\*: **27 hot**, **32 cold**.
 :::
 
 ::: {.callout-note appearance="simple" icon="false"}
@@ -173,7 +173,7 @@ Three townships without contiguous neighbours were not tested, but remain on the
 ![](gaa_ex2_slide_assets/ehsa_map.png){fig-alt="EHSA township classifications recoloured using the final Technical Report palette: red hot spots, blue cold spots and grey other statuses" height="620"}
 :::
 
-::::: {.column width="57%"}
+:::::: {.column width="57%"}
 ::: {.callout-tip appearance="simple" icon="false"}
 ### What the map shows
 
@@ -183,15 +183,15 @@ The **monthly EHSA classifications** distinguish sporadic, oscillating and persi
 ::: {.callout-note appearance="simple" icon="false"}
 ### Categories present in the results
 
-**Hot spots:** <span style="color:#B2182B">■</span> sporadic · <span style="color:#E58B7C">■</span> oscillating.  
-**Cold spots:** <span style="color:#A8CCE9">■</span> sporadic · <span style="color:#5F9ED1">■</span> oscillating · <span style="color:#245B99">■</span> persistent.  
-**Other:** <span style="color:#969696">■</span> no contiguous neighbour · <span style="color:#A9B0B8">■</span> no pattern detected.
+**Hot spots:** [■]{style="color:#B2182B"} sporadic · [■]{style="color:#E58B7C"} oscillating.\
+**Cold spots:** [■]{style="color:#A8CCE9"} sporadic · [■]{style="color:#5F9ED1"} oscillating · [■]{style="color:#245B99"} persistent.\
+**Other:** [■]{style="color:#969696"} no contiguous neighbour · [■]{style="color:#A9B0B8"} no pattern detected.
 :::
 
 ::: {.callout-warning appearance="minimal" icon="false"}
 **Caution:** A coldspot category describes a relative statistical pattern, not an area that is necessarily safe.
 :::
-:::::
+::::::
 ::::::::
 
 ## 6. Why Aggregate and Monthly Patterns Differ
@@ -205,7 +205,7 @@ The **monthly EHSA classifications** distinguish sporadic, oscillating and persi
 ::: {.callout-tip appearance="simple" icon="false"}
 ### Unexpected result
 
-Among **27** Gi* hot spots:
+Among **27** Gi\* hot spots:
 
 - **17** sporadic EHSA coldspots
 - **8** no pattern detected
@@ -215,7 +215,7 @@ Among **27** Gi* hot spots:
 ::: {.callout-warning appearance="simple" icon="false"}
 ### Interpretation
 
-Gi* uses **full-period aggregated frequency**. EHSA uses **monthly local patterns** and different classification rules; the categories are **not directly equivalent**.
+Gi\* uses **full-period aggregated frequency**. EHSA uses **monthly local patterns** and different classification rules; the categories are **not directly equivalent**.
 :::
 :::::
 :::::::
@@ -247,7 +247,7 @@ There is no clear WSS elbow. Six groups balance within-cluster similarity, clust
 
 ## 8. SKATER — Connected Regional Groups
 
-:::::::: columns
+::::::: columns
 ::: {.column width="39%"}
 ![](gaa_ex2_slide_assets/skater_map.png){fig-alt="Six SKATER clusters across Myanmar, using the exact cluster colour identities of Technical Report Section 12.4.3" height="620"}
 :::
@@ -257,20 +257,20 @@ There is no clear WSS elbow. Six groups balance within-cluster similarity, clust
 ### Cluster sizes
 
 | Cluster | Townships |
-|---|---:|
-| 1 | 88 |
-| 2 | 82 |
-| 3 | 36 |
-| 4 | 13 |
-| 5 | 29 |
-| 6 | 79 |
+|---------|----------:|
+| 1       |        88 |
+| 2       |        82 |
+| 3       |        36 |
+| 4       |        13 |
+| 5       |        29 |
+| 6       |        79 |
 :::
 
 ::: {.callout-warning appearance="minimal" icon="false"}
 The **327** clustered townships are contiguous within their assigned group. The three isolated townships are shown separately. Cluster labels are **not** severity rankings.
 :::
 :::::
-::::::::
+:::::::
 
 ## 9. Temporal Profiles by SKATER Cluster
 
@@ -284,12 +284,12 @@ The **327** clustered townships are contiguous within their assigned group. The 
 
 ## 10. Integrated Insights, Applications and Limits
 
-:::::::: columns
+::::::::: columns
 :::: {.column width="32%"}
 ::: {.callout-tip appearance="simple" icon="false"}
 ### Where to investigate
 
-**23 of 27** Gi* hot spots are in Cluster 2. Cluster 5 contains **21 of 32** Gi* cold spots (21/29 of its townships).
+**23 of 27** Gi\* hot spots are in Cluster 2. Cluster 5 contains **21 of 32** Gi\* cold spots (21/29 of its townships).
 :::
 ::::
 
@@ -297,7 +297,7 @@ The **327** clustered townships are contiguous within their assigned group. The 
 ::: {.callout-note appearance="simple" icon="false"}
 ### Why time is essential
 
-**17 of 27** full-period Gi* hot spots are EHSA sporadic coldspots. Overall concentration is not the same as monthly persistence.
+**17 of 27** full-period Gi\* hot spots are EHSA sporadic coldspots. Overall concentration is not the same as monthly persistence.
 :::
 ::::
 
@@ -308,14 +308,13 @@ The **327** clustered townships are contiguous within their assigned group. The 
 SKATER groups neighbouring townships with similar historical frequency patterns, supporting regional monitoring perspectives.
 :::
 ::::
-::::::::
+:::::::::
 
 ::: {.callout-warning appearance="minimal" icon="false"}
 **Limits:** historical records are not current safety estimates. Event counts are not severity; reporting and location uncertainty remain; 2025 has only nine months; descriptive patterns are not causal explanations.
 :::
 
 **Sources:** ACLED conflict events and codebook; MIMU township boundaries; Su Mon (ACLED, 2024); CFR Global Conflict Tracker; *R for Geospatial Data Science and Analytics*, Chs. 10–12. Complete APA references, code and AI disclosure are included in the Technical Report.
-
 
 ## 11. References
 
